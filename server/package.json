@@ -1,0 +1,26 @@
+{
+  "name": "multi-agent-mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Multi-Agent MCP server — file/state manager for project agent teams. Never runs models, never spawns agents (PLAN.md section 3.8).",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "multi-agent-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.20.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

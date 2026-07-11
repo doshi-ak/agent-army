@@ -1,0 +1,12 @@
+# Dependencies (platform-specific — never copy across macOS/Linux)
+node_modules/
+
+# Environment / secrets — never committed
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# NOTE: server/dist/ is deliberately COMMITTED (project .mcp.json points at it;
+# Code Web fallback per PLAN.md §10). Rebuild + commit together with src changes.
