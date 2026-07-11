@@ -21,6 +21,7 @@ import { SERVER_NAME, SERVER_VERSION } from "./shared.js";
 import { registerTeamTools } from "./team.js";
 import { registerAgentTools } from "./agents.js";
 import { registerRoleTools } from "./roles.js";
+import { registerStateTools } from "./state.js";
 
 async function main(): Promise<void> {
   const server = new McpServer({
@@ -31,6 +32,7 @@ async function main(): Promise<void> {
   registerTeamTools(server);
   registerAgentTools(server);
   registerRoleTools(server);
+  registerStateTools(server);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);

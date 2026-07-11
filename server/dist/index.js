@@ -20,6 +20,7 @@ import { SERVER_NAME, SERVER_VERSION } from "./shared.js";
 import { registerTeamTools } from "./team.js";
 import { registerAgentTools } from "./agents.js";
 import { registerRoleTools } from "./roles.js";
+import { registerStateTools } from "./state.js";
 async function main() {
     const server = new McpServer({
         name: SERVER_NAME,
@@ -28,6 +29,7 @@ async function main() {
     registerTeamTools(server);
     registerAgentTools(server);
     registerRoleTools(server);
+    registerStateTools(server);
     const transport = new StdioServerTransport();
     await server.connect(transport);
     console.error(`[${SERVER_NAME}] v${SERVER_VERSION} running on stdio`);
