@@ -158,6 +158,44 @@ export function serializeState(doc) {
     out.push(`last_manager_tick: ${doc.last_manager_tick === null ? "null" : q(doc.last_manager_tick)}`);
     return out.join("\n");
 }
+/** Render a full STATE.md: frontmatter mirror + human-readable tables, kept in sync. */
+export function renderStateMd(doc) {
+    const teamRows = doc.team.map((t) => `| ${t.agent} | ${t.role} | ${t.status} |`).join("\n");
+    const workRows = doc.active_work
+        .map((w) => `| ${w.task} | ${w.owner} | ${w.claimed_at} | ${w.eta} |`)
+        .join("\n");
+    const blockers = doc.blockers.length ? doc.blockers.map((b) => `- ${b.desc}`).join("\n") : "(none)";
+    const tick = doc.last_manager_tick ?? "(never run)";
+    return `---
+${serializeState(doc)}
+---
+
+# STATE.md — current truth for ${doc.project}
+
+<!-- Maintained by the multi-agent-mcp server tools. Status vocabulary:
+     DONE | DONE_WITH_CONCERNS | NEEDS_CONTEXT | BLOCKED | IN_PROGRESS | IDLE -->
+
+## Team
+
+| Agent | Role | Status |
+|---|---|---|
+${teamRows}
+
+## Active Work
+
+| Task | Owner | Claimed at | ETA |
+|---|---|---|---|
+${workRows}
+
+## Blockers
+
+${blockers}
+
+## Last Manager Tick
+
+${tick}
+`;
+}
 // ------------------------------------------------------------- PROGRESS.md
 /** `- [ISO timestamp] <actor> — <event>: <outcome>` (em dash separator). */
 const PROGRESS_RE = /^-\s*\[([^\]]+)\]\s*(.+?)\s+—\s+([^:]+):\s*(.*)$/;

@@ -9,8 +9,8 @@
 import { z } from "zod";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { ok, guarded, resolveProjectDir, requireHarness, stateFile, progressFile, rolesFile, agentsDir, nowIso, } from "./shared.js";
-import { parseState, parseProgress, parseRoles, } from "./state/schema.js";
+import { ok, guarded, ToolError, resolveProjectDir, requireHarness, stateFile, progressFile, rolesFile, agentsDir, nowIso, } from "./shared.js";
+import { parseState, parseProgress, parseRoles, renderStateMd, } from "./state/schema.js";
 import { appendProgress } from "./state/writers.js";
 const projectDirArg = z
     .string()
@@ -207,6 +207,107 @@ Example: log a claim before starting work, and a done/blocked entry after.`,
             progressSinceLastTick,
             evalGap,
             recommendations,
+        });
+    }));
+    // ------------------------------------------------------------ state_write
+    server.registerTool("state_write", {
+        title: "Structured update to STATE.md",
+        description: `Apply one structured, schema-validated mutation to _team/STATE.md and re-render it (frontmatter mirror + human tables stay in sync). Ops:
+  - upsert_agent: add/update a team member's status (needs agent, status; optional role).
+  - claim: add an active-work item (needs task, owner; optional eta) — also logs "claim" to PROGRESS.md.
+  - complete: remove an active-work item by task (needs task) — also logs "done".
+  - set_blockers: replace the blocker list (blockers: string[]).
+  - record_tick: stamp last_manager_tick = now (the agent-manager calls this after acting on a manager_tick report).`,
+        inputSchema: {
+            projectDir: projectDirArg,
+            op: z
+                .enum(["upsert_agent", "claim", "complete", "set_blockers", "record_tick"])
+                .describe("The mutation to apply."),
+            agent: z.string().optional(),
+            role: z.string().optional(),
+            status: z
+                .enum(["DONE", "DONE_WITH_CONCERNS", "NEEDS_CONTEXT", "BLOCKED", "IN_PROGRESS", "IDLE"])
+                .optional(),
+            task: z.string().optional(),
+            owner: z.string().optional(),
+            eta: z.string().optional().describe("ISO-8601 ETA for a claim; omit for open-ended."),
+            blockers: z.array(z.string()).optional(),
+        },
+        outputSchema: {
+            projectDir: z.string(),
+            op: z.string(),
+            team: z.array(z.object({ agent: z.string(), role: z.string(), status: z.string() })),
+            activeWork: z.array(z.object({ task: z.string(), owner: z.string(), claimed_at: z.string(), eta: z.string() })),
+            blockers: z.array(z.object({ desc: z.string() })),
+            lastManagerTick: z.string().nullable(),
+        },
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: false,
+            idempotentHint: false,
+            openWorldHint: false,
+        },
+    }, async (args) => guarded(async () => {
+        const root = resolveProjectDir(args.projectDir);
+        requireHarness(root);
+        const doc = parseState(fs.readFileSync(stateFile(root), "utf8"));
+        switch (args.op) {
+            case "upsert_agent": {
+                if (!args.agent || !args.status) {
+                    throw new ToolError("op 'upsert_agent' requires 'agent' and 'status'.");
+                }
+                const existing = doc.team.find((t) => t.agent === args.agent);
+                if (existing) {
+                    existing.status = args.status;
+                    if (args.role)
+                        existing.role = args.role;
+                }
+                else {
+                    doc.team.push({ agent: args.agent, role: args.role ?? "", status: args.status });
+                }
+                break;
+            }
+            case "claim": {
+                if (!args.task || !args.owner) {
+                    throw new ToolError("op 'claim' requires 'task' and 'owner'.");
+                }
+                doc.active_work.push({
+                    task: args.task,
+                    owner: args.owner,
+                    claimed_at: nowIso(),
+                    eta: args.eta ?? "",
+                });
+                appendProgress(root, args.owner, "claim", args.task);
+                break;
+            }
+            case "complete": {
+                if (!args.task)
+                    throw new ToolError("op 'complete' requires 'task'.");
+                const before = doc.active_work.length;
+                doc.active_work = doc.active_work.filter((w) => w.task !== args.task);
+                if (doc.active_work.length === before) {
+                    throw new ToolError(`No active-work item matching task '${args.task}'.`);
+                }
+                appendProgress(root, args.owner ?? "unknown", "done", args.task);
+                break;
+            }
+            case "set_blockers": {
+                doc.blockers = (args.blockers ?? []).map((desc) => ({ desc }));
+                break;
+            }
+            case "record_tick": {
+                doc.last_manager_tick = nowIso();
+                break;
+            }
+        }
+        fs.writeFileSync(stateFile(root), renderStateMd(doc), "utf8");
+        return ok(`state_write(${args.op}) applied to STATE.md.`, {
+            projectDir: root,
+            op: args.op,
+            team: doc.team,
+            activeWork: doc.active_work,
+            blockers: doc.blockers,
+            lastManagerTick: doc.last_manager_tick,
         });
     }));
 }

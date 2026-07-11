@@ -55,6 +55,8 @@ export declare function splitFrontmatter(markdown: string): {
 export declare function parseState(markdown: string): StateDoc;
 /** Serialize a StateDoc back to the canonical frontmatter block (no fences). */
 export declare function serializeState(doc: StateDoc): string;
+/** Render a full STATE.md: frontmatter mirror + human-readable tables, kept in sync. */
+export declare function renderStateMd(doc: StateDoc): string;
 export declare function parseProgress(markdown: string): ProgressEntry[];
 export declare function formatProgress(e: ProgressEntry): string;
 /** `| Role | Agent file | Source template | History |` registry rows. */
