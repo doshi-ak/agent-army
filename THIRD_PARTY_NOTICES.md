@@ -29,3 +29,11 @@ Per-file provenance is recorded in each template's `provenance:` frontmatter lin
 Both upstream projects are MIT-licensed; this notice satisfies the attribution
 requirement. For maintained versions of any individual agent, see the upstream
 repos — these are point-in-time curated copies.
+
+## obra/superpowers (MIT)
+Patterns adapted (no code copied): the verification-before-completion gate concept and
+the RED-GREEN-REFACTOR skill-authoring loop (planned for team:skill-forge, M3), and the
+subagent status vocabulary informing STATE.md's status enum. Source:
+https://github.com/obra/superpowers — Jesse Vincent, MIT license. Discourse
+cross-examination pattern in the build team's verifier adapted from
+spencermarx/open-code-review (Apache-2.0) — concept only, no code imported.
