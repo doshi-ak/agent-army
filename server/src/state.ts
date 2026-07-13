@@ -30,6 +30,7 @@ import {
   parseProgress,
   parseRoles,
   renderStateMd,
+  computeManagerTick,
 } from "./state/schema.js";
 import { appendProgress } from "./state/writers.js";
 
@@ -37,13 +38,6 @@ const projectDirArg = z
   .string()
   .optional()
   .describe("Absolute project root; defaults to the server's cwd.");
-
-/** Ordinal for stale-claim detection: how far past ETA counts as "stale". */
-function isStale(etaIso: string, now: number): boolean {
-  if (!etaIso) return false;
-  const eta = Date.parse(etaIso);
-  return Number.isFinite(eta) && now > eta;
-}
 
 export function registerStateTools(server: McpServer): void {
   // ---------------------------------------------------------- progress_log
@@ -228,52 +222,16 @@ Example: log a claim before starting work, and a done/blocked entry after.`,
         requireHarness(root);
         const doc = parseState(fs.readFileSync(stateFile(root), "utf8"));
         const progress = parseProgress(fs.readFileSync(progressFile(root), "utf8"));
-        const now = Date.now();
 
-        const staleClaims = doc.active_work
-          .filter((w) => isStale(w.eta, now))
-          .map((w) => ({ task: w.task, owner: w.owner, eta: w.eta }));
-        const idleAgents = doc.team.filter((t) => t.status === "IDLE").map((t) => t.agent);
-
-        const lastTick = doc.last_manager_tick ? Date.parse(doc.last_manager_tick) : NaN;
-        const progressSinceLastTick = Number.isFinite(lastTick)
-          ? progress.filter((e) => Date.parse(e.timestamp) > lastTick).length
-          : progress.length;
-
-        // Eval-coverage heuristic: evals/ should hold ≥1 case file.
         const evalsDir = path.join(root, "evals");
-        const evalFiles = fs.existsSync(evalsDir)
-          ? fs.readdirSync(evalsDir).filter((f) => /\.(md|xml|json|ya?ml)$/.test(f))
-          : [];
-        const evalGap =
-          evalFiles.length === 0
-            ? "No eval cases found in evals/ — generate at least one acceptance case per active work item."
-            : null;
+        const evalFileCount = fs.existsSync(evalsDir)
+          ? fs.readdirSync(evalsDir).filter((f) => /\.(md|xml|json|ya?ml)$/.test(f)).length
+          : 0;
 
-        const recommendations: string[] = [];
-        for (const s of staleClaims) {
-          recommendations.push(
-            `Stale claim: "${s.task}" (owner ${s.owner}) is past its ETA ${s.eta} — reassign, extend, or mark blocked.`,
-          );
-        }
-        for (const a of idleAgents) {
-          recommendations.push(`Idle agent "${a}" — assign from the active queue or retire.`);
-        }
-        if (evalGap) recommendations.push(evalGap);
-        if (recommendations.length === 0) {
-          recommendations.push("No action needed: no stale claims, no idle agents, eval coverage present.");
-        }
-
+        const report = computeManagerTick(doc, progress, evalFileCount, Date.now());
         return ok(
-          `manager_tick: ${staleClaims.length} stale, ${idleAgents.length} idle, ${progressSinceLastTick} progress entr(y/ies) since last tick.`,
-          {
-            projectDir: root,
-            staleClaims,
-            idleAgents,
-            progressSinceLastTick,
-            evalGap,
-            recommendations,
-          },
+          `manager_tick: ${report.staleClaims.length} stale, ${report.idleAgents.length} idle, ${report.progressSinceLastTick} progress entr(y/ies) since last tick.`,
+          { projectDir: root, ...report },
         );
       }),
   );

@@ -240,4 +240,41 @@ export function parseRoles(markdown) {
     }
     return out;
 }
+/**
+ * Pure manager-tick computation (no I/O) — the core of the `manager_tick`
+ * tool, factored out so it's unit-testable against fixtures. Given the parsed
+ * state, progress log, an eval-file count, and the current epoch, returns the
+ * recommendations report. Read-only: it decides nothing, it advises.
+ */
+export function computeManagerTick(doc, progress, evalFileCount, now) {
+    const staleClaims = doc.active_work
+        .filter((w) => {
+        if (!w.eta)
+            return false;
+        const eta = Date.parse(w.eta);
+        return Number.isFinite(eta) && now > eta;
+    })
+        .map((w) => ({ task: w.task, owner: w.owner, eta: w.eta }));
+    const idleAgents = doc.team.filter((t) => t.status === "IDLE").map((t) => t.agent);
+    const lastTick = doc.last_manager_tick ? Date.parse(doc.last_manager_tick) : NaN;
+    const progressSinceLastTick = Number.isFinite(lastTick)
+        ? progress.filter((e) => Date.parse(e.timestamp) > lastTick).length
+        : progress.length;
+    const evalGap = evalFileCount === 0
+        ? "No eval cases found in evals/ — generate at least one acceptance case per active work item."
+        : null;
+    const recommendations = [];
+    for (const s of staleClaims) {
+        recommendations.push(`Stale claim: "${s.task}" (owner ${s.owner}) is past its ETA ${s.eta} — reassign, extend, or mark blocked.`);
+    }
+    for (const a of idleAgents) {
+        recommendations.push(`Idle agent "${a}" — assign from the active queue or retire.`);
+    }
+    if (evalGap)
+        recommendations.push(evalGap);
+    if (recommendations.length === 0) {
+        recommendations.push("No action needed: no stale claims, no idle agents, eval coverage present.");
+    }
+    return { staleClaims, idleAgents, progressSinceLastTick, evalGap, recommendations };
+}
 //# sourceMappingURL=schema.js.map
