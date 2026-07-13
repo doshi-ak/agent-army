@@ -61,4 +61,22 @@ export declare function parseProgress(markdown: string): ProgressEntry[];
 export declare function formatProgress(e: ProgressEntry): string;
 /** `| Role | Agent file | Source template | History |` registry rows. */
 export declare function parseRoles(markdown: string): RoleRow[];
+export interface ManagerReport {
+    staleClaims: {
+        task: string;
+        owner: string;
+        eta: string;
+    }[];
+    idleAgents: string[];
+    progressSinceLastTick: number;
+    evalGap: string | null;
+    recommendations: string[];
+}
+/**
+ * Pure manager-tick computation (no I/O) — the core of the `manager_tick`
+ * tool, factored out so it's unit-testable against fixtures. Given the parsed
+ * state, progress log, an eval-file count, and the current epoch, returns the
+ * recommendations report. Read-only: it decides nothing, it advises.
+ */
+export declare function computeManagerTick(doc: StateDoc, progress: ProgressEntry[], evalFileCount: number, now: number): ManagerReport;
 //# sourceMappingURL=schema.d.ts.map
