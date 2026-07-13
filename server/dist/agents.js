@@ -262,7 +262,7 @@ Example:
         annotations: {
             readOnlyHint: false,
             destructiveHint: true,
-            idempotentHint: true,
+            idempotentHint: false,
             openWorldHint: false,
         },
     }, async (args) => guarded(async () => {

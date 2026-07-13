@@ -120,7 +120,20 @@ function assignArray(doc, key, items) {
     }
 }
 function unquote(v) {
-    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+    // q() below always double-quotes via JSON.stringify, so reverse it with
+    // JSON.parse (not a bare slice) — otherwise escaped characters (a literal
+    // `"` becomes `\"`) survive as literal backslashes and the round-trip
+    // corrupts the value. Single-quote handling is a defensive fallback only
+    // for hand-edited files; q() never emits it.
+    if (v.startsWith('"') && v.endsWith('"')) {
+        try {
+            return JSON.parse(v);
+        }
+        catch {
+            return v.slice(1, -1);
+        }
+    }
+    if (v.startsWith("'") && v.endsWith("'")) {
         return v.slice(1, -1);
     }
     return v;

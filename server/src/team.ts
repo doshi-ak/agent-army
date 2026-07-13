@@ -30,6 +30,7 @@ import {
   initialRolesMd,
   initialStateMd,
 } from "./state/writers.js";
+import { parseState, parseRoles } from "./state/schema.js";
 
 const CLAUDE_MD_START = "<!-- multi-agent-mcp:routing:start -->";
 const CLAUDE_MD_END = "<!-- multi-agent-mcp:routing:end -->";
@@ -253,7 +254,7 @@ Example:
     "team_status",
     {
       title: "Team status snapshot",
-      description: `Read the full team harness into one structured snapshot: active agents (with roles and last activity), archived count, the tail of the PROGRESS.md audit log, and the raw STATE.md / ROLES.md contents.
+      description: `Read the full team harness into one structured snapshot: active agents (with roles and last activity), archived count, the tail of the PROGRESS.md audit log, and STATE.md / ROLES.md parsed into structured fields (not raw markdown).
 
 Args:
   - projectDir (string, optional): absolute project root; defaults to the server's cwd.
@@ -290,8 +291,30 @@ Example:
         agentCount: z.number(),
         archivedCount: z.number(),
         progressTail: z.array(z.string()),
-        state: z.string(),
-        roles: z.string(),
+        state: z
+          .object({
+            project: z.string(),
+            team: z.array(z.object({ agent: z.string(), role: z.string(), status: z.string() })),
+            activeWork: z.array(
+              z.object({
+                task: z.string(),
+                owner: z.string(),
+                claimed_at: z.string(),
+                eta: z.string(),
+              }),
+            ),
+            blockers: z.array(z.object({ desc: z.string() })),
+            lastManagerTick: z.string().nullable(),
+          })
+          .nullable(),
+        roles: z.array(
+          z.object({
+            role: z.string(),
+            agentFile: z.string(),
+            sourceTemplate: z.string(),
+            history: z.string(),
+          }),
+        ),
       },
       annotations: {
         readOnlyHint: true,
@@ -346,6 +369,13 @@ Example:
           ? fs.readdirSync(archiveDir(root)).filter((f) => f.endsWith(".md")).length
           : 0;
 
+        const stateDoc = fs.existsSync(stateFile(root))
+          ? parseState(fs.readFileSync(stateFile(root), "utf8"))
+          : null;
+        const rolesRows = fs.existsSync(rolesFile(root))
+          ? parseRoles(fs.readFileSync(rolesFile(root), "utf8"))
+          : [];
+
         const data = {
           projectDir: root,
           initialized: missing.length === 0,
@@ -354,8 +384,16 @@ Example:
           agentCount: agents.length,
           archivedCount,
           progressTail,
-          state: fs.existsSync(stateFile(root)) ? fs.readFileSync(stateFile(root), "utf8") : "",
-          roles: fs.existsSync(rolesFile(root)) ? fs.readFileSync(rolesFile(root), "utf8") : "",
+          state: stateDoc
+            ? {
+                project: stateDoc.project,
+                team: stateDoc.team,
+                activeWork: stateDoc.active_work,
+                blockers: stateDoc.blockers,
+                lastManagerTick: stateDoc.last_manager_tick,
+              }
+            : null,
+          roles: rolesRows,
         };
         return ok(
           `Team in ${root}: ${agents.length} active agent(s), ${archivedCount} archived${missing.length > 0 ? `; MISSING: ${missing.join(", ")} (re-run team_init)` : ""}.`,
