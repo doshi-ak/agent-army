@@ -10,6 +10,9 @@ import * as path from "node:path";
 import { z } from "zod";
 import { agentsDir, archiveDir, guarded, ok, parseFrontmatter, progressFile, resolveProjectDir, rolesFile, serverEntryPath, stateFile, teamDir, ToolError, } from "./shared.js";
 import { initialProgressMd, initialRolesMd, initialStateMd, } from "./state/writers.js";
+// team_status parses STATE.md/ROLES.md into structured fields instead of
+// returning raw markdown (M2 handoff contract) — the one sanctioned seam
+// where this M1-owned file reads M2's schema module.
 import { parseState, parseRoles } from "./state/schema.js";
 const CLAUDE_MD_START = "<!-- multi-agent-mcp:routing:start -->";
 const CLAUDE_MD_END = "<!-- multi-agent-mcp:routing:end -->";
