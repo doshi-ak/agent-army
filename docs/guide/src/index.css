@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Dispatch-board identity ─────────────────────────────────────────
+   ink navy · warm paper · safety-orange signal · semantic state colors
+   Display: Avenir Next (macOS) · Body: system · Mono: SF Mono */
+
+:root {
+  --ink: #182741;
+  --ink-soft: #3d4d6b;
+  --paper: #faf9f5;
+  --paper-raised: #ffffff;
+  --line: #dcd9d0;
+  --signal: #d95b12;
+  --signal-soft: #fbe9dd;
+  --ok: #2e7d4f;
+  --ok-soft: #e2f0e8;
+  --warn: #b87a00;
+  --warn-soft: #f7ecd4;
+  --muted-chip: #eceae3;
+
+  --background: 46 33% 97%;
+  --foreground: 217 46% 17%;
+  --card: 0 0% 100%;
+  --card-foreground: 217 46% 17%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 217 46% 17%;
+  --primary: 22 85% 46%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 46 20% 91%;
+  --secondary-foreground: 217 46% 17%;
+  --muted: 46 20% 91%;
+  --muted-foreground: 219 25% 33%;
+  --accent: 22 74% 92%;
+  --accent-foreground: 217 46% 17%;
+  --destructive: 0 72% 42%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 43 15% 84%;
+  --input: 43 15% 84%;
+  --ring: 22 85% 46%;
+  --radius: 0.375rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e6e4dc; --ink-soft: #a8b0c2; --paper: #101a2c; --paper-raised: #18243a;
+    --line: #2b3a55; --signal: #f0762b; --signal-soft: #3a2718; --ok: #5cb885;
+    --ok-soft: #1c3327; --warn: #e0a63d; --warn-soft: #3a2f16; --muted-chip: #223046;
+    --background: 217 47% 12%; --foreground: 46 17% 88%; --card: 216 42% 16%;
+    --card-foreground: 46 17% 88%; --popover: 216 42% 16%; --popover-foreground: 46 17% 88%;
+    --primary: 24 87% 55%; --primary-foreground: 217 47% 10%; --secondary: 217 34% 21%;
+    --secondary-foreground: 46 17% 88%; --muted: 217 34% 21%; --muted-foreground: 219 20% 71%;
+    --accent: 24 44% 22%; --accent-foreground: 46 17% 88%; --destructive: 0 62% 52%;
+    --destructive-foreground: 0 0% 100%; --border: 217 30% 25%; --input: 217 30% 25%;
+    --ring: 24 87% 55%;
+  }
+}
+
+/* viewer's theme toggle must beat the media query in both directions */
+:root[data-theme="light"] {
+  --ink: #182741; --ink-soft: #3d4d6b; --paper: #faf9f5; --paper-raised: #ffffff;
+  --line: #dcd9d0; --signal: #d95b12; --signal-soft: #fbe9dd; --ok: #2e7d4f;
+  --ok-soft: #e2f0e8; --warn: #b87a00; --warn-soft: #f7ecd4; --muted-chip: #eceae3;
+  --background: 46 33% 97%; --foreground: 217 46% 17%; --card: 0 0% 100%;
+  --card-foreground: 217 46% 17%; --popover: 0 0% 100%; --popover-foreground: 217 46% 17%;
+  --primary: 22 85% 46%; --primary-foreground: 0 0% 100%; --secondary: 46 20% 91%;
+  --secondary-foreground: 217 46% 17%; --muted: 46 20% 91%; --muted-foreground: 219 25% 33%;
+  --accent: 22 74% 92%; --accent-foreground: 217 46% 17%; --border: 43 15% 84%;
+  --input: 43 15% 84%; --ring: 22 85% 46%;
+}
+:root[data-theme="dark"] {
+  --ink: #e6e4dc; --ink-soft: #a8b0c2; --paper: #101a2c; --paper-raised: #18243a;
+  --line: #2b3a55; --signal: #f0762b; --signal-soft: #3a2718; --ok: #5cb885;
+  --ok-soft: #1c3327; --warn: #e0a63d; --warn-soft: #3a2f16; --muted-chip: #223046;
+  --background: 217 47% 12%; --foreground: 46 17% 88%; --card: 216 42% 16%;
+  --card-foreground: 46 17% 88%; --popover: 216 42% 16%; --popover-foreground: 46 17% 88%;
+  --primary: 24 87% 55%; --primary-foreground: 217 47% 10%; --secondary: 217 34% 21%;
+  --secondary-foreground: 46 17% 88%; --muted: 217 34% 21%; --muted-foreground: 219 20% 71%;
+  --accent: 24 44% 22%; --accent-foreground: 46 17% 88%; --border: 217 30% 25%;
+  --input: 217 30% 25%; --ring: 24 87% 55%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.display {
+  font-family: "Avenir Next", Avenir, Futura, "Segoe UI", system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+.mono {
+  font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--signal);
+}
+h1, h2, h3 { text-wrap: balance; }
+
+*:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

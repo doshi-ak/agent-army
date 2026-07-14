@@ -1,0 +1,1858 @@
+[
+  {
+    "agent": "api-designer",
+    "folder": "01-core-development",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6115
+  },
+  {
+    "agent": "backend-architect",
+    "folder": "01-core-development",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 18364
+  },
+  {
+    "agent": "backend-developer",
+    "folder": "01-core-development",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6682
+  },
+  {
+    "agent": "database-architect",
+    "folder": "01-core-development",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 16794
+  },
+  {
+    "agent": "design-bridge",
+    "folder": "01-core-development",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 4544
+  },
+  {
+    "agent": "design-system-architect",
+    "folder": "01-core-development",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 6862
+  },
+  {
+    "agent": "electron-pro",
+    "folder": "01-core-development",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6389
+  },
+  {
+    "agent": "event-sourcing-architect",
+    "folder": "01-core-development",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1861
+  },
+  {
+    "agent": "frontend-developer",
+    "folder": "01-core-development",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "frontend-mobile-development",
+    "size": 6788
+  },
+  {
+    "agent": "fullstack-developer",
+    "folder": "01-core-development",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7190
+  },
+  {
+    "agent": "graphql-architect",
+    "folder": "01-core-development",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "backend-development",
+    "size": 6819
+  },
+  {
+    "agent": "microservices-architect",
+    "folder": "01-core-development",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6384
+  },
+  {
+    "agent": "mobile-developer",
+    "folder": "01-core-development",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 11067
+  },
+  {
+    "agent": "monorepo-architect",
+    "folder": "01-core-development",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1795
+  },
+  {
+    "agent": "ui-ux-designer",
+    "folder": "01-core-development",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "multi-platform-apps",
+    "size": 9038
+  },
+  {
+    "agent": "websocket-engineer",
+    "folder": "01-core-development",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 4299
+  },
+  {
+    "agent": "angular-architect",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6656
+  },
+  {
+    "agent": "bash-pro",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 17643
+  },
+  {
+    "agent": "c-pro",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1163
+  },
+  {
+    "agent": "cpp-pro",
+    "folder": "02-language-specialists",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 7539
+  },
+  {
+    "agent": "csharp-developer",
+    "folder": "02-language-specialists",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 7221
+  },
+  {
+    "agent": "django-pro",
+    "folder": "02-language-specialists",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "python-development",
+    "size": 6562
+  },
+  {
+    "agent": "dotnet-architect",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 6728
+  },
+  {
+    "agent": "dotnet-core-expert",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6438
+  },
+  {
+    "agent": "dotnet-framework-4.8-expert",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7565
+  },
+  {
+    "agent": "elixir-expert",
+    "folder": "02-language-specialists",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 8134
+  },
+  {
+    "agent": "expo-react-native-expert",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 9735
+  },
+  {
+    "agent": "fastapi-developer",
+    "folder": "02-language-specialists",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6886
+  },
+  {
+    "agent": "flutter-expert",
+    "folder": "02-language-specialists",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "multi-platform-apps",
+    "size": 9007
+  },
+  {
+    "agent": "golang-pro",
+    "folder": "02-language-specialists",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 7896
+  },
+  {
+    "agent": "haskell-pro",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1783
+  },
+  {
+    "agent": "ios-developer",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 8815
+  },
+  {
+    "agent": "java-pro",
+    "folder": "02-language-specialists",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "jvm-languages",
+    "size": 7770
+  },
+  {
+    "agent": "javascript-pro",
+    "folder": "02-language-specialists",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 7369
+  },
+  {
+    "agent": "julia-pro",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 8249
+  },
+  {
+    "agent": "kotlin-specialist",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7347
+  },
+  {
+    "agent": "laravel-specialist",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6172
+  },
+  {
+    "agent": "minecraft-bukkit-pro",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 4502
+  },
+  {
+    "agent": "nextjs-developer",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6626
+  },
+  {
+    "agent": "node-specialist",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 3753
+  },
+  {
+    "agent": "php-pro",
+    "folder": "02-language-specialists",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 7030
+  },
+  {
+    "agent": "posix-shell-pro",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 14663
+  },
+  {
+    "agent": "powershell-5.1-expert",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 2485
+  },
+  {
+    "agent": "powershell-7-expert",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 2329
+  },
+  {
+    "agent": "python-pro",
+    "folder": "02-language-specialists",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 8536
+  },
+  {
+    "agent": "rails-expert",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 13459
+  },
+  {
+    "agent": "react-specialist",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6730
+  },
+  {
+    "agent": "ruby-pro",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1308
+  },
+  {
+    "agent": "rust-engineer",
+    "folder": "02-language-specialists",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 7626
+  },
+  {
+    "agent": "scala-pro",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 5093
+  },
+  {
+    "agent": "spring-boot-engineer",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6590
+  },
+  {
+    "agent": "sql-pro",
+    "folder": "02-language-specialists",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 7410
+  },
+  {
+    "agent": "swift-expert",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7451
+  },
+  {
+    "agent": "symfony-specialist",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 10663
+  },
+  {
+    "agent": "temporal-python-pro",
+    "folder": "02-language-specialists",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 10088
+  },
+  {
+    "agent": "typescript-pro",
+    "folder": "02-language-specialists",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 7381
+  },
+  {
+    "agent": "vue-expert",
+    "folder": "02-language-specialists",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6502
+  },
+  {
+    "agent": "azure-infra-engineer",
+    "folder": "03-infrastructure",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 1950
+  },
+  {
+    "agent": "cloud-architect",
+    "folder": "03-infrastructure",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "database-cloud-optimization",
+    "size": 7754
+  },
+  {
+    "agent": "database-admin",
+    "folder": "03-infrastructure",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "database-migrations",
+    "size": 9760
+  },
+  {
+    "agent": "deployment-engineer",
+    "folder": "03-infrastructure",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "full-stack-orchestration",
+    "size": 9026
+  },
+  {
+    "agent": "devops-engineer",
+    "folder": "03-infrastructure",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6948
+  },
+  {
+    "agent": "devops-troubleshooter",
+    "folder": "03-infrastructure",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "distributed-debugging",
+    "size": 9538
+  },
+  {
+    "agent": "docker-expert",
+    "folder": "03-infrastructure",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 8150
+  },
+  {
+    "agent": "hybrid-cloud-architect",
+    "folder": "03-infrastructure",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 9555
+  },
+  {
+    "agent": "incident-responder",
+    "folder": "03-infrastructure",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "incident-response",
+    "size": 9930
+  },
+  {
+    "agent": "kubernetes-architect",
+    "folder": "03-infrastructure",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "kubernetes-operations",
+    "size": 9355
+  },
+  {
+    "agent": "network-engineer",
+    "folder": "03-infrastructure",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "observability-monitoring",
+    "size": 9611
+  },
+  {
+    "agent": "observability-engineer",
+    "folder": "03-infrastructure",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 12546
+  },
+  {
+    "agent": "platform-engineer",
+    "folder": "03-infrastructure",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7555
+  },
+  {
+    "agent": "security-engineer",
+    "folder": "03-infrastructure",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7888
+  },
+  {
+    "agent": "service-mesh-expert",
+    "folder": "03-infrastructure",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2109
+  },
+  {
+    "agent": "sre-engineer",
+    "folder": "03-infrastructure",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6943
+  },
+  {
+    "agent": "terraform-specialist",
+    "folder": "03-infrastructure",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "deployment-strategies",
+    "size": 8788
+  },
+  {
+    "agent": "terragrunt-expert",
+    "folder": "03-infrastructure",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 8226
+  },
+  {
+    "agent": "windows-infra-admin",
+    "folder": "03-infrastructure",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 1987
+  },
+  {
+    "agent": "accessibility-tester",
+    "folder": "04-quality-security",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 7056
+  },
+  {
+    "agent": "ad-security-reviewer",
+    "folder": "04-quality-security",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 2369
+  },
+  {
+    "agent": "ai-writing-auditor",
+    "folder": "04-quality-security",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 4235
+  },
+  {
+    "agent": "architect-review",
+    "folder": "04-quality-security",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "comprehensive-review",
+    "size": 7781
+  },
+  {
+    "agent": "backend-security-coder",
+    "folder": "04-quality-security",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 9454
+  },
+  {
+    "agent": "chaos-engineer",
+    "folder": "04-quality-security",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6515
+  },
+  {
+    "agent": "code-review-preshipment",
+    "folder": "04-quality-security",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 3100
+  },
+  {
+    "agent": "code-reviewer",
+    "folder": "04-quality-security",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "comprehensive-review",
+    "size": 8436
+  },
+  {
+    "agent": "compliance-auditor",
+    "folder": "04-quality-security",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6868
+  },
+  {
+    "agent": "debugger",
+    "folder": "04-quality-security",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6577
+  },
+  {
+    "agent": "error-detective",
+    "folder": "04-quality-security",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6748
+  },
+  {
+    "agent": "frontend-security-coder",
+    "folder": "04-quality-security",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 11004
+  },
+  {
+    "agent": "gdpr-ccpa-compliance",
+    "folder": "04-quality-security",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 4683
+  },
+  {
+    "agent": "malware-analyst",
+    "folder": "04-quality-security",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 7843
+  },
+  {
+    "agent": "mobile-security-coder",
+    "folder": "04-quality-security",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 12170
+  },
+  {
+    "agent": "penetration-tester",
+    "folder": "04-quality-security",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6737
+  },
+  {
+    "agent": "performance-engineer",
+    "folder": "04-quality-security",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "performance-testing-review",
+    "size": 10387
+  },
+  {
+    "agent": "playwright",
+    "folder": "04-quality-security",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 5269
+  },
+  {
+    "agent": "powershell-security-hardening",
+    "folder": "04-quality-security",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 2484
+  },
+  {
+    "agent": "qa-expert",
+    "folder": "04-quality-security",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6689
+  },
+  {
+    "agent": "security-auditor",
+    "folder": "04-quality-security",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "full-stack-orchestration",
+    "size": 9619
+  },
+  {
+    "agent": "test-automator",
+    "folder": "04-quality-security",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "performance-testing-review",
+    "size": 10667
+  },
+  {
+    "agent": "threat-modeling-expert",
+    "folder": "04-quality-security",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1722
+  },
+  {
+    "agent": "ui-ux-tester",
+    "folder": "04-quality-security",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6946
+  },
+  {
+    "agent": "ui-visual-validator",
+    "folder": "04-quality-security",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 9423
+  },
+  {
+    "agent": "ai-engineer",
+    "folder": "05-data-ai",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "llm-application-dev",
+    "size": 8142
+  },
+  {
+    "agent": "data-analyst",
+    "folder": "05-data-ai",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6876
+  },
+  {
+    "agent": "data-engineer",
+    "folder": "05-data-ai",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "data-engineering",
+    "size": 11337
+  },
+  {
+    "agent": "data-scientist",
+    "folder": "05-data-ai",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "machine-learning-ops",
+    "size": 9988
+  },
+  {
+    "agent": "database-optimizer",
+    "folder": "05-data-ai",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "database-cloud-optimization",
+    "size": 10030
+  },
+  {
+    "agent": "llm-architect",
+    "folder": "05-data-ai",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6520
+  },
+  {
+    "agent": "machine-learning-engineer",
+    "folder": "05-data-ai",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6502
+  },
+  {
+    "agent": "ml-engineer",
+    "folder": "05-data-ai",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "machine-learning-ops",
+    "size": 8905
+  },
+  {
+    "agent": "mlops-engineer",
+    "folder": "05-data-ai",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "machine-learning-ops",
+    "size": 11192
+  },
+  {
+    "agent": "model-advisor",
+    "folder": "05-data-ai",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1181
+  },
+  {
+    "agent": "nlp-engineer",
+    "folder": "05-data-ai",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6635
+  },
+  {
+    "agent": "postgres-pro",
+    "folder": "05-data-ai",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6537
+  },
+  {
+    "agent": "prompt-engineer",
+    "folder": "05-data-ai",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "llm-application-dev",
+    "size": 11018
+  },
+  {
+    "agent": "reinforcement-learning-engineer",
+    "folder": "05-data-ai",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7162
+  },
+  {
+    "agent": "vector-database-engineer",
+    "folder": "05-data-ai",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 4904
+  },
+  {
+    "agent": "build-engineer",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6855
+  },
+  {
+    "agent": "c4-code",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 12898
+  },
+  {
+    "agent": "c4-component",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 9723
+  },
+  {
+    "agent": "c4-container",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 11258
+  },
+  {
+    "agent": "c4-context",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 10968
+  },
+  {
+    "agent": "cli-developer",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6641
+  },
+  {
+    "agent": "dependency-manager",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6870
+  },
+  {
+    "agent": "deploy-with-verification",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2437
+  },
+  {
+    "agent": "docs-architect",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 3693
+  },
+  {
+    "agent": "documentation-engineer",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6749
+  },
+  {
+    "agent": "dx-optimizer",
+    "folder": "06-developer-experience",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6593
+  },
+  {
+    "agent": "git-workflow-manager",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6681
+  },
+  {
+    "agent": "legacy-modernizer",
+    "folder": "06-developer-experience",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6782
+  },
+  {
+    "agent": "mcp-developer",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6940
+  },
+  {
+    "agent": "mermaid-expert",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1250
+  },
+  {
+    "agent": "policy-enforcer",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 5416
+  },
+  {
+    "agent": "powershell-module-architect",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 2166
+  },
+  {
+    "agent": "powershell-ui-architect",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 5621
+  },
+  {
+    "agent": "prod-logs-health-check",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1664
+  },
+  {
+    "agent": "readme-generator",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6749
+  },
+  {
+    "agent": "receipt-verifier",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 5387
+  },
+  {
+    "agent": "refactoring-specialist",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6939
+  },
+  {
+    "agent": "reference-builder",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 4765
+  },
+  {
+    "agent": "review-policy-author",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 5720
+  },
+  {
+    "agent": "slack-expert",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6608
+  },
+  {
+    "agent": "tooling-engineer",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6428
+  },
+  {
+    "agent": "tutorial-engineer",
+    "folder": "06-developer-experience",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 4386
+  },
+  {
+    "agent": "visual-asset-generator",
+    "folder": "06-developer-experience",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 1902
+  },
+  {
+    "agent": "api-documenter",
+    "folder": "07-specialized-domains",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "api-testing-observability",
+    "size": 7471
+  },
+  {
+    "agent": "arm-cortex-expert",
+    "folder": "07-specialized-domains",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 12457
+  },
+  {
+    "agent": "blockchain-developer",
+    "folder": "07-specialized-domains",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "blockchain-web3",
+    "size": 9281
+  },
+  {
+    "agent": "embedded-systems",
+    "folder": "07-specialized-domains",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6398
+  },
+  {
+    "agent": "fintech-engineer",
+    "folder": "07-specialized-domains",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6861
+  },
+  {
+    "agent": "firmware-analyst",
+    "folder": "07-specialized-domains",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 8764
+  },
+  {
+    "agent": "game-developer",
+    "folder": "07-specialized-domains",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6431
+  },
+  {
+    "agent": "healthcare-admin",
+    "folder": "07-specialized-domains",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7896
+  },
+  {
+    "agent": "hipaa-compliance",
+    "folder": "07-specialized-domains",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 4987
+  },
+  {
+    "agent": "image-generator",
+    "folder": "07-specialized-domains",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2222
+  },
+  {
+    "agent": "iot-engineer",
+    "folder": "07-specialized-domains",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6363
+  },
+  {
+    "agent": "m365-admin",
+    "folder": "07-specialized-domains",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 1849
+  },
+  {
+    "agent": "mobile-app-developer",
+    "folder": "07-specialized-domains",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6674
+  },
+  {
+    "agent": "payment-integration",
+    "folder": "07-specialized-domains",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6744
+  },
+  {
+    "agent": "quant-analyst",
+    "folder": "07-specialized-domains",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6838
+  },
+  {
+    "agent": "reverse-engineer",
+    "folder": "07-specialized-domains",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 7315
+  },
+  {
+    "agent": "risk-manager",
+    "folder": "07-specialized-domains",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6622
+  },
+  {
+    "agent": "seo-specialist",
+    "folder": "07-specialized-domains",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 5296
+  },
+  {
+    "agent": "unity-developer",
+    "folder": "07-specialized-domains",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 10342
+  },
+  {
+    "agent": "assumption-mapping",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 3029
+  },
+  {
+    "agent": "backlog-grooming",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 3391
+  },
+  {
+    "agent": "content-marketer",
+    "folder": "08-business-product",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "content-marketing",
+    "size": 8215
+  },
+  {
+    "agent": "content-quality-editor",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 2202
+  },
+  {
+    "agent": "customer-success-manager",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6908
+  },
+  {
+    "agent": "customer-support",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 8207
+  },
+  {
+    "agent": "growth-loops",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 3853
+  },
+  {
+    "agent": "hr-pro",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 7865
+  },
+  {
+    "agent": "legal-advisor",
+    "folder": "08-business-product",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6646
+  },
+  {
+    "agent": "license-engineer",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 8366
+  },
+  {
+    "agent": "product-manager",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6541
+  },
+  {
+    "agent": "project-manager",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6504
+  },
+  {
+    "agent": "sales-automator",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 937
+  },
+  {
+    "agent": "sales-engineer",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6990
+  },
+  {
+    "agent": "scrum-master",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6751
+  },
+  {
+    "agent": "seo-authority-builder",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2966
+  },
+  {
+    "agent": "seo-cannibalization-detector",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2648
+  },
+  {
+    "agent": "seo-content-auditor",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2019
+  },
+  {
+    "agent": "seo-content-planner",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2030
+  },
+  {
+    "agent": "seo-content-refresher",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2549
+  },
+  {
+    "agent": "seo-content-writer",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2022
+  },
+  {
+    "agent": "seo-keyword-strategist",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2244
+  },
+  {
+    "agent": "seo-meta-optimizer",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2201
+  },
+  {
+    "agent": "seo-snippet-hunter",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2473
+  },
+  {
+    "agent": "seo-structure-architect",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2400
+  },
+  {
+    "agent": "social-publishing-publisher",
+    "folder": "08-business-product",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 3353
+  },
+  {
+    "agent": "startup-analyst",
+    "folder": "08-business-product",
+    "kind": "semantic-merge",
+    "origin": "both",
+    "won_from": "startup-business-analyst",
+    "size": 11136
+  },
+  {
+    "agent": "technical-writer",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6520
+  },
+  {
+    "agent": "ux-researcher",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6807
+  },
+  {
+    "agent": "wordpress-master",
+    "folder": "08-business-product",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7559
+  },
+  {
+    "agent": "ab-test-analysis",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 4347
+  },
+  {
+    "agent": "cohort-analysis",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 3929
+  },
+  {
+    "agent": "competitive-analyst",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6914
+  },
+  {
+    "agent": "data-researcher",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6741
+  },
+  {
+    "agent": "first-principles-thinking",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 4216
+  },
+  {
+    "agent": "gallery-researcher",
+    "folder": "09-research-analysis",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1895
+  },
+  {
+    "agent": "market-researcher",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6758
+  },
+  {
+    "agent": "project-idea-validator",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6880
+  },
+  {
+    "agent": "research-analyst",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6751
+  },
+  {
+    "agent": "scientific-literature-researcher",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 5250
+  },
+  {
+    "agent": "search-specialist",
+    "folder": "09-research-analysis",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "voltagent",
+    "size": 6786
+  },
+  {
+    "agent": "trend-analyst",
+    "folder": "09-research-analysis",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6697
+  },
+  {
+    "agent": "agent-installer",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 3559
+  },
+  {
+    "agent": "agent-organizer",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6942
+  },
+  {
+    "agent": "architect",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 4667
+  },
+  {
+    "agent": "codebase-orchestrator",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6958
+  },
+  {
+    "agent": "conductor-validator",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 6834
+  },
+  {
+    "agent": "context-manager",
+    "folder": "super-agents",
+    "kind": "exact-both",
+    "origin": "both",
+    "won_from": "agent-orchestration",
+    "size": 7888
+  },
+  {
+    "agent": "error-coordinator",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6905
+  },
+  {
+    "agent": "eval-judge",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 3070
+  },
+  {
+    "agent": "eval-orchestrator",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2320
+  },
+  {
+    "agent": "implement",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 4235
+  },
+  {
+    "agent": "it-ops-orchestrator",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 2607
+  },
+  {
+    "agent": "knowledge-synthesizer",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 7041
+  },
+  {
+    "agent": "multi-agent-coordinator",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6796
+  },
+  {
+    "agent": "orchestrate",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 4114
+  },
+  {
+    "agent": "performance-monitor",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6812
+  },
+  {
+    "agent": "qa",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 5725
+  },
+  {
+    "agent": "review",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 6469
+  },
+  {
+    "agent": "session-end",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2603
+  },
+  {
+    "agent": "session-start",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 2503
+  },
+  {
+    "agent": "task-distributor",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6668
+  },
+  {
+    "agent": "task-executor",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 1288
+  },
+  {
+    "agent": "tdd-orchestrator",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 9862
+  },
+  {
+    "agent": "team-debugger",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 3830
+  },
+  {
+    "agent": "team-implementer",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 3811
+  },
+  {
+    "agent": "team-lead",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 4300
+  },
+  {
+    "agent": "team-reviewer",
+    "folder": "super-agents",
+    "kind": "wsho-only",
+    "origin": "wshobson",
+    "won_from": "wshobson",
+    "size": 3457
+  },
+  {
+    "agent": "workflow-orchestrator",
+    "folder": "super-agents",
+    "kind": "volt-only",
+    "origin": "voltagent",
+    "won_from": "voltagent",
+    "size": 6583
+  }
+]
