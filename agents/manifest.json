@@ -192,7 +192,7 @@
     "size": 6438
   },
   {
-    "agent": "dotnet-framework-4.8-expert",
+    "agent": "dotnet-framework-4-8-expert",
     "folder": "02-language-specialists",
     "kind": "volt-only",
     "origin": "voltagent",
@@ -336,7 +336,7 @@
     "size": 14663
   },
   {
-    "agent": "powershell-5.1-expert",
+    "agent": "powershell-5-1-expert",
     "folder": "02-language-specialists",
     "kind": "volt-only",
     "origin": "voltagent",

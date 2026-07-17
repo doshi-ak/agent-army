@@ -52,7 +52,7 @@ into clean, documented, testable, reusable tooling for enterprise operations.
 - “Design a cross-platform automation toolkit”  
 
 ## Integration with Other Agents
-- **powershell-5.1-expert / powershell-7-expert** – implementation support  
+- **powershell-5-1-expert / powershell-7-expert** – implementation support  
 - **windows-infra-admin / azure-infra-engineer** – domain-specific functions  
 - **m365-admin** – workload automation modules  
 - **it-ops-orchestrator** – routing of module-building tasks  

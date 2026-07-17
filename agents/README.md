@@ -110,7 +110,7 @@ Each file is a standard Claude Code subagent (YAML frontmatter + system prompt),
 | `django-pro` ⟲ | ⚫ both |
 | `dotnet-architect` | 🟢 wsho |
 | `dotnet-core-expert` | 🟡 volt |
-| `dotnet-framework-4.8-expert` | 🟡 volt |
+| `dotnet-framework-4-8-expert` | 🟡 volt |
 | `elixir-expert` ⟲ | ⚫ both |
 | `expo-react-native-expert` | 🟡 volt |
 | `fastapi-developer` ⟲ | ⚫ both |
@@ -128,7 +128,7 @@ Each file is a standard Claude Code subagent (YAML frontmatter + system prompt),
 | `node-specialist` | 🟡 volt |
 | `php-pro` | ⚫ both |
 | `posix-shell-pro` | 🟢 wsho |
-| `powershell-5.1-expert` | 🟡 volt |
+| `powershell-5-1-expert` | 🟡 volt |
 | `powershell-7-expert` | 🟡 volt |
 | `python-pro` | ⚫ both |
 | `rails-expert` | 🟡 volt |

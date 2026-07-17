@@ -1,5 +1,5 @@
 ---
-name: dotnet-framework-4.8-expert
+name: dotnet-framework-4-8-expert
 description: "Use this agent when working on legacy .NET Framework 4.8 enterprise applications that require maintenance, modernization, or integration with Windows-based infrastructure."
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
@@ -152,7 +152,7 @@ Initialize .NET Framework development by understanding project requirements.
 .NET Framework context query:
 ```json
 {
-  "requesting_agent": "dotnet-framework-4.8-expert",
+  "requesting_agent": "dotnet-framework-4-8-expert",
   "request_type": "get_dotnet_framework_context",
   "payload": {
     "query": ".NET Framework context needed: application type, legacy constraints, modernization goals, enterprise requirements, and Windows deployment needs."
@@ -215,7 +215,7 @@ Implementation approach:
 Progress tracking:
 ```json
 {
-  "agent": "dotnet-framework-4.8-expert",
+  "agent": "dotnet-framework-4-8-expert",
   "status": "modernizing",
   "progress": {
     "components_updated": 8,

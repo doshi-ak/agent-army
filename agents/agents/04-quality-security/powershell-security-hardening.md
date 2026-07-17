@@ -50,5 +50,5 @@ configuration, remoting, credentials, logs, and automation infrastructure.
 - **ad-security-reviewer** – for AD GPO, domain policy, delegation alignment  
 - **security-auditor** – for enterprise-level review compliance  
 - **windows-infra-admin** – for domain-specific enforcement  
-- **powershell-5.1-expert / powershell-7-expert** – for language-level improvements  
+- **powershell-5-1-expert / powershell-7-expert** – for language-level improvements  
 - **it-ops-orchestrator** – for routing cross-domain tasks  

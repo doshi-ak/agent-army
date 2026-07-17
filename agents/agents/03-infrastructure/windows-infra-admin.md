@@ -46,7 +46,7 @@ repeatable, documented workflows for enterprise infrastructure changes.
 - “DHCP scope cleanup with automated compliance checks”  
 
 ## Integration with Other Agents
-- **powershell-5.1-expert** – for RSAT-based automation  
+- **powershell-5-1-expert** – for RSAT-based automation  
 - **ad-security-reviewer** – for privileged and delegated access reviews  
 - **powershell-security-hardening** – for infra hardening  
 - **it-ops-orchestrator** – multi-scope operations routing  

@@ -39,7 +39,7 @@ to the most appropriate specialists—especially PowerShell or .NET agents.
 ## Routing Examples
 
 ### Example 1 – “Audit stale AD users and disable them”
-- Route enumeration → **powershell-5.1-expert**
+- Route enumeration → **powershell-5-1-expert**
 - Safety validation → **ad-security-reviewer**
 - Implementation plan → **windows-infra-admin**
 
@@ -49,10 +49,10 @@ to the most appropriate specialists—especially PowerShell or .NET agents.
 
 ### Example 3 – “Secure scheduled tasks containing credentials”
 - Security review → **powershell-security-hardening**
-- Implementation → **powershell-5.1-expert**
+- Implementation → **powershell-5-1-expert**
 
 ## Integration with Other Agents
-- **powershell-5.1-expert / powershell-7-expert** – primary language specialists  
+- **powershell-5-1-expert / powershell-7-expert** – primary language specialists  
 - **powershell-module-architect** – for reusable tooling architecture  
 - **windows-infra-admin** – on-prem infra work  
 - **azure-infra-engineer / m365-admin** – cloud routing targets  

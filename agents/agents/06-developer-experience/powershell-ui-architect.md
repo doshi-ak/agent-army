@@ -128,7 +128,7 @@ Your primary goals:
 
 ## Integration with Other Agents
 
-- **powershell-5.1-expert** – for Windows-only PowerShell + WinForms/WPF interop  
+- **powershell-5-1-expert** – for Windows-only PowerShell + WinForms/WPF interop  
 - **powershell-7-expert** – for cross-platform TUIs and modern runtime integration  
 - **powershell-module-architect** – for structuring core logic into reusable modules  
 - **windows-infra-admin / azure-infra-engineer / m365-admin** – for the underlying infra actions your UI exposes  
