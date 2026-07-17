@@ -1,0 +1,155 @@
+{
+  "suite": "functional-mcp",
+  "generatedAt": "2026-07-17T08:18:07.990Z",
+  "axis1": {
+    "scoreable": 13,
+    "pass": 13,
+    "fail": 0,
+    "blocked": 2,
+    "floorMet": true
+  },
+  "axis2": {
+    "guardrailBreaches": 0,
+    "floorMet": true
+  },
+  "cases": [
+    {
+      "id": "EVAL-01",
+      "dod": "D1/D5/D6",
+      "milestone": "M1",
+      "title": "team_init output set + net-new skill-forge nudge",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-02",
+      "dod": "D1/D2",
+      "milestone": "M1",
+      "title": "agent_list after a create sequence",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-03",
+      "dod": "D2",
+      "milestone": "M1",
+      "title": "agent_delete archives, never hard-deletes",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-04",
+      "dod": "D3",
+      "milestone": "M2",
+      "title": "manager_tick flags a 2x-past-ETA stale claim",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-05",
+      "dod": "D2",
+      "milestone": "M1",
+      "title": "ROLES.md records superteam provenance for debugger",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-06",
+      "dod": "D2",
+      "milestone": "M1",
+      "title": "role_list returns the curated v1 catalog (10), not the full library",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-07",
+      "dod": "D7",
+      "milestone": "M4",
+      "title": "dashboard auto-regenerates on a state mutation (no explicit refresh)",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-15",
+      "dod": "D7",
+      "milestone": "M4",
+      "title": "dashboard is self-contained (no external network requests)",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-08",
+      "dod": "D2",
+      "milestone": "M1",
+      "title": "agent_assign_role updates ROLES.md refinement history",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-09",
+      "dod": "D3",
+      "milestone": "M2",
+      "title": "PROGRESS.md is append-only under concurrent writes",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-10",
+      "dod": "D8/§3.8",
+      "milestone": "M2",
+      "title": "server/session boundary: compiled server has NO model/spawn/network APIs",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": true
+    },
+    {
+      "id": "EVAL-12",
+      "dod": "D6",
+      "milestone": "M1",
+      "title": "team_init is idempotent (second run does not duplicate/corrupt)",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-14",
+      "dod": "D2",
+      "milestone": "M2",
+      "title": "roles_sync reconciles ROLES.md against .claude/agents reality",
+      "status": "PASS",
+      "detail": "",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-11",
+      "dod": "D2/D5",
+      "milestone": "M3",
+      "title": "team:skill-forge produces a spec-conformant SKILL.md",
+      "status": "BLOCKED",
+      "detail": "M3 (plugin skill-forge) not built — not a server tool",
+      "guardrail": false
+    },
+    {
+      "id": "EVAL-13",
+      "dod": "D9",
+      "milestone": "M3",
+      "title": "D9 negative gate: git-push/network/rm stay gated after team_init",
+      "status": "BLOCKED",
+      "detail": "permission gating is a session-layer behavior, not observable from the MCP tool surface; verify via D9 matrix on Desktop/CLI",
+      "guardrail": false
+    }
+  ],
+  "notes": [
+    "D9 GAP: team_init did NOT write .claude/settings.json (the scoped allowlist per PLAN §9.5) — zero-friction deployment unimplemented in M1/M2."
+  ]
+}

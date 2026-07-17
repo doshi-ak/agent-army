@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '=== LATEST FROM AKASH (newest COMPLETE relay — full log: ~/Claude/Code/MCP-Builder/_coordination/FROM_AKASH.md · reply in RESPONSES-TO-AKASH.md) ==='; f=/Users/doshi/Claude/Code/MCP-Builder/_coordination/FROM_AKASH.md; n=$(grep -n '^-------\\[' \"$f\" 2>/dev/null | tail -1 | cut -d: -f1); if [ -n \"$n\" ]; then tail -n +\"$n\" \"$f\" | head -80; else tail -n 30 \"$f\" 2>/dev/null; fi",
+            "timeout": 10,
+            "statusMessage": "Checking Akash broadcast..."
+          }
+        ]
+      }
+    ]
+  }
+}

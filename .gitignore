@@ -10,3 +10,6 @@ node_modules/
 
 # NOTE: server/dist/ is deliberately COMMITTED (project .mcp.json points at it;
 # Code Web fallback per PLAN.md §10). Rebuild + commit together with src changes.
+
+# Local per-machine Claude Code permissions (personal, not shared)
+.claude/settings.local.json

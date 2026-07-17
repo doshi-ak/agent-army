@@ -1,0 +1,58 @@
+# Agent Army — Eval regression CI (owner: Evelyn / Evaluator).
+#
+# Runs the executable eval harness on every push/PR that touches the server or
+# the evals. This is the *eval* pipeline (Evaluator's lane). Broader repo CI —
+# CodeQL, Dependabot, deploy — stays with the Executor per PLAN §10.6.
+#
+# Gate semantics (matches evals/harness/run-all.mjs):
+#   - harness self-test (meta-evals) must pass, else results are untrustworthy → hard fail
+#   - any must-fix product finding (engine defect or non-conformant role) → job fails
+#     (this is intentional: the gate blocks on real defects; that is the forcing function)
+# The report card (DASHBOARD.html) is uploaded on every run, pass or fail.
+
+name: evals
+
+on:
+  push:
+    branches: [main]
+    paths: ["server/**", "evals/**", ".github/workflows/evals.yml"]
+  pull_request:
+    paths: ["server/**", "evals/**", ".github/workflows/evals.yml"]
+  workflow_dispatch: {}
+
+jobs:
+  eval-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install server deps
+        working-directory: server
+        run: npm ci
+
+      - name: Build server
+        working-directory: server
+        run: npm run build
+
+      - name: Server unit/integration tests (M1/M2)
+        working-directory: server
+        run: npm test
+
+      - name: Eval regression (functional + 242 roles + test-the-tester + dashboard)
+        run: node evals/harness/run-all.mjs
+
+      - name: Upload eval report card
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report-card
+          path: |
+            evals/DASHBOARD.html
+            evals/results/*.json
+          if-no-files-found: warn

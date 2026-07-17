@@ -12,7 +12,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { parseState, parseProgress, parseRoles, } from "../state/schema.js";
-import { archiveDir, progressFile, rolesFile, stateFile, teamDir } from "../shared.js";
+import { agentsDir, archiveDir, parseFrontmatter, progressFile, rolesFile, stateFile, teamDir, } from "../shared.js";
 function escapeHtml(s) {
     return s
         .replace(/&/g, "&amp;")
@@ -39,10 +39,32 @@ function statusBadge(status) {
     const color = colors[status] ?? "#57606a";
     return `<span style="display:inline-block;padding:1px 8px;border-radius:10px;font-size:.75rem;font-weight:600;color:#fff;background:${color}">${escapeHtml(status)}</span>`;
 }
-function teamTable(doc) {
-    if (doc.team.length === 0)
+/**
+ * The team roster, source of truth = `.claude/agents/*.md` on disk — the
+ * same source `agent_list`/`team_status` already use (agent_create never
+ * auto-populates STATE.md's `## Team` table, so trusting `doc.team` alone
+ * silently drops every agent nobody separately ran `state_write
+ * (op: upsert_agent)` for). `doc.team` is layered in ONLY for its `status`
+ * field, which has no other source; agents with no STATE.md status entry
+ * yet default to IDLE (STATUS_VOCAB's baseline, matching a freshly-staffed
+ * agent with no explicit status set).
+ */
+function buildRoster(root, doc) {
+    const dir = agentsDir(root);
+    const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith(".md")) : [];
+    const statusByAgent = new Map(doc.team.map((m) => [m.agent, m.status]));
+    return files
+        .map((f) => {
+        const name = f.replace(/\.md$/, "");
+        const { fm } = parseFrontmatter(fs.readFileSync(path.join(dir, f), "utf8"));
+        return { agent: name, role: fm.role ?? "(unknown)", status: statusByAgent.get(name) ?? "IDLE" };
+    })
+        .sort((a, b) => a.agent.localeCompare(b.agent));
+}
+function teamTable(roster) {
+    if (roster.length === 0)
         return "<p><em>No agents staffed yet — run team-new-agent.</em></p>";
-    const rows = doc.team
+    const rows = roster
         .map((m) => `<tr><td>${escapeHtml(m.agent)}</td><td>${escapeHtml(m.role)}</td><td>${statusBadge(m.status)}</td></tr>`)
         .join("\n");
     return `<table><thead><tr><th>Agent</th><th>Role</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
@@ -93,6 +115,7 @@ export function renderDashboardHtml(root, now) {
         ? fs.readdirSync(archiveDir(root)).filter((f) => f.endsWith(".md")).length
         : 0;
     const overdueCount = doc.active_work.filter((w) => isOverdue(w.eta, now)).length;
+    const roster = buildRoster(root, doc);
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -118,7 +141,7 @@ export function renderDashboardHtml(root, now) {
 <p class="meta">Generated ${escapeHtml(new Date(now).toISOString())} · self-contained, no external requests · regenerates on every state mutation</p>
 
 <div>
-  <span class="stat"><b>${doc.team.length}</b>agents</span>
+  <span class="stat"><b>${roster.length}</b>agents</span>
   <span class="stat"><b>${archivedCount}</b>archived</span>
   <span class="stat"><b>${doc.active_work.length}</b>active work</span>
   <span class="stat${overdueCount > 0 ? " warn" : ""}"><b>${overdueCount}</b>overdue</span>
@@ -127,7 +150,7 @@ export function renderDashboardHtml(root, now) {
 </div>
 
 <h2>Team</h2>
-${teamTable(doc)}
+${teamTable(roster)}
 
 <h2>Active work</h2>
 ${activeWorkTable(doc, now)}

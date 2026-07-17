@@ -1,0 +1,912 @@
+{
+  "suite": "role-conformance",
+  "generatedAt": "2026-07-17T08:18:08.205Z",
+  "scope": {
+    "library": {
+      "total": 232,
+      "pass": 126,
+      "warn": 106,
+      "fail": 0
+    },
+    "curated": {
+      "total": 10,
+      "pass": 3,
+      "warn": 7,
+      "fail": 0
+    },
+    "combined": {
+      "total": 242,
+      "pass": 129,
+      "warn": 113,
+      "fail": 0
+    }
+  },
+  "byCategory": {
+    "01-core-development": {
+      "total": 16,
+      "pass": 8,
+      "warn": 8,
+      "fail": 0
+    },
+    "02-language-specialists": {
+      "total": 41,
+      "pass": 27,
+      "warn": 14,
+      "fail": 0
+    },
+    "03-infrastructure": {
+      "total": 19,
+      "pass": 8,
+      "warn": 11,
+      "fail": 0
+    },
+    "04-quality-security": {
+      "total": 25,
+      "pass": 12,
+      "warn": 13,
+      "fail": 0
+    },
+    "05-data-ai": {
+      "total": 15,
+      "pass": 6,
+      "warn": 9,
+      "fail": 0
+    },
+    "06-developer-experience": {
+      "total": 28,
+      "pass": 17,
+      "warn": 11,
+      "fail": 0
+    },
+    "07-specialized-domains": {
+      "total": 19,
+      "pass": 11,
+      "warn": 8,
+      "fail": 0
+    },
+    "08-business-product": {
+      "total": 30,
+      "pass": 11,
+      "warn": 19,
+      "fail": 0
+    },
+    "09-research-analysis": {
+      "total": 12,
+      "pass": 8,
+      "warn": 4,
+      "fail": 0
+    },
+    "super-agents": {
+      "total": 27,
+      "pass": 18,
+      "warn": 9,
+      "fail": 0
+    },
+    "(root)": {
+      "total": 10,
+      "pass": 3,
+      "warn": 7,
+      "fail": 0
+    }
+  },
+  "failures": [],
+  "warnings": [
+    {
+      "file": "agents/agents/01-core-development/backend-architect.md",
+      "name": "database-cloud-optimization-backend-architect",
+      "reasons": [
+        "WARN: 'name' ('database-cloud-optimization-backend-architect') != filename ('backend-architect')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/01-core-development/database-architect.md",
+      "name": "database-cloud-optimization-database-architect",
+      "reasons": [
+        "WARN: 'name' ('database-cloud-optimization-database-architect') != filename ('database-architect')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/01-core-development/design-system-architect.md",
+      "name": "design-system-architect",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/01-core-development/event-sourcing-architect.md",
+      "name": "event-sourcing-architect",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/01-core-development/frontend-developer.md",
+      "name": "frontend-mobile-development-frontend-developer",
+      "reasons": [
+        "WARN: 'name' ('frontend-mobile-development-frontend-developer') != filename ('frontend-developer')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/01-core-development/graphql-architect.md",
+      "name": "backend-development-graphql-architect",
+      "reasons": [
+        "WARN: 'name' ('backend-development-graphql-architect') != filename ('graphql-architect')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/01-core-development/monorepo-architect.md",
+      "name": "monorepo-architect",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/01-core-development/ui-ux-designer.md",
+      "name": "ui-ux-designer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/bash-pro.md",
+      "name": "bash-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/c-pro.md",
+      "name": "c-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/django-pro.md",
+      "name": "python-development-django-pro",
+      "reasons": [
+        "WARN: 'name' ('python-development-django-pro') != filename ('django-pro')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/dotnet-architect.md",
+      "name": "dotnet-architect",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/flutter-expert.md",
+      "name": "flutter-expert",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/haskell-pro.md",
+      "name": "haskell-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/ios-developer.md",
+      "name": "ios-developer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/java-pro.md",
+      "name": "java-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/julia-pro.md",
+      "name": "julia-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/minecraft-bukkit-pro.md",
+      "name": "minecraft-bukkit-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/posix-shell-pro.md",
+      "name": "posix-shell-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/ruby-pro.md",
+      "name": "ruby-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/scala-pro.md",
+      "name": "scala-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/02-language-specialists/temporal-python-pro.md",
+      "name": "temporal-python-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/cloud-architect.md",
+      "name": "database-cloud-optimization-cloud-architect",
+      "reasons": [
+        "WARN: 'name' ('database-cloud-optimization-cloud-architect') != filename ('cloud-architect')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/database-admin.md",
+      "name": "database-admin",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/deployment-engineer.md",
+      "name": "full-stack-orchestration-deployment-engineer",
+      "reasons": [
+        "WARN: 'name' ('full-stack-orchestration-deployment-engineer') != filename ('deployment-engineer')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/devops-troubleshooter.md",
+      "name": "distributed-debugging-devops-troubleshooter",
+      "reasons": [
+        "WARN: 'name' ('distributed-debugging-devops-troubleshooter') != filename ('devops-troubleshooter')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/hybrid-cloud-architect.md",
+      "name": "hybrid-cloud-architect",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/incident-responder.md",
+      "name": "incident-responder",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/kubernetes-architect.md",
+      "name": "kubernetes-operations-kubernetes-architect",
+      "reasons": [
+        "WARN: 'name' ('kubernetes-operations-kubernetes-architect') != filename ('kubernetes-architect')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/network-engineer.md",
+      "name": "observability-monitoring-network-engineer",
+      "reasons": [
+        "WARN: 'name' ('observability-monitoring-network-engineer') != filename ('network-engineer')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/observability-engineer.md",
+      "name": "observability-monitoring-observability-engineer",
+      "reasons": [
+        "WARN: 'name' ('observability-monitoring-observability-engineer') != filename ('observability-engineer')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/service-mesh-expert.md",
+      "name": "service-mesh-expert",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/03-infrastructure/terraform-specialist.md",
+      "name": "deployment-strategies-terraform-specialist",
+      "reasons": [
+        "WARN: 'name' ('deployment-strategies-terraform-specialist') != filename ('terraform-specialist')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/architect-review.md",
+      "name": "comprehensive-review-architect-review",
+      "reasons": [
+        "WARN: 'name' ('comprehensive-review-architect-review') != filename ('architect-review')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/backend-security-coder.md",
+      "name": "data-validation-suite-backend-security-coder",
+      "reasons": [
+        "WARN: 'name' ('data-validation-suite-backend-security-coder') != filename ('backend-security-coder')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/code-reviewer.md",
+      "name": "comprehensive-review-code-reviewer",
+      "reasons": [
+        "WARN: 'name' ('comprehensive-review-code-reviewer') != filename ('code-reviewer')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/frontend-security-coder.md",
+      "name": "frontend-security-coder",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/gdpr-ccpa-compliance.md",
+      "name": "gdpr-ccpa-compliance",
+      "reasons": [
+        "WARN: no 'model' declared (inherits session model)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/malware-analyst.md",
+      "name": "malware-analyst",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/mobile-security-coder.md",
+      "name": "mobile-security-coder",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/performance-engineer.md",
+      "name": "performance-testing-review-performance-engineer",
+      "reasons": [
+        "WARN: 'name' ('performance-testing-review-performance-engineer') != filename ('performance-engineer')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/playwright.md",
+      "name": "playwright",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/security-auditor.md",
+      "name": "full-stack-orchestration-security-auditor",
+      "reasons": [
+        "WARN: 'name' ('full-stack-orchestration-security-auditor') != filename ('security-auditor')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/test-automator.md",
+      "name": "performance-testing-review-test-automator",
+      "reasons": [
+        "WARN: 'name' ('performance-testing-review-test-automator') != filename ('test-automator')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/threat-modeling-expert.md",
+      "name": "threat-modeling-expert",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/04-quality-security/ui-visual-validator.md",
+      "name": "ui-visual-validator",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/05-data-ai/ai-engineer.md",
+      "name": "ai-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/05-data-ai/data-engineer.md",
+      "name": "data-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/05-data-ai/data-scientist.md",
+      "name": "data-scientist",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/05-data-ai/database-optimizer.md",
+      "name": "database-cloud-optimization-database-optimizer",
+      "reasons": [
+        "WARN: 'name' ('database-cloud-optimization-database-optimizer') != filename ('database-optimizer')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/05-data-ai/ml-engineer.md",
+      "name": "ml-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/05-data-ai/mlops-engineer.md",
+      "name": "mlops-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/05-data-ai/model-advisor.md",
+      "name": "model-advisor",
+      "reasons": [
+        "WARN: 'description' < 20 chars (too thin to route on)",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/05-data-ai/prompt-engineer.md",
+      "name": "prompt-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/05-data-ai/vector-database-engineer.md",
+      "name": "vector-database-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/c4-code.md",
+      "name": "c4-code",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/c4-component.md",
+      "name": "c4-component",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/c4-container.md",
+      "name": "c4-container",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/c4-context.md",
+      "name": "c4-context",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/docs-architect.md",
+      "name": "documentation-generation-docs-architect",
+      "reasons": [
+        "WARN: 'name' ('documentation-generation-docs-architect') != filename ('docs-architect')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/mermaid-expert.md",
+      "name": "mermaid-expert",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/policy-enforcer.md",
+      "name": "policy-enforcer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/receipt-verifier.md",
+      "name": "receipt-verifier",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/reference-builder.md",
+      "name": "reference-builder",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/review-policy-author.md",
+      "name": "review-policy-author",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/06-developer-experience/tutorial-engineer.md",
+      "name": "documentation-generation-tutorial-engineer",
+      "reasons": [
+        "WARN: 'name' ('documentation-generation-tutorial-engineer') != filename ('tutorial-engineer')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/07-specialized-domains/api-documenter.md",
+      "name": "api-testing-observability-api-documenter",
+      "reasons": [
+        "WARN: 'name' ('api-testing-observability-api-documenter') != filename ('api-documenter')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/07-specialized-domains/arm-cortex-expert.md",
+      "name": "arm-cortex-expert",
+      "reasons": [
+        "WARN: 'description' < 20 chars (too thin to route on)"
+      ]
+    },
+    {
+      "file": "agents/agents/07-specialized-domains/blockchain-developer.md",
+      "name": "blockchain-developer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/07-specialized-domains/firmware-analyst.md",
+      "name": "firmware-analyst",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/07-specialized-domains/hipaa-compliance.md",
+      "name": "hipaa-compliance",
+      "reasons": [
+        "WARN: no 'model' declared (inherits session model)"
+      ]
+    },
+    {
+      "file": "agents/agents/07-specialized-domains/image-generator.md",
+      "name": "image-generator",
+      "reasons": [
+        "WARN: 'description' < 20 chars (too thin to route on)"
+      ]
+    },
+    {
+      "file": "agents/agents/07-specialized-domains/reverse-engineer.md",
+      "name": "reverse-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/07-specialized-domains/unity-developer.md",
+      "name": "unity-developer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/assumption-mapping.md",
+      "name": "assumption-mapping",
+      "reasons": [
+        "WARN: no 'model' declared (inherits session model)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/backlog-grooming.md",
+      "name": "backlog-grooming",
+      "reasons": [
+        "WARN: no 'model' declared (inherits session model)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/content-marketer.md",
+      "name": "content-marketer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/customer-support.md",
+      "name": "customer-support",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/growth-loops.md",
+      "name": "growth-loops",
+      "reasons": [
+        "WARN: no 'model' declared (inherits session model)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/hr-pro.md",
+      "name": "hr-pro",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/sales-automator.md",
+      "name": "sales-automator",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-authority-builder.md",
+      "name": "seo-authority-builder",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-cannibalization-detector.md",
+      "name": "seo-cannibalization-detector",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-content-auditor.md",
+      "name": "seo-content-auditor",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-content-planner.md",
+      "name": "seo-content-planner",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-content-refresher.md",
+      "name": "seo-content-refresher",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-content-writer.md",
+      "name": "seo-content-writer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-keyword-strategist.md",
+      "name": "seo-keyword-strategist",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-meta-optimizer.md",
+      "name": "seo-meta-optimizer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-snippet-hunter.md",
+      "name": "seo-snippet-hunter",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/seo-structure-architect.md",
+      "name": "seo-structure-architect",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/social-publishing-publisher.md",
+      "name": "social-publishing-publisher",
+      "reasons": [
+        "WARN: 'description' < 20 chars (too thin to route on)"
+      ]
+    },
+    {
+      "file": "agents/agents/08-business-product/startup-analyst.md",
+      "name": "startup-analyst",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/09-research-analysis/ab-test-analysis.md",
+      "name": "ab-test-analysis",
+      "reasons": [
+        "WARN: no 'model' declared (inherits session model)"
+      ]
+    },
+    {
+      "file": "agents/agents/09-research-analysis/cohort-analysis.md",
+      "name": "cohort-analysis",
+      "reasons": [
+        "WARN: no 'model' declared (inherits session model)"
+      ]
+    },
+    {
+      "file": "agents/agents/09-research-analysis/first-principles-thinking.md",
+      "name": "first-principles-thinking",
+      "reasons": [
+        "WARN: no 'model' declared (inherits session model)"
+      ]
+    },
+    {
+      "file": "agents/agents/09-research-analysis/gallery-researcher.md",
+      "name": "gallery-researcher",
+      "reasons": [
+        "WARN: 'description' < 20 chars (too thin to route on)"
+      ]
+    },
+    {
+      "file": "agents/agents/super-agents/architect.md",
+      "name": "architect",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/super-agents/context-manager.md",
+      "name": "agent-orchestration-context-manager",
+      "reasons": [
+        "WARN: 'name' ('agent-orchestration-context-manager') != filename ('context-manager')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/super-agents/eval-orchestrator.md",
+      "name": "eval-orchestrator",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/super-agents/implement.md",
+      "name": "implement",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/super-agents/orchestrate.md",
+      "name": "orchestrate",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/super-agents/qa.md",
+      "name": "qa",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/super-agents/review.md",
+      "name": "review",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "agents/agents/super-agents/task-executor.md",
+      "name": "task-executor",
+      "reasons": [
+        "WARN: 'description' < 20 chars (too thin to route on)"
+      ]
+    },
+    {
+      "file": "agents/agents/super-agents/tdd-orchestrator.md",
+      "name": "backend-development-tdd-orchestrator",
+      "reasons": [
+        "WARN: 'name' ('backend-development-tdd-orchestrator') != filename ('tdd-orchestrator')",
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "server/roles/agent-manager.md",
+      "name": "agent-manager",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "server/roles/ci-cd-engineer.md",
+      "name": "ci-cd-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "server/roles/code-reviewer.md",
+      "name": "code-reviewer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "server/roles/performance-engineer.md",
+      "name": "performance-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "server/roles/regression-test-engineer.md",
+      "name": "regression-test-engineer",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "server/roles/security-auditor.md",
+      "name": "security-auditor",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    },
+    {
+      "file": "server/roles/systems-architect.md",
+      "name": "systems-architect",
+      "reasons": [
+        "WARN: no 'tools' declared (inherits all tools — widen blast radius)"
+      ]
+    }
+  ],
+  "note": "Static contract gate only (frontmatter/name/description/body/no-secrets). Behavioral per-role evals (does the role DO its job?) are a future cost-disclosed tier requiring model dispatch."
+}

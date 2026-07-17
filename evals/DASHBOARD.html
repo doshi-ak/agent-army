@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Army — Eval Report Card</title>
+<style>
+  :root { color-scheme: light dark; --bg:#f6f7f9; --card:#fff; --ink:#1a1f26; --mut:#5b6572; --line:#e3e7ec; --ok:#1a8a4a; --warn:#b8860b; --bad:#c0392b; --wait:#4a6da7; }
+  @media (prefers-color-scheme: dark){ :root{ --bg:#0f1319; --card:#171d26; --ink:#e8ecf1; --mut:#9aa5b1; --line:#28303b; } }
+  :root[data-theme="dark"]{ --bg:#0f1319; --card:#171d26; --ink:#e8ecf1; --mut:#9aa5b1; --line:#28303b; }
+  :root[data-theme="light"]{ --bg:#f6f7f9; --card:#fff; --ink:#1a1f26; --mut:#5b6572; --line:#e3e7ec; }
+  * { box-sizing:border-box; } html,body{ margin:0; }
+  body { background:var(--bg); color:var(--ink); font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; padding:24px 16px 64px; }
+  .wrap { max-width:1000px; margin:0 auto; }
+  .hero { border-radius:18px; padding:28px 26px; color:#fff; background:#b8860b; box-shadow:0 6px 24px rgba(0,0,0,.14); }
+  .hero .big { font-size:clamp(30px,6vw,46px); font-weight:800; letter-spacing:-.5px; margin:2px 0 6px; }
+  .hero .plain { font-size:clamp(16px,2.4vw,20px); opacity:.96; max-width:60ch; }
+  .hero .meta { margin-top:14px; font-size:14px; opacity:.9; }
+  h1.name { font-size:15px; text-transform:uppercase; letter-spacing:2px; opacity:.85; margin:0; font-weight:700; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px 22px; margin-top:20px; }
+  .card h2 { font-size:21px; margin:0 0 6px; }
+  .card h3 { font-size:15px; text-transform:uppercase; letter-spacing:.5px; color:var(--mut); margin:22px 0 8px; }
+  .lede { color:var(--ink); max-width:74ch; margin:0 0 14px; }
+  .tiles { display:flex; flex-wrap:wrap; gap:12px; margin:6px 0 8px; }
+  .tile { flex:1 1 130px; border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--bg); }
+  .tile b { display:block; font-size:32px; font-weight:800; line-height:1; }
+  .tile span { font-size:12.5px; color:var(--mut); display:block; margin-top:6px; }
+  .tile.ok b{ color:var(--ok);} .tile.bad b{ color:var(--bad);} .tile.warn b{ color:var(--warn);} .tile.wait b{ color:var(--wait);}
+  .tbl-scroll, table { width:100%; }
+  table { border-collapse:collapse; margin-top:8px; font-size:14px; display:table; overflow-x:auto; }
+  th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-size:12px; text-transform:uppercase; letter-spacing:.4px; color:var(--mut); }
+  td.st,.sign { white-space:nowrap; } .mono{ font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; }
+  .detail { color:var(--mut); font-size:13px; }
+  tr.lv-FAIL td { background:rgba(192,57,43,.09); } tr.lv-WARN td { background:rgba(184,134,11,.08); }
+  tr.lv-BLOCKED td { background:rgba(74,109,167,.08); }
+  .notes { background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin-top:14px; font-size:14px; }
+  .notes ul { margin:6px 0 0; padding-left:20px; } .notes li { margin:4px 0; }
+  .foot { color:var(--mut); font-size:13px; margin-top:12px; } .good{ color:var(--ok); font-weight:600; }
+  .signoff .role { font-size:12px; color:var(--mut); } .sign { font-family:ui-monospace,monospace; font-size:12.5px; color:var(--mut); }
+  .legend { display:flex; flex-wrap:wrap; gap:16px; margin-top:16px; font-size:13.5px; color:var(--mut); }
+  footer { text-align:center; color:var(--mut); font-size:12.5px; margin-top:28px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1 class="name">Agent Army &mdash; Eval Report Card</h1>
+    <div class="big">🟡 NEEDS A LOOK</div>
+    <div class="plain">Nothing is broken, but some things need tidying up or can't be tested yet.</div>
+    <div class="meta">Last checked: 2026-07-17 08:18 UTC &nbsp;·&nbsp; 0 broken &nbsp;·&nbsp; 113 need tidying &nbsp;·&nbsp; 2 can't test yet</div>
+  </header>
+
+  <div class="legend">
+    <span>✅ Working = tested and fine</span>
+    <span>⚠️ Needs tidying = works, but not perfect</span>
+    <span>❌ Broken = must be fixed before shipping</span>
+    <span>⏳ Can't test yet = the part isn't built yet</span>
+  </div>
+
+  
+  <section class="card">
+    <h2>1 &middot; Does the engine work?</h2>
+    <p class="lede">These are the 15 core checks of the Agent Army "engine" &mdash; the part that creates the team, tracks who is doing what, and keeps an honest logbook. Think of it like a car's dashboard warning lights: green means the part was tested and is fine.</p>
+    <div class="tiles">
+      <div class="tile ok"><b>13</b><span>checks passed</span></div>
+      <div class="tile ok"><b>0</b><span>checks failed</span></div>
+      <div class="tile ok"><b>0</b><span>safety-rule breaches</span></div>
+      <div class="tile wait"><b>2</b><span>can't test yet*</span></div>
+    </div>
+    <table><thead><tr><th>ID</th><th>What it checks</th><th>Requirement</th><th>Result</th><th>Notes</th></tr></thead><tbody>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-01</td>
+      <td>team_init output set + net-new skill-forge nudge</td>
+      <td>D1/D5/D6</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-02</td>
+      <td>agent_list after a create sequence</td>
+      <td>D1/D2</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-03</td>
+      <td>agent_delete archives, never hard-deletes</td>
+      <td>D2</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-04</td>
+      <td>manager_tick flags a 2x-past-ETA stale claim</td>
+      <td>D3</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-05</td>
+      <td>ROLES.md records superteam provenance for debugger</td>
+      <td>D2</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-06</td>
+      <td>role_list returns the curated v1 catalog (10), not the full library</td>
+      <td>D2</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-07</td>
+      <td>dashboard auto-regenerates on a state mutation (no explicit refresh)</td>
+      <td>D7</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-15</td>
+      <td>dashboard is self-contained (no external network requests)</td>
+      <td>D7</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-08</td>
+      <td>agent_assign_role updates ROLES.md refinement history</td>
+      <td>D2</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-09</td>
+      <td>PROGRESS.md is append-only under concurrent writes</td>
+      <td>D3</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-10</td>
+      <td>server/session boundary: compiled server has NO model/spawn/network APIs</td>
+      <td>D8/§3.8</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-12</td>
+      <td>team_init is idempotent (second run does not duplicate/corrupt)</td>
+      <td>D6</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-PASS">
+      <td class="mono">EVAL-14</td>
+      <td>roles_sync reconciles ROLES.md against .claude/agents reality</td>
+      <td>D2</td>
+      <td class="st">✅ Working</td>
+      <td class="detail">&mdash;</td>
+    </tr>
+    <tr class="lv-BLOCKED">
+      <td class="mono">EVAL-11</td>
+      <td>team:skill-forge produces a spec-conformant SKILL.md</td>
+      <td>D2/D5</td>
+      <td class="st">⏳ Can't test yet</td>
+      <td class="detail">M3 (plugin skill-forge) not built — not a server tool</td>
+    </tr>
+    <tr class="lv-BLOCKED">
+      <td class="mono">EVAL-13</td>
+      <td>D9 negative gate: git-push/network/rm stay gated after team_init</td>
+      <td>D9</td>
+      <td class="st">⏳ Can't test yet</td>
+      <td class="detail">permission gating is a session-layer behavior, not observable from the MCP tool surface; verify via D9 matrix on Desktop/CLI</td>
+    </tr></tbody></table>
+    <div class="notes"><b>Things we noticed:</b><ul><li>D9 GAP: team_init did NOT write .claude/settings.json (the scoped allowlist per PLAN §9.5) — zero-friction deployment unimplemented in M1/M2.</li></ul></div>
+    <p class="foot">*"Can't test yet" means the part isn't built yet (the plugin and the live dashboard are later steps) &mdash; it is NOT a failure.</p>
+  </section>
+
+  <section class="card">
+    <h2>2 &middot; Are the 242 "job description" files clean?</h2>
+    <p class="lede">Agent Army ships a library of 242 ready-made worker profiles (a "debugger", a "writer", and so on). Each is a text file with a name and a job description. This checks every one follows the rules: has a proper name, a real description, actual instructions, and &mdash; importantly &mdash; contains no passwords or secret keys.</p>
+    <div class="tiles">
+      <div class="tile ok"><b>129</b><span>fully clean</span></div>
+      <div class="tile warn"><b>113</b><span>usable, need tidying</span></div>
+      <div class="tile ok"><b>0</b><span>must be fixed</span></div>
+    </div>
+    <p class='good'>✅ No profile is broken.</p>
+    <h3>By category</h3>
+    <table><thead><tr><th>Category</th><th>Total</th><th>Clean</th><th>Tidy-ups</th><th>Broken</th></tr></thead><tbody><tr class="lv-WARN"><td>08-business-product</td><td>30</td><td>11</td><td>19</td><td>0</td></tr><tr class="lv-WARN"><td>02-language-specialists</td><td>41</td><td>27</td><td>14</td><td>0</td></tr><tr class="lv-WARN"><td>04-quality-security</td><td>25</td><td>12</td><td>13</td><td>0</td></tr><tr class="lv-WARN"><td>03-infrastructure</td><td>19</td><td>8</td><td>11</td><td>0</td></tr><tr class="lv-WARN"><td>06-developer-experience</td><td>28</td><td>17</td><td>11</td><td>0</td></tr><tr class="lv-WARN"><td>05-data-ai</td><td>15</td><td>6</td><td>9</td><td>0</td></tr><tr class="lv-WARN"><td>super-agents</td><td>27</td><td>18</td><td>9</td><td>0</td></tr><tr class="lv-WARN"><td>01-core-development</td><td>16</td><td>8</td><td>8</td><td>0</td></tr><tr class="lv-WARN"><td>07-specialized-domains</td><td>19</td><td>11</td><td>8</td><td>0</td></tr><tr class="lv-WARN"><td>(root)</td><td>10</td><td>3</td><td>7</td><td>0</td></tr><tr class="lv-WARN"><td>09-research-analysis</td><td>12</td><td>8</td><td>4</td><td>0</td></tr></tbody></table>
+    <p class="foot">"Need tidying" is usually a missing tool-list or model note &mdash; the profile still works, it's just not fully spelled out. Static contract gate only (frontmatter/name/description/body/no-secrets). Behavioral per-role evals (does the role DO its job?) are a future cost-disclosed tier requiring model dispatch.</p>
+  </section>
+
+  <section class="card">
+    <h2>3 &middot; Should we bolt on outside tools? (Perplexity, Tavily, &hellip;)</h2>
+    <p class="lede">A judgment question, not a pass/fail one: when someone offers a shiny outside tool (a web-search add-on like Perplexity or Tavily, an outside worker service), should Agent Army swallow it whole, keep it at arm's length, or skip it? The rule of thumb, from the project's own architecture: keep outside tools <b>separate and swappable</b> unless there's a strong reason not to &mdash; fewer moving parts, less that can break.</p>
+    <div class="tiles">
+      <div class="tile ok"><b>✓</b><span>analysis written</span></div>
+    </div>
+    <p class="foot">Full scored analysis: <span class="mono">evals/INTEGRATION-DECISION-EVAL.md</span> (ready to read).</p>
+  </section>
+  
+  <section class="card signoff">
+    <h2>4 &middot; Who has checked this? (sign-off)</h2>
+    <p class="lede">Evals only matter if people actually read them. Each teammate below must cross-reference these results against their own area and initial the box. An unsigned row means "nobody has audited this yet."</p>
+    <table><thead><tr><th>Teammate</th><th>Their job here</th><th>What to cross-check</th><th>Signed?</th></tr></thead><tbody>
+      <tr><td><b>Cody Banks</b><br><span class="role">Architect</span></td><td>Owns the blueprint</td><td>Do the passing checks match what the plan (PLAN.md) promised? Are the "can't test yet" items really just later steps?</td><td class="sign">☐ initials ____ date ____</td></tr>
+      <tr><td><b>Excelcius</b><br><span class="role">Builder</span></td><td>Writes the code</td><td>Fix the broken items above. Re-run the checks. Confirm green before calling a milestone done.</td><td class="sign">☐ initials ____ date ____</td></tr>
+      <tr><td><b>Olga</b><br><span class="role">Orchestrator</span></td><td>Keeps everyone honest</td><td>Confirm this page's status matches git-truth and gets reported to Akash. Flag any stale/ignored row.</td><td class="sign">☐ initials ____ date ____</td></tr>
+    </tbody></table>
+  </section>
+
+  <footer>
+    Generated automatically from the eval harness by Evelyn (Evaluator). This page reads live result files &mdash;
+    re-run the checks and rebuild to refresh. Every claim here is machine-checked against the real software, not hand-written.
+  </footer>
+</div>
+<script>
+  // Respect an artifact host's theme toggle if present.
+  try { var t = document.documentElement.getAttribute('data-theme'); if(t) document.documentElement.setAttribute('data-theme', t); } catch(e){}
+</script>
+</body>
+</html>
