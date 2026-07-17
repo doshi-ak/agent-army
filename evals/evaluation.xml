@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Agent Army (multi-agent-mcp server) — 10-question evaluation
+  Format: mcp-builder Phase 4 canonical (<evaluation> / <qa_pair> / <question> / <answer>).
+  Consumable by anthropic-skills/mcp-builder/scripts/evaluation.py:
+      python evaluation.py -t stdio -c node \
+        -a /Users/doshi/Developer/GitHub/agent-army/server/dist/index.js \
+        evaluation.xml
+
+  HONESTY NOTES (read before trusting the answers):
+  - Every <answer> below was verified on 2026-07-17 against the LIVE compiled server
+    (server/dist/index.js, repo HEAD 80b2efd, 14 tools) over the real stdio MCP surface —
+    not asserted from the spec. See docs/VERIFICATION.md for the captured CLI evidence and
+    the exact tool sequences.
+  - This server is a state/filing server, not a read-only query API. Unlike a typical
+    mcp-builder target, several questions require the model to first scaffold an isolated
+    scratch project (team_init) and stage state (agent_create / state_write) before reading
+    the answer back. Those setup calls are non-destructive to any real data (they act only
+    on the server's throwaway working directory) and team_init is idempotent, so each
+    question remains independent and reproducible per the mcp-builder independence rule.
+  - Answers are single, string-comparable, and stable: they derive from the fixed shipped
+    role catalog (server/roles/, exactly 10 files) and deterministic tool behavior, never
+    from wall-clock state. The one time-relative case (EVAL-A07) fixes its own timestamps.
+  - <qa_pair> carries id / dod / tools attributes for traceability to PLAN.md DoD items and
+    to evals/EVALS-DRAFT.md §A. A strict question/answer text parser ignores the attributes;
+    they do not affect scoring.
+-->
+<evaluation>
+   <qa_pair id="EVAL-A01" dod="D2" tools="role_list">
+      <question>Connect to the multi-agent team server. Browse its pre-built specialties catalog (the roles available for staffing agents). Exactly how many roles does the catalog contain? Answer with a single integer.</question>
+      <answer>10</answer>
+   </qa_pair>
+   <qa_pair id="EVAL-A02" dod="D2/D3" tools="role_list,role_get">
+      <question>In the team server's role catalog, all but one role are curated copies of upstream community agent templates; exactly one role was authored brand-new for this product and records no upstream source in its provenance. Inspect the catalog and each role's provenance, then name that one net-new role. Answer with the role name exactly as the catalog lists it (lowercase-hyphen form).</question>
+      <answer>agent-manager</answer>
+   </qa_pair>
+   <qa_pair id="EVAL-A03" dod="D2" tools="role_list,role_get">
+      <question>Examine every role in the team server's specialties catalog and the target model each one declares. How many of the catalog roles target the "opus" model? Answer with a single integer.</question>
+      <answer>3</answer>
+   </qa_pair>
+   <qa_pair id="EVAL-A04" dod="D2" tools="role_get">
+      <question>Look up the "security-auditor" role in the team server's catalog. Which model does that role template target? Answer with just the model name.</question>
+      <answer>opus</answer>
+   </qa_pair>
+   <qa_pair id="EVAL-A05" dod="D1/D5" tools="team_init">
+      <question>Initialize the agent-team harness in a brand-new, empty project directory that has no prior team setup. Because the environment is net-new, the initialization response is supposed to include an implicit nudge to build project-specific Agent Skills before staffing the team. Does the team-initialization response include such a skill-forge nudge? Answer True or False.</question>
+      <answer>True</answer>
+   </qa_pair>
+   <qa_pair id="EVAL-A06" dod="D6" tools="team_init">
+      <question>Initialize the agent-team harness in a fresh project directory, then run the exact same initialization a second time on that same directory without changing anything. In the second run's structured response, what value is reported for the "netNew" field? Answer True or False.</question>
+      <answer>False</answer>
+   </qa_pair>
+   <qa_pair id="EVAL-A07" dod="D3" tools="team_init,agent_create,state_write,manager_tick">
+      <question>Set up a fresh team, staff one agent, and have that agent claim a task whose ETA is two hours in the past (already overdue). Then run one manager maintenance pass. How many stale claims does the manager pass report? Answer with a single integer.</question>
+      <answer>1</answer>
+   </qa_pair>
+   <qa_pair id="EVAL-A08" dod="D2" tools="team_init,agent_create,agent_delete,agent_list">
+      <question>Set up a fresh team, staff a single agent, then retire that agent. This product never hard-deletes an agent — retirement archives it. After retiring the one agent, how many agents does the roster report as archived? Answer with a single integer.</question>
+      <answer>1</answer>
+   </qa_pair>
+   <qa_pair id="EVAL-A09" dod="D2" tools="team_init,agent_create,agent_assign_role,agent_list">
+      <question>Set up a fresh team and staff an agent using the "debugger" role. Then reassign that same agent to the "code-reviewer" role. After the reassignment, when you list the team, what role is that agent shown to hold? Answer with the role name.</question>
+      <answer>code-reviewer</answer>
+   </qa_pair>
+   <qa_pair id="EVAL-A10" dod="D1/D8" tools="listTools">
+      <question>Connect to the multi-agent team server and enumerate the complete set of tools it exposes over its protocol. How many distinct tools does the server provide? Answer with a single integer.</question>
+      <answer>14</answer>
+   </qa_pair>
+</evaluation>
