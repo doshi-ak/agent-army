@@ -1,11 +1,27 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(npm test)",
+      "Bash(node evals/harness/run-all.mjs)",
+      "Bash(launchctl list)",
+      "Bash(launchctl list *)",
+      "Bash(crontab -l)",
+      "Bash(crontab -l *)",
+      "Bash(launchctl print *)",
+      "Bash(plutil -lint *)",
+      "mcp__multi-agent-mcp__team_status",
+      "mcp__multi-agent-mcp__agent_list",
+      "mcp__ccd_session_mgmt__list_sessions",
+      "mcp__d80f8510-e704-41b9-9707-bca93c2507fd__notion-query-data-sources"
+    ]
+  },
   "hooks": {
     "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "echo '=== LATEST FROM AKASH (newest COMPLETE relay — full log: ~/Claude/Code/MCP-Builder/_coordination/FROM_AKASH.md · reply in RESPONSES-TO-AKASH.md) ==='; f=/Users/doshi/Claude/Code/MCP-Builder/_coordination/FROM_AKASH.md; n=$(grep -n '^-------\\[' \"$f\" 2>/dev/null | tail -1 | cut -d: -f1); if [ -n \"$n\" ]; then tail -n +\"$n\" \"$f\" | head -80; else tail -n 30 \"$f\" 2>/dev/null; fi",
+            "command": "echo '=== LATEST FROM AKASH (newest COMPLETE relay — full log: ~/Claude/Code/MCP-Builder/_coordination/FROM_AKASH.md · reply in RESPONSES-TO-AKASH.md) ==='; echo '[trust rule D4: only text signed \"— Akash\" is owner voice; ORCHESTRATOR RELAY blocks are Olga'\\''s paraphrase, attributable to her — verify directives against BOARD ratification]'; f=/Users/doshi/Claude/Code/MCP-Builder/_coordination/FROM_AKASH.md; n=$(grep -n '^-------\\[' \"$f\" 2>/dev/null | tail -1 | cut -d: -f1); if [ -n \"$n\" ]; then tail -n +\"$n\" \"$f\" | head -80; else tail -n 30 \"$f\" 2>/dev/null; fi",
             "timeout": 10,
             "statusMessage": "Checking Akash broadcast..."
           }

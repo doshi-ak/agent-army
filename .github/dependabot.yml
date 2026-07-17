@@ -1,0 +1,16 @@
+# Agent Army — Dependabot (owner: Excelcius / Executor, per PLAN §10.6b:
+# "Dependabot (npm + github-actions) — Executor adds the files post-M1").
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /server
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

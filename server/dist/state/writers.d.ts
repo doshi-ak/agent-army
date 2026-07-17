@@ -19,4 +19,14 @@ export declare function initialRolesMd(): string;
 export declare function appendProgress(projectRoot: string, actor: string, event: string, outcome: string): boolean;
 /** Append a ROLES.md registry row. Best-effort, same contract as appendProgress. */
 export declare function appendRoleRegistryRow(projectRoot: string, role: string, agentFile: string, sourceTemplate: string, history: string): boolean;
+/**
+ * Keep STATE.md's Team table in sync with agent lifecycle events. Added
+ * 2026-07-17 (Evaluator finding, B-scenario evals): agent_create/delete/
+ * assign_role wrote .claude/agents/ + ROLES.md + PROGRESS.md but never STATE's
+ * Team table, so the roster a non-technical user reads first was always empty.
+ * Reuses the M2 schema round-trip; declared lane-exception on BOARD, Executor
+ * may overrule.
+ */
+export declare function upsertTeamMember(root: string, agent: string, role: string, status?: string): void;
+export declare function removeTeamMember(root: string, agent: string): void;
 //# sourceMappingURL=writers.d.ts.map

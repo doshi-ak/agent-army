@@ -26,6 +26,7 @@ const stages = [
   ["functional MCP evals", "run-evals.mjs"],
   ["per-role conformance", "run-role-evals.mjs"],
   ["M3 plugin conformance", "run-plugin-evals.mjs"],
+  ["B-scenario use-case evals (Axis 3)", "run-scenarios.mjs"],
   ["harness meta-evals (test-the-tester)", "run-meta-evals.mjs"],
   ["build dashboard", "build-dashboard.mjs"],
   ["milestone scoreboards", "scoreboard.mjs"],
@@ -58,7 +59,7 @@ process.on("exit", () => { try { fs.rmSync(LOCK, { recursive: true, force: true 
 // GREEN. Only files the suites themselves write are cleared — manually recorded
 // evidence (session-layer.json, EVAL-RUBRIC §6) must SURVIVE this wipe.
 const RES0 = path.resolve(here, "..", "results");
-for (const f of ["functional.json", "roles.json", "plugin.json", "harness-meta.json"])
+for (const f of ["functional.json", "roles.json", "plugin.json", "harness-meta.json", "scenarios.json"])
   fs.rmSync(path.join(RES0, f), { force: true });
 const runStartMs = Date.now();
 
@@ -92,15 +93,16 @@ const engineFindings = (fnl ? fnl.axis1.fail + fnl.axis2.guardrailBreaches : 0);
 const libraryFindings = (roles ? roles.scope.combined.fail : 0);
 // Plugin + session-layer FAILs are product findings too — a top-line GREEN that
 // hides a red SL row overclaims exactly like the M3 scoreboard used to.
-const plugin = readJson("plugin.json"), sl = readJson("session-layer.json");
+const plugin = readJson("plugin.json"), sl = readJson("session-layer.json"), scen = readJson("scenarios.json");
 const pluginFindings = (plugin?.checks ?? []).filter((c) => c.status === "FAIL").length;
 const slFindings = (sl?.cases ?? []).filter((c) => c.status === "FAIL").length;
-const mustFix = engineFindings + libraryFindings + pluginFindings + slFindings;
+const scenarioFindings = (scen?.scenarios ?? []).filter((s) => s.status !== "PASS").length;
+const mustFix = engineFindings + libraryFindings + pluginFindings + slFindings + scenarioFindings;
 if (suiteCrashed) console.error(`\n⚠️  A suite crashed before writing fresh results (functional=${functionalCrashed}, roles=${rolesCrashed}) — results are INVALID, not green.`);
 
 console.log(`\n${"═".repeat(64)}`);
 console.log(`HARNESS SELF-TEST : ${harnessBroken ? "❌ BROKEN — do not trust these results" : `✅ VALIDATED (${meta.pass}/${meta.total} meta-evals pass)`}`);
-console.log(`PRODUCT FINDINGS  : ${mustFix} must-fix  (engine ${engineFindings} · library ${libraryFindings} · plugin ${pluginFindings} · session-layer ${slFindings})`);
+console.log(`PRODUCT FINDINGS  : ${mustFix} must-fix  (engine ${engineFindings} · library ${libraryFindings} · plugin ${pluginFindings} · session-layer ${slFindings} · scenarios ${scenarioFindings})`);
 console.log(`GATE VERDICT      : ${harnessBroken ? "INVALID" : mustFix === 0 ? "🟢 GREEN — nothing blocking" : engineFindings ? "🔴 RED — engine/guardrail defect" : "🟠 ORANGE — engine OK, non-engine findings need fixing"}`);
 console.log(`REPORT CARD       : evals/DASHBOARD.html`);
 // Exit non-zero if the harness is broken OR the gate found must-fix defects

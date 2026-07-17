@@ -12,7 +12,7 @@ import * as path from "node:path";
 import { z } from "zod";
 import { agentsDir, archiveDir, fileStamp, guarded, nowIso, ok, parseFrontmatter, progressFile, requireHarness, resolveProjectDir, ToolError, validateName, } from "./shared.js";
 import { loadRoleTemplate } from "./roles.js";
-import { appendProgress, appendRoleRegistryRow } from "./state/writers.js";
+import { appendProgress, appendRoleRegistryRow, upsertTeamMember, removeTeamMember } from "./state/writers.js";
 import { refreshDashboard } from "./dashboard/render.js";
 const ASSIGNMENT_HEADER = "## Current assignment";
 const projectDirArg = z
@@ -117,6 +117,7 @@ Example:
         fs.writeFileSync(file, renderAgentFile(name, template, args.taskContext ?? ""), "utf8");
         const logged = appendProgress(root, name, "agent_create", `created with role '${template.role}'`) &&
             appendRoleRegistryRow(root, template.role, `.claude/agents/${name}.md`, `server/roles/${template.role}.md (${template.provenance})`, `${nowIso()}: created`);
+        upsertTeamMember(root, name, template.role, "IDLE");
         refreshDashboard(root, Date.now());
         return ok(`Agent '${name}' created with role '${template.role}'.`, {
             name,
@@ -163,6 +164,7 @@ Example:
         const reason = args.reason ?? "retired via agent_delete";
         const archivedTo = archiveAgentFile(root, name, reason);
         const logged = appendProgress(root, name, "agent_delete", reason);
+        removeTeamMember(root, name);
         refreshDashboard(root, Date.now());
         return ok(`Agent '${name}' archived (never hard-deleted).`, {
             name,
@@ -285,6 +287,7 @@ Example:
         fs.writeFileSync(file, renderAgentFile(name, template, assignment), "utf8");
         const logged = appendProgress(root, name, "agent_assign_role", `re-roled from '${previousRole}' to '${template.role}'`) &&
             appendRoleRegistryRow(root, template.role, `.claude/agents/${name}.md`, `server/roles/${template.role}.md (${template.provenance})`, `${nowIso()}: reassigned from ${previousRole}`);
+        upsertTeamMember(root, name, template.role);
         refreshDashboard(root, Date.now());
         return ok(`Agent '${name}' re-roled: ${previousRole} -> ${template.role}.`, {
             name,

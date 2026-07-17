@@ -136,7 +136,7 @@ try {
 
   await test("state_read reflects the same structured snapshot manager_tick saw", async () => {
     const data = await callTool(client, "state_read", {});
-    assert.equal(data.team.length, 1); // idle-one only — test-builder isn't in STATE.md's team table
+    assert.equal(data.team.length, 2); // test-builder + idle-one — agent lifecycle tools sync the Team table (2026-07-17 fix; it used to stay empty)
     assert.equal(data.activeWork.length, 1);
   });
 

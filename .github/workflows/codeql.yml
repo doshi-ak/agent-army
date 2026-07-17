@@ -1,0 +1,34 @@
+# Agent Army — CodeQL security scanning (owner: Excelcius / Executor, per PLAN §10.6b:
+# "Repo CI hygiene the moment agents push unattended: CodeQL (js/ts, push + weekly)").
+# Agents began pushing unattended Jul 17 — this is the tripwire that watches what they push.
+
+name: codeql
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 9 * * 1" # weekly, Monday 09:00 UTC
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3

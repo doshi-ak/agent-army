@@ -119,8 +119,8 @@ $ node evals/harness/run-evals.mjs
   ✓ EVAL-10 PASS — server/session boundary: compiled server has NO model/spawn/network APIs
   ✓ EVAL-12 PASS — team_init is idempotent (second run does not duplicate/corrupt)
   ✓ EVAL-14 PASS — roles_sync reconciles ROLES.md against .claude/agents reality
-  ⃠ EVAL-11 BLOCKED — team:skill-forge is a plugin skill, not a server tool (scored by run-plugin-evals.mjs)
-  ⃠ EVAL-13 BLOCKED — permission gating is a session-layer behavior, not observable from the MCP surface
+  ⃠ EVAL-11 BLOCKED — not a server tool by design — team:skill-forge is a plugin skill; scored as M3-04 by run-plugin-evals.mjs
+  ⃠ EVAL-13 BLOCKED — permission gating is a session-layer behavior, not observable from the MCP tool surface; verify via D9 matrix on Desktop/CLI
 
 Axis1 13/13 PASS (0 fail, 2 blocked) · Axis2 0 breaches
 ```
@@ -156,7 +156,73 @@ $ cat .mcp.json
 ```
 
 `.mcp.json` registers the server by absolute path, so any surface that opens this project
-launches the identical server (the mechanism DoD 8 relies on).
+launches the identical server (the mechanism DoD 8 relies on). **Web caveat this creates:**
+the path is *this Mac's* absolute path (`serverEntryPath()` = `path.resolve(__dirname,
+"index.js")`, `server/src/shared.ts:74-76`) — a `.mcp.json` scaffolded here will not resolve
+inside a Code Web sandbox. The Web run must re-run `team_init` in the sandbox (writing the
+sandbox's own path) or hand-register a repo-relative command; §5 records this as a check.
+
+### 2.5 Independent second CLI pass — M5 executor run (same day, separate scratch project)
+
+A second, independently written driver (scratchpad `m5-matrix-driver.mjs`, reusing the
+`server/test/e2e-scratch.test.mjs` client pattern) booted `server/dist/index.js` over stdio
+at **2026-07-17T08:28:29Z**, cwd = `mktemp -d` → `/tmp/m5-matrix-Pv3EeZ` (deleted after the
+run, `rm -rf` confirmed). dist freshness was checked first (`stat -f '%m %N' … | sort -rn`:
+`dist/index.js` newer than every `server/src/*.ts`). It re-confirmed §2.2/§2.4 (14 tools;
+identical `team_init` created-set; same generated `.mcp.json`) and added the following
+observations not covered above — raw output snippets, all from one continuous run:
+
+**D6 idempotency, byte-level.** Second `team_init` → `created:
+["_team/dashboard.html (regenerated)"]` only (dashboard is a derived artifact, regenerated
+by design); all 8 state/config items `skipped`; `netNew: false`; STATE.md read before/after
+run 2 was **byte-identical**.
+
+**D2 lifecycle, live.**
+
+```json
+agent_create   → { "name": "matrix-builder", "role": "debugger",
+                   "file": ".../.claude/agents/matrix-builder.md",
+                   "provenance": "agent-superteam/agents/04-quality-security/debugger.md
+                                  (upstream VoltAgent + wshobson ..., MIT; copied verbatim 2026-07-11)" }
+agent_assign_role → { "previousRole": "debugger", "role": "docs-writer",
+                   "archivedPrevious": ".../_team/archive/matrix-builder-2026-07-17T082831Z.md" }
+agent_delete   → { "archivedTo": ".../_team/archive/matrix-builder-2026-07-17T082831Z-2.md" }
+```
+
+Post-delete: archive dir holds both archived defs; active agent file gone (`exists →
+false`); `team_status` → `agentCount: 0, archivedCount: 2, initialized: true`.
+
+**D3 manager_tick, full report.** After planting one 2h-overdue claim + one IDLE agent:
+
+```json
+{ "staleClaims": [{ "task": "overdue-matrix-task", "owner": "matrix-builder",
+                    "eta": "2026-07-17T06:28:31.104Z" }],
+  "idleAgents": ["idle-one"],
+  "evalGap": "No eval cases found in evals/ — generate at least one acceptance case per active work item.",
+  "progressSinceLastTick": 5,
+  "recommendations": [ "...stale claim...", "...idle agent...", "...eval gap..." ] }
+```
+
+Exactly the planted findings, no false positives; report-only (`readOnlyHint: true`),
+consistent with §3.8.
+
+**D7 same-call regen.** `_team/dashboard.html` read before → one `state_write
+(op: upsert_agent)` → read after, **no other call in between**: `contentChanged: true`;
+final dashboard shows the claimed task under "Active work"; `grep -oE 'https?://…'` over
+the HTML → zero external URLs. Design note, not a defect: roster rows come from
+`.claude/agents/*.md` (STATE.md's team table contributes *status* only — documented at
+`server/src/dashboard/render.ts:67-74`), so a status-only `upsert_agent` with no agent
+file adds no roster row.
+
+**D9 tool-half, observed.** After the TOOL `team_init`:
+`.claude/settings.json exists? → false`. The allowlist is owned by the `team-init`
+**skill**, step 4 of `plugin/skills/team-init/SKILL.md`: *"**Write the D9 permission
+allowlist.** Read `.claude/settings.json` in the target project (create it as `{}` if
+absent). Merge the following into its `permissions.allow` array idempotently"* — with the
+exact list (`Write(_team/**)`, `Write(.claude/agents/**)`, read-only shell) and the hard
+refusal to ever add `git push` / network / `rm` / money-shaped commands. Whether the
+*session* honors it (0 prompts happy path, gated ops still prompt) is SL-3 — interactive
+surfaces only, not claimed here.
 
 ---
 
@@ -168,15 +234,15 @@ D1–D8 per PLAN §0.1; D9 per §9.5.
 | # | DoD item | How to verify | CLI | Desktop | Web |
 |---|---|---|---|---|---|
 | **D1** | Surface as a team: init → agents visible in state files | Run `team_init`; create agents; confirm `_team/STATE.md` / `.claude/agents/` reflect them | **PASS** (§2.4, §2.3 EVAL-01/02) | **NYE** | **NYE** |
-| **D2 (tools)** | Lifecycle tools create/delete/assign/list/roles each work | Exercise each tool; confirm observable state-file change | **PASS** (§2.3 EVAL-02/03/05/06/08/14) | **NYE** | **NYE** |
+| **D2 (tools)** | Lifecycle tools create/delete/assign/list/roles each work | Exercise each tool; confirm observable state-file change | **PASS** (§2.3 EVAL-02/03/05/06/08/14; §2.5 live create → re-role → archive run) | **NYE** | **NYE** |
 | **D2 (skills)** | The 8 `team:*` plugin skills fire on their trigger phrases | In an interactive session, say each skill's plain-English trigger; confirm the SKILL.md loads and acts | **N/A** (no interactive skill layer in a stdio harness) | **NYE** | **NYE** |
-| **D3** | Manager loop: `manager_tick` surfaces stale claims / gaps | Stage a 2×-past-ETA claim; run `manager_tick`; confirm it is flagged | **PASS** (§2.3 EVAL-04) | **NYE** | **NYE** |
-| **D4** | Non-technical guide passes read-through (Akash test) | Akash reads `docs/GUIDE.md` unaided and completes init → task → dashboard | **N/A** (human read-through, not a harness check) | **NYE** (Akash) | **NYE** (Akash) |
+| **D3** | Manager loop: `manager_tick` surfaces stale claims / gaps | Stage a 2×-past-ETA claim; run `manager_tick`; confirm it is flagged | **PASS** (§2.3 EVAL-04; §2.5 full report: stale + idle + eval-gap, no false positives) | **NYE** | **NYE** |
+| **D4** | Non-technical guide passes read-through (Akash test) | Akash reads the guide unaided and completes init → task → dashboard | **MANUAL / N/A** (human read-through, not a harness check). Guide status on disk: `docs/guide/GUIDE.html` exists (266,795 bytes, Jul 14) + `docs/guide/src/`; `docs/GUIDE.md` packaged Jul 17 ~04:30 (this M5 run — it landed 2 min after the first evidence sweep, which briefly recorded it absent) | **NYE** (Akash) | **NYE** (Akash) |
 | **D5** | Net-new nudge fires, agentskills.io-conformant | `team_init` in an empty dir; confirm skill-forge nudge payload | **PASS** (§2.4, §2.3 EVAL-01) | **NYE** | **NYE** |
-| **D6** | `team_init` idempotent, complete, correct | Run `team_init` twice; second run mutates nothing, reports `netNew:false` | **PASS** (§2.3 EVAL-12) | **NYE** | **NYE** |
-| **D7** | Dashboard auto-regenerates on every state mutation; self-contained | Mutate state without calling `dashboard_refresh`; confirm `dashboard.html` changed + no external requests | **PASS** (§2.3 EVAL-07/15) | **NYE** | **NYE** |
+| **D6** | `team_init` idempotent, complete, correct | Run `team_init` twice; second run mutates nothing, reports `netNew:false` | **PASS** (§2.3 EVAL-12; §2.5: run 2 created nothing but the derived dashboard regen, STATE.md byte-identical) | **NYE** | **NYE** |
+| **D7** | Dashboard auto-regenerates on every state mutation; self-contained | Mutate state without calling `dashboard_refresh`; confirm `dashboard.html` changed + no external requests | **PASS** (§2.3 EVAL-07/15; §2.5: content changed within the same `state_write` call, zero external URLs) | **NYE** | **NYE** |
 | **D8** | Seamless across CLI / Desktop / Web (git-sync boundary documented) | Run the D1–D7 flow on each surface; confirm parity modulo the git push/pull continuity boundary | **PASS (CLI leg only)** — the other two legs are exactly what is NYE | **NYE** | **NYE** |
-| **D9** | Zero-friction deploy: happy path 0 prompts; git-push/rm/network/money stay gated | Run init → new-task → dashboard with a fresh `.claude/settings.json`; count prompts (must be 0); then confirm a git push still prompts | **N/A** — the allowlist is written by the `team-init` **skill** (session layer), not the `team_init` **tool**; not observable from the stdio surface (§2.3 EVAL-13 BLOCKED) | **NYE** | **NYE** |
+| **D9** | Zero-friction deploy: happy path 0 prompts; git-push/rm/network/money stay gated | Run init → new-task → dashboard with a fresh `.claude/settings.json`; count prompts (must be 0); then confirm a git push still prompts | **SPLIT VERIFIED** (§2.5) — tool half observed: the `team_init` TOOL wrote **no** `.claude/settings.json` (checked `false` post-init, by design); skill half quoted: `team-init` SKILL step 4 owns the allowlist write. Prompt *behavior* (both halves of the acceptance) is session-layer: **NYE** (SL-3; §2.3 EVAL-13 BLOCKED) | **NYE** | **NYE** |
 
 **Reading of the matrix, stated plainly:** the CLI column is genuinely green where a stdio
 harness can see the behavior, and honestly N/A where the behavior lives in the interactive
@@ -196,6 +262,13 @@ Run these on the **Claude Code desktop app** (Mac). Paste observed output next t
    - `/plugin install agent-army@agent-army-marketplace`
    - Restart the session. **Verify (SL-1):** the plugin appears in the installed list and the
      8 `team-*` skills are discoverable.
+   - **Status reference (not a claim):** this is M3 acceptance C1 — session-layer, first
+     interactive run **claimed by Cody Banks** (`evals/ADJUDICATION-LOG.md` B3;
+     `evals/EVAL-RUBRIC.md` §6 SL-1..4). `evals/SCOREBOARD.md` caps M3 at "🟡 FILE-CONTRACT
+     PASS — acceptance pending session-layer run", and `evals/results/session-layer.json`
+     did not exist at this run (checked `ls evals/results/`). This matrix inherits that
+     status; it does not overturn it. Record the run's evidence in `session-layer.json`
+     per the rubric's protocol (runner, surface, headCommit, per-case literal evidence).
 2. **Open a scratch project folder** (empty or a throwaway repo) in the desktop app.
 3. **D5 / D1 / D6:** say *"set up an agent team in this project."* Confirm `_team/STATE.md`,
    `_team/PROGRESS.md`, `_team/ROLES.md`, `.mcp.json`, the CLAUDE.md routing block, and
@@ -224,7 +297,12 @@ Mac's live disk.
    server without a build step (README "Build & run"). If a private-repo `npx`/clone issue
    bites, the documented fallback is the committed `dist/` (PLAN §10, open item).
 2. Open the repo in Code Web; confirm the server and `_team/` files arrive with the clone and
-   the `multi-agent-mcp` server registers from `.mcp.json`.
+   the `multi-agent-mcp` server registers from `.mcp.json`. **Absolute-path check (found on
+   the CLI run — §2.4/§2.5):** `team_init` writes the scaffolding machine's *absolute*
+   server path into `.mcp.json`, so a file committed from the Mac will not resolve in the
+   sandbox. Expect to re-run `team_init` inside the sandbox (it writes the sandbox's own
+   path) or hand-register a repo-relative `node server/dist/index.js`; record which was
+   needed.
 3. **D1/D2/D3/D7:** run the same flow as §4 steps 3–7; confirm parity with the Desktop/CLI
    result set.
 4. **D8 boundary (the honest expected result, not real-time parity):** make a state change in
@@ -240,7 +318,10 @@ Mac's live disk.
 ## 6. Summary
 
 - **CLI: executed and passing** — 14 tools live, 13/13 scoreable harness cases pass with zero
-  guardrail breaches, `team_init` produces the full harness end-to-end. Evidence in §2.
+  guardrail breaches, `team_init` produces the full harness end-to-end. Evidence in §2,
+  including a second independent same-day pass (§2.5) that live-ran the D2 lifecycle,
+  D3 manager_tick report, D7 same-call dashboard regen, byte-level D6 idempotency, and the
+  D9 tool/skill split — scratch projects deleted after both runs.
 - **Desktop: not yet executed** — steps in §4, awaiting a human on the desktop app.
 - **Web: not yet executed** — steps in §5, awaiting a human in Code Web; the git-sync boundary
   is the expected result for D8, not a defect.

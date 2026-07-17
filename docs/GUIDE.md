@@ -67,8 +67,11 @@ status, milestone by milestone (these are the real states, not aspirations):
 
 1. **Where it lives:** one GitHub repository (`agent-army`) holding the server, the plugin,
    and this guide — all in one place.
-2. **How it deploys:** install the plugin once per machine, then say *"set up an agent team
-   in this project"* in any folder. That is the whole deployment.
+2. **How it deploys:** two one-time steps per machine — get the `agent-army` repo onto the
+   machine (one clone, one `npm install` inside `server/`; the built server code ships in the
+   repo), and install the plugin. After that, saying *"set up an agent team in this project"*
+   in any folder is the whole per-project deployment. The plugin supplies the commands; the
+   repo supplies the engine they drive.
 3. **Where it works:** Claude Code in the **Desktop** app, the **Terminal** (CLI), and the
    **Web**. Desktop and Terminal share your Mac's files live; Web syncs through GitHub. No
    surface is missing features — they only differ in *when* they sync.
@@ -79,6 +82,16 @@ status, milestone by milestone (these are the real states, not aspirations):
 
 You install the plugin once, then use it in any project. The commands are the same on every
 surface; only how you start Claude differs. Pick your surface.
+
+**Once per machine, before anything else** — get the engine onto the machine:
+
+```
+git clone https://github.com/doshi-ak/agent-army ~/Developer/GitHub/agent-army
+cd ~/Developer/GitHub/agent-army/server && npm install
+```
+
+(The built server code ships in the repo; `npm install` just fetches its one SDK dependency.
+Skip this if the repo is already on the machine.)
 
 ### Desktop app (Claude Code on the Mac)
 
@@ -130,7 +143,12 @@ The repo carries everything.
 
 1. Make sure the project repo already has a team (set it up once from Desktop or Terminal,
    then push it to GitHub).
-2. Open the repo in Claude Code Web — the server and team files arrive with the clone.
+2. Open the repo in Claude Code Web — the team files arrive with the clone. One honest
+   caveat: the server registration written by setup points at the path where the engine
+   lives on *your Mac*, so inside the Web sandbox the session may need to install the
+   server's dependency once (`npm install` inside `server/`, a few seconds) or re-point
+   `.mcp.json` at the cloned copy. This is the documented Web git-sync boundary — the
+   verification record (`docs/VERIFICATION.md`) tracks it.
 3. **Work normally:**
    ```
    Have the team pick up the next task from STATE

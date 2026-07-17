@@ -346,7 +346,14 @@ export function computeManagerTick(
     })
     .map((w) => ({ task: w.task, owner: w.owner, eta: w.eta }));
 
-  const idleAgents = doc.team.filter((t) => t.status === "IDLE").map((t) => t.agent);
+  // Idle = IDLE status AND no active-work claim. Now that the agent lifecycle
+  // tools populate the Team table (2026-07-17), a status-only read would call
+  // an agent "idle" while it holds a live claim — owners of active work are
+  // working by definition, whatever their status row says.
+  const owners = new Set(doc.active_work.map((w) => w.owner));
+  const idleAgents = doc.team
+    .filter((t) => t.status === "IDLE" && !owners.has(t.agent))
+    .map((t) => t.agent);
 
   const lastTick = doc.last_manager_tick ? Date.parse(doc.last_manager_tick) : NaN;
   const progressSinceLastTick = Number.isFinite(lastTick)

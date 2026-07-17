@@ -6,7 +6,8 @@
  * Schema validation, concurrency safety, and reconciliation are M2's job.
  */
 import * as fs from "node:fs";
-import { nowIso, progressFile, rolesFile } from "../shared.js";
+import { nowIso, progressFile, rolesFile, stateFile } from "../shared.js";
+import { parseState, renderStateMd } from "./schema.js";
 /** Initial _team/STATE.md — sections per PLAN.md §5, status vocabulary per §10.5. */
 export function initialStateMd(projectName) {
     return `---
@@ -83,5 +84,33 @@ export function appendRoleRegistryRow(projectRoot, role, agentFile, sourceTempla
         return false;
     fs.appendFileSync(file, `| ${role} | ${agentFile} | ${sourceTemplate} | ${history} |\n`, "utf8");
     return true;
+}
+/**
+ * Keep STATE.md's Team table in sync with agent lifecycle events. Added
+ * 2026-07-17 (Evaluator finding, B-scenario evals): agent_create/delete/
+ * assign_role wrote .claude/agents/ + ROLES.md + PROGRESS.md but never STATE's
+ * Team table, so the roster a non-technical user reads first was always empty.
+ * Reuses the M2 schema round-trip; declared lane-exception on BOARD, Executor
+ * may overrule.
+ */
+export function upsertTeamMember(root, agent, role, status) {
+    const file = stateFile(root);
+    const doc = parseState(fs.readFileSync(file, "utf8"));
+    const existing = doc.team.find((t) => t.agent === agent);
+    if (existing) {
+        existing.role = role || existing.role;
+        if (status)
+            existing.status = status;
+    }
+    else {
+        doc.team.push({ agent, role, status: (status ?? "IDLE") });
+    }
+    fs.writeFileSync(file, renderStateMd(doc), "utf8");
+}
+export function removeTeamMember(root, agent) {
+    const file = stateFile(root);
+    const doc = parseState(fs.readFileSync(file, "utf8"));
+    doc.team = doc.team.filter((t) => t.agent !== agent);
+    fs.writeFileSync(file, renderStateMd(doc), "utf8");
 }
 //# sourceMappingURL=writers.js.map

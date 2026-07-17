@@ -63,6 +63,23 @@ await test("no external requests: no http(s):// references anywhere in the HTML"
   assert.ok(!/https?:\/\//.test(html), "dashboard must be fully self-contained");
 });
 
+await test("Team table shows EVERY staffed agent, not just ones with an explicit state_write status (regression)", async () => {
+  // agent_create never auto-populates STATE.md's `## Team` table (only
+  // state_write op:upsert_agent does, and nothing requires calling it) — a
+  // dashboard sourced from doc.team alone silently drops every agent nobody
+  // separately set a status for. Caught via a real multi-agent demo project;
+  // fixed by sourcing the roster from .claude/agents/*.md, same as
+  // agent_list/team_status already do.
+  await callTool(client, "agent_create", { name: "roster-check-a", role: "docs-writer" });
+  await callTool(client, "agent_create", { name: "roster-check-b", role: "code-reviewer" });
+  // Deliberately do NOT call state_write(upsert_agent) for either — that's the point.
+  const html = readFileSync(dashboardPath, "utf8");
+  const teamSection = html.slice(html.indexOf("<h2>Team</h2>"), html.indexOf("<h2>Active work</h2>"));
+  assert.ok(teamSection.includes("roster-check-a"), "agent with no explicit STATE.md status must still appear");
+  assert.ok(teamSection.includes("roster-check-b"), "agent with no explicit STATE.md status must still appear");
+  assert.ok(teamSection.includes("docs-writer") && teamSection.includes("code-reviewer"), "roles must come from the agent files");
+});
+
 await test("agent_create regenerates the dashboard within that same call (DoD 7)", async () => {
   await callTool(client, "agent_create", { name: "dash-debugger", role: "debugger" });
   const html = readFileSync(dashboardPath, "utf8");

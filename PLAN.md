@@ -38,7 +38,9 @@ wshobson, merged), obra/superpowers (patterns), agentskills.io (format contract)
 
 ## 1. Section-1 gate verdict (stated out loud, per the spec)
 
-**Team build is WARRANTED.** ~13 tools across cleanly separable groups (`team_*`,
+**Team build is WARRANTED.** 14 tools *(Architect correction Jul 17, closes ledger D1: M2 added
+`state_read`; the shipped `listTools` count is 14 — evals and the verification matrix already use the real
+number)* across cleanly separable groups (`team_*`,
 `agent_*`/`role_*`, `state_*`/manager, dashboard, plugin/skills, docs) = independent
 ownership blocks; a standing 3-seat team already exists. Blocks map to milestones
 M1–M5 below. The Executor may parallelize across blocks with its own `builder`
@@ -239,6 +241,13 @@ Executor reads this section before starting M3.
    outbound. The guide documents exactly what is and isn't auto-approved. Acceptance:
    a fresh `team:init` → `team:new-task` → dashboard cycle completes with ZERO
    permission prompts on the happy path.
+   **AMENDED by Architect (Jul 17, 04:58 — evidence-driven, session-layer run `798e4a7`):** literal
+   zero is platform-impossible: Claude Code protects settings files (the D9 allowlist write itself
+   costs ONE approval) and ignores allowlists until the one-time workspace-trust dialog. **D9 as
+   ratified now reads: ZERO RECURRING prompts on the happy path; at most TWO one-time platform
+   approvals at init (settings write + workspace trust), both documented in the skill and guide for
+   non-technical users.** Verified: SL-3/SL-5 PASS (`evals/results/session-layer.json`, HEAD `98c8b7b`)
+   — post-trust, `team_status` runs promptless; push/rm/curl stay DENIED.
 
 ## 10.6 External tooling verdicts (researched 2026-07-11, cited brief on file)
 
