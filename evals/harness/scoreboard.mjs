@@ -9,6 +9,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execSync } from "node:child_process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const EVALS = path.resolve(__dirname, "..");
@@ -19,6 +20,19 @@ const fnl = read("functional.json");
 const plugin = read("plugin.json");
 const roles = read("roles.json");
 const meta = read("harness-meta.json");
+
+// Session-layer results (EVAL-RUBRIC §6): recorded manually by an interactive Code
+// session. Missing or stale (recorded against a different HEAD) = BLOCKED, never PASS.
+const sl = read("session-layer.json");
+let headCommit = "";
+try { headCommit = execSync("git rev-parse HEAD", { cwd: path.resolve(EVALS, ".."), encoding: "utf8" }).trim(); } catch { /* scoreboard still renders without git */ }
+const slFresh = !!(sl && Array.isArray(sl.cases) && sl.headCommit && headCommit &&
+  (headCommit.startsWith(sl.headCommit) || sl.headCommit.startsWith(headCommit)));
+const slRows = slFresh
+  ? sl.cases.map((c) => ({ id: c.id, title: `session-layer: ${c.title || c.id}`, status: c.status,
+      detail: `${sl.runner || "?"} @ ${sl.headCommit.slice(0, 7)}${c.evidence ? " — " + String(c.evidence).slice(0, 80) : ""}` }))
+  : [{ id: "SL-1..4", title: "session-layer run (plugin install · 8 skill invocations · D9 gate · skill-forge)",
+      status: "BLOCKED", detail: sl ? `recorded against ${sl.headCommit?.slice(0, 7) || "?"} ≠ HEAD ${headCommit.slice(0, 7)} — stale, rerun` : "no results/session-layer.json yet — needs an interactive Code session (EVAL-RUBRIC §6)" }];
 
 const fcases = fnl?.cases ?? [];
 const byMs = (ms) => fcases.filter((c) => c.milestone === ms);
@@ -50,7 +64,11 @@ const M3 = {
     ...(roles ? [{ id: "LIBRARY-232", title: "bundled role library conforms (contract gate)",
       status: roles.scope.library.fail === 0 ? "PASS" : "FAIL",
       detail: `${roles.scope.library.pass + roles.scope.library.warn}/${roles.scope.library.total} usable, ${roles.scope.library.fail} broken, ${roles.scope.library.warn} tidy-ups` }] : []),
+    ...slRows,
   ],
+  // Architect's M3 acceptance stands REJECTED until the session-layer run lands —
+  // file-contract green alone must not read as "M3 accepted" (EVAL-RUBRIC §6).
+  cap: slFresh ? null : "🟡 FILE-CONTRACT PASS — acceptance pending session-layer run (EVAL-RUBRIC §6)",
 };
 const M4 = {
   name: "M4 — Dashboard (auto-regen, self-contained HTML)",
@@ -61,7 +79,8 @@ const M4 = {
 function scoreblock(m) {
   const rows = [...m.functional.map((c) => ({ id: c.id, title: c.title, status: c.status, detail: c.detail })), ...m.extra];
   const t = tally(rows);
-  const verdict = t.fail > 0 ? "🔴 FAIL" : t.blocked > 0 ? `🟢 PASS (${t.blocked} not-yet-testable)` : "🟢 PASS";
+  const verdict = t.fail > 0 ? "🔴 FAIL"
+    : (m.cap || (t.blocked > 0 ? `🟢 PASS (${t.blocked} not-yet-testable)` : "🟢 PASS"));
   const icon = (s) => ({ PASS: "✅", FAIL: "❌", BLOCKED: "⏳" }[s] || s);
   const lines = rows.map((r) => `| ${r.id} | ${r.title} | ${icon(r.status)} ${r.status} | ${r.detail || "—"} |`);
   return { t, verdict, md: `### ${m.name}

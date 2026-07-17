@@ -168,8 +168,42 @@ Olga/Cody Banks/Excelcius act on signal. Per incoming flag:
 5. **Record:** ranked backlog kept in this file's companion `evals/ADJUDICATION-LOG.md`
    (created on first real flag). Format: `- [P#] <one-line> · root-cause · owner · status`.
 
-**Status this turn:** Wilbet has posted no flags yet (STATE "awaiting first turn", no
-WATCHTOWER-LEDGER on disk). Nothing to adjudicate; protocol is armed for the first batch.
+**Status:** live — ranked backlog in `evals/ADJUDICATION-LOG.md` (Round 1: Jul 17 early AM;
+Round 2: Jul 17 ~08:30Z, watchtower FLAGS + M3-acceptance reconciliation).
+
+---
+
+## 6. Session-layer eval tier (SL) — scoring what the stdio harness cannot see
+
+**Why this tier exists (Architect finding, Jul 17 04:05):** M3 ships *skills* — natural-language
+instructions executed by an interactive Claude Code session. A stdio-MCP harness can prove the
+shipped files are structurally correct (M3-01…07) and that the *tools* skills call behave
+(EVAL-01…15), but it is **architecturally incapable** of observing whether Claude Code loads a
+skill, fires it on its trigger phrase, or honors the D9 settings write. Those are session-layer
+behaviors. This tier defines them as first-class evals so "M3 accepted" is a measured claim.
+
+**Protocol:** an interactive Claude Code session (any fleet member on an interactive surface;
+Cody Banks has claimed the first run) executes the SL cases in a scratch project and records a
+structured result in `evals/results/session-layer.json`:
+`{ runner, surface, headCommit, ranAt, cases: [{ id, status: PASS|FAIL|BLOCKED, evidence }] }`
+— `evidence` is the literal observed output (one line per assertion). My harness validates the
+JSON shape, folds it into the scoreboard, and treats a missing/stale file (`headCommit` ≠
+current HEAD at scoring time) as BLOCKED, never PASS. Manual-run honesty rule: no SL case may
+be marked PASS without pasted evidence.
+
+| ID | Realizes | Pass criteria (all must hold) |
+|---|---|---|
+| **SL-1** | M3 acceptance C1 | `/plugin marketplace add <repo>` then `/plugin install agent-army@agent-army-marketplace` both succeed; the plugin appears in the installed-plugin list; the 8 `team-*` skills are discoverable in the session. |
+| **SL-2** | M3 acceptance C2 | Each of the 8 skills fires on a natural trigger phrase (not the literal `/name`): the session demonstrably loads that SKILL.md (skill-invocation acknowledged) and follows its instructions. Score per-skill, 8/8 required; partial = FAIL with the misses listed. |
+| **SL-3** | M3 acceptance C3 + EVAL-13 (D9) | After invoking `team-init` in a scratch project: (a) `.claude/settings.json` exists with the scoped allowlist — `_team/**` + `.claude/agents/**` writes, read-only shell; (b) **negative half:** a `git push`, network call, and `rm` attempt each still prompt (stay gated). Both halves required. |
+| **SL-4** | EVAL-11 (skill-forge) | Invoking `team-skill-forge` for a net-new task produces a SKILL.md that passes the M3-03 contract gate (name==dir, ≤64 lc-hyphen name, description ≤1024, body <500 lines) — verifiable by running `run-plugin-evals.mjs` logic against the generated file. |
+| **SL-5** | M3/M4 doc-truth | No skill prose contradicts the live tool surface (e.g., no "does not exist yet" for tools that exist). Static half already gated by M3-06; the SL half confirms the *session* acts on the current claims. |
+| **SL-6** | DoD-8 surface matrix | SL-1…5 outcomes recorded per surface (Code CLI / desktop app / Cowork) in the M5 verification matrix. Deferred to M5; listed here so the matrix has a defined content contract. |
+
+**Scoring integration:** SL-1…4 unblock and score EVAL-11/EVAL-13 in Axis 1; SL-5/6 feed
+Axis 3. Until `session-layer.json` exists, the scoreboard's M3 verdict stays capped at
+**"file-contract PASS · acceptance pending session-layer run"** — a green M3 row without SL
+evidence would overclaim against the Architect's standing REJECTED verdict.
 
 ---
 

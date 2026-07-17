@@ -25,14 +25,16 @@ import { tmpdir } from "node:os";
 import * as path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createRequire } from "node:module";
+import { execFileSync } from "node:child_process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SERVER_DIR = path.resolve(__dirname, "..", "..", "server");
 const SERVER_ENTRY = path.join(SERVER_DIR, "dist", "index.js");
 const RESULTS_MD = path.resolve(__dirname, "..", "RESULTS.md");
-// Tools that MUST exist at the current milestone (M1 8 + M2 5). A `requires`
-// tool in this set that goes missing is a REGRESSION → FAIL, not BLOCKED —
-// BLOCKED is reserved for genuinely-unbuilt future tools (M3/M4).
+// Tools that MUST exist at the current milestone (M1 8 + M2 5 + M4 1). A
+// `requires` tool in this set that goes missing is a REGRESSION → FAIL, not
+// BLOCKED — BLOCKED is reserved for dependencies this harness genuinely cannot
+// observe from the stdio MCP surface.
 const EXPECTED_TOOLS = new Set([
   "team_init", "team_status", "agent_create", "agent_delete", "agent_list",
   "agent_assign_role", "role_list", "role_get",
