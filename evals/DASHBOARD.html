@@ -48,7 +48,7 @@
     <h1 class="name">Agent Army &mdash; Eval Report Card</h1>
     <div class="big">🟡 NEEDS A LOOK</div>
     <div class="plain">Nothing is broken, but some things need tidying up or can't be tested yet.</div>
-    <div class="meta">Last checked: 2026-07-17 08:53 UTC &nbsp;·&nbsp; 0 broken &nbsp;·&nbsp; 113 need tidying &nbsp;·&nbsp; 2 can't test yet</div>
+    <div class="meta">Last checked: 2026-07-17 08:56 UTC &nbsp;·&nbsp; 0 broken &nbsp;·&nbsp; 0 need tidying &nbsp;·&nbsp; 2 can't test yet</div>
   </header>
 
   <div class="legend">
@@ -182,13 +182,13 @@
     <h2>2 &middot; Are the 242 "job description" files clean?</h2>
     <p class="lede">Agent Army ships a library of 242 ready-made worker profiles (a "debugger", a "writer", and so on). Each is a text file with a name and a job description. This checks every one follows the rules: has a proper name, a real description, actual instructions, and &mdash; importantly &mdash; contains no passwords or secret keys.</p>
     <div class="tiles">
-      <div class="tile ok"><b>129</b><span>fully clean</span></div>
-      <div class="tile warn"><b>113</b><span>usable, need tidying</span></div>
+      <div class="tile ok"><b>242</b><span>fully clean</span></div>
+      <div class="tile ok"><b>0</b><span>usable, need tidying</span></div>
       <div class="tile ok"><b>0</b><span>must be fixed</span></div>
     </div>
     <p class='good'>✅ No profile is broken.</p>
     <h3>By category</h3>
-    <table><thead><tr><th>Category</th><th>Total</th><th>Clean</th><th>Tidy-ups</th><th>Broken</th></tr></thead><tbody><tr class="lv-WARN"><td>08-business-product</td><td>30</td><td>11</td><td>19</td><td>0</td></tr><tr class="lv-WARN"><td>02-language-specialists</td><td>41</td><td>27</td><td>14</td><td>0</td></tr><tr class="lv-WARN"><td>04-quality-security</td><td>25</td><td>12</td><td>13</td><td>0</td></tr><tr class="lv-WARN"><td>03-infrastructure</td><td>19</td><td>8</td><td>11</td><td>0</td></tr><tr class="lv-WARN"><td>06-developer-experience</td><td>28</td><td>17</td><td>11</td><td>0</td></tr><tr class="lv-WARN"><td>05-data-ai</td><td>15</td><td>6</td><td>9</td><td>0</td></tr><tr class="lv-WARN"><td>super-agents</td><td>27</td><td>18</td><td>9</td><td>0</td></tr><tr class="lv-WARN"><td>01-core-development</td><td>16</td><td>8</td><td>8</td><td>0</td></tr><tr class="lv-WARN"><td>07-specialized-domains</td><td>19</td><td>11</td><td>8</td><td>0</td></tr><tr class="lv-WARN"><td>(root)</td><td>10</td><td>3</td><td>7</td><td>0</td></tr><tr class="lv-WARN"><td>09-research-analysis</td><td>12</td><td>8</td><td>4</td><td>0</td></tr></tbody></table>
+    <table><thead><tr><th>Category</th><th>Total</th><th>Clean</th><th>Tidy-ups</th><th>Broken</th></tr></thead><tbody><tr class="lv-PASS"><td>01-core-development</td><td>16</td><td>16</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>02-language-specialists</td><td>41</td><td>41</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>03-infrastructure</td><td>19</td><td>19</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>04-quality-security</td><td>25</td><td>25</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>05-data-ai</td><td>15</td><td>15</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>06-developer-experience</td><td>28</td><td>28</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>07-specialized-domains</td><td>19</td><td>19</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>08-business-product</td><td>30</td><td>30</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>09-research-analysis</td><td>12</td><td>12</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>super-agents</td><td>27</td><td>27</td><td>0</td><td>0</td></tr><tr class="lv-PASS"><td>(root)</td><td>10</td><td>10</td><td>0</td><td>0</td></tr></tbody></table>
     <p class="foot">"Need tidying" is usually a missing tool-list or model note &mdash; the profile still works, it's just not fully spelled out. Static contract gate only (frontmatter/name/description/body/no-secrets). Behavioral per-role evals (does the role DO its job?) are a future cost-disclosed tier requiring model dispatch.</p>
   </section>
 

@@ -60,9 +60,23 @@ function parseFrontmatter(text) {
   const raw = text.slice(3, end).trim();
   const body = text.slice(end + 4).trim();
   const fm = {};
-  for (const line of raw.split("\n")) {
-    const m = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
-    if (m) fm[m[1].toLowerCase()] = m[2].replace(/^["']|["']$/g, "").trim();
+  // Handles YAML block scalars (key: >- / > / |) by folding the indented
+  // continuation lines into the value. The old line-regex read only the marker
+  // char as the value — 6 rich multi-line descriptions scored as "<20 chars"
+  // (false WARN, caught 2026-07-17). Not a YAML engine; enough for role files.
+  const lines = raw.split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+    if (!m) continue;
+    let val = m[2].trim();
+    if (/^[>|][+-]?$/.test(val)) {
+      const parts = [];
+      while (i + 1 < lines.length && (/^\s+\S/.test(lines[i + 1]) || lines[i + 1].trim() === "")) {
+        parts.push(lines[++i].trim());
+      }
+      val = parts.join(" ").trim();
+    }
+    fm[m[1].toLowerCase()] = val.replace(/^["']|["']$/g, "").trim();
   }
   return { fm, body };
 }
@@ -91,9 +105,17 @@ function evalRole(file, categoryRoot) {
       if (fm.description.length < 20) warn("'description' < 20 chars (too thin to route on)");
       if (fm.description.length > 1024) fail("'description' > 1024 chars (agentskills.io limit)");
     }
-    if (!fm.model) warn("no 'model' declared (inherits session model)");
+    // Omitting 'model'/'tools' is the NATIVE SUBAGENT DEFAULT (inherit), not a
+    // defect: the library is 232 upstream-verbatim templates whose provenance we
+    // preserve, and PLAN §9.6 tiering assigns models at deploy time — a pinned
+    // model in a role file would fight the tiering policy. Downgraded WARN→INFO
+    // (adjudicated 2026-07-17; was 100+8 warns). Whether the CURATED 10 should
+    // pin minimal tool sets is an architecture call — routed to the Architect
+    // (BOARD 2026-07-17). INFO is reported in counts, never in warn lists.
+    const info = (r) => reasons.push("INFO: " + r);
+    if (!fm.model) info("no 'model' declared (inherits session model — native default)");
     else if (!KNOWN_MODELS.has(fm.model.toLowerCase())) warn(`unknown model '${fm.model}'`);
-    if (!fm.tools) warn("no 'tools' declared (inherits all tools — widen blast radius)");
+    if (!fm.tools) info("no 'tools' declared (inherits session tools — native default)");
   }
   if (!body || body.length < 200) fail(`body too short (${body.length} chars) — no real instructions`);
   for (const [re, label] of SECRET_PATTERNS)
