@@ -33,10 +33,12 @@ the accepted hygiene fixes. It never touches another agent's actual work product
      `last_manager_tick`.
 4. Log the tick itself: `progress_log(actor: "agent-manager", event: "manager_tick", outcome:
    "<top finding, one line>")`.
-5. **Dashboard refresh — known gap, be honest about it.** The agent-manager's operating loop
-   calls a `dashboard_refresh` tool; that tool does not exist yet (it ships in M4). Until M4
-   lands, skip this step and say so plainly rather than claiming the dashboard was refreshed —
-   `_team/dashboard.html` stays the static seed page from `team-init` in the meantime.
+5. **Dashboard refresh.** Call **`dashboard_refresh`** as the last step. In practice it's
+   usually a no-op by the time you reach it — every state-mutating tool this skill calls
+   (`state_write`, `progress_log`, `agent_create`/`agent_delete`/`agent_assign_role` via other
+   skills) already regenerates `_team/dashboard.html` internally (DoD 7: reflects state within
+   one tool-call of any mutation). Call it explicitly anyway so the tick report can confirm the
+   dashboard is current, and as a safety net if state was ever hand-edited outside the tools.
 
 ## Hard rules (carried from `server/roles/agent-manager.md`)
 

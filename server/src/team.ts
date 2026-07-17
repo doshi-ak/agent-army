@@ -30,6 +30,7 @@ import {
   initialRolesMd,
   initialStateMd,
 } from "./state/writers.js";
+import { refreshDashboard } from "./dashboard/render.js";
 // team_status parses STATE.md/ROLES.md into structured fields instead of
 // returning raw markdown (M2 handoff contract) — the one sanctioned seam
 // where this M1-owned file reads M2's schema module.
@@ -60,23 +61,6 @@ ${CLAUDE_MD_END}
 `;
 }
 
-/** Minimal self-contained dashboard placeholder; M4 replaces this wholesale. */
-function dashboardSeed(projectName: string): string {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>${projectName} — team dashboard</title>
-<style>body{font-family:-apple-system,system-ui,sans-serif;max-width:640px;margin:4rem auto;padding:0 1rem;color:#222}code{background:#f2f2f2;padding:2px 5px;border-radius:4px}</style>
-</head>
-<body>
-<h1>${projectName} — team dashboard</h1>
-<p>Dashboard seed (M1). The live auto-regenerating dashboard ships in M4.</p>
-<p>Until then: run the <code>team_status</code> tool, or read <code>_team/STATE.md</code> and <code>_team/PROGRESS.md</code> directly.</p>
-</body>
-</html>
-`;
-}
 
 /**
  * Skill-forge nudge for net-new environments (DoD 5), conformant to the
@@ -149,7 +133,7 @@ Creates:
   - .claude/agents/ (agent definitions live here)
   - _team/STATE.md, _team/PROGRESS.md, _team/ROLES.md (state files, PLAN schemas)
   - _team/archive/ (retired agents land here — nothing is hard-deleted)
-  - _team/dashboard.html (seed; the live dashboard ships in M4)
+  - _team/dashboard.html (self-contained, auto-regenerated on every state-mutating tool call)
   - .mcp.json entry registering this server via node + absolute repo path (merged non-destructively if the file exists)
   - CLAUDE.md routing block (marker-delimited, appended once)
 
@@ -217,11 +201,6 @@ Example:
           ["_team/STATE.md", stateFile(root), () => initialStateMd(projectName)],
           ["_team/PROGRESS.md", progressFile(root), () => initialProgressMd()],
           ["_team/ROLES.md", rolesFile(root), () => initialRolesMd()],
-          [
-            "_team/dashboard.html",
-            path.join(teamDir(root), "dashboard.html"),
-            () => dashboardSeed(projectName),
-          ],
         ];
         for (const [rel, file, render] of files) {
           if (fs.existsSync(file)) {
@@ -237,6 +216,12 @@ Example:
         track(`.mcp.json (${mcpResult})`, mcpResult !== "skipped");
         const claudeMdResult = ensureClaudeMdBlock(root);
         track(`CLAUDE.md routing block (${claudeMdResult})`, claudeMdResult !== "skipped");
+
+        // Dashboard is a DERIVED artifact, not source-of-truth state — unlike
+        // STATE/PROGRESS/ROLES it is regenerated every call (DoD 7), not
+        // skip-if-exists. M4: server/src/dashboard/render.ts.
+        refreshDashboard(root, Date.now());
+        created.push("_team/dashboard.html (regenerated)");
 
         const data: Record<string, unknown> = {
           projectDir: root,

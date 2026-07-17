@@ -29,6 +29,7 @@ import {
 } from "./shared.js";
 import { loadRoleTemplate, type RoleTemplate } from "./roles.js";
 import { appendProgress, appendRoleRegistryRow } from "./state/writers.js";
+import { refreshDashboard } from "./dashboard/render.js";
 
 const ASSIGNMENT_HEADER = "## Current assignment";
 
@@ -161,6 +162,7 @@ Example:
             `server/roles/${template.role}.md (${template.provenance})`,
             `${nowIso()}: created`,
           );
+        refreshDashboard(root, Date.now());
         return ok(`Agent '${name}' created with role '${template.role}'.`, {
           name,
           role: template.role,
@@ -218,6 +220,7 @@ Example:
         const reason = args.reason ?? "retired via agent_delete";
         const archivedTo = archiveAgentFile(root, name, reason);
         const logged = appendProgress(root, name, "agent_delete", reason);
+        refreshDashboard(root, Date.now());
         return ok(`Agent '${name}' archived (never hard-deleted).`, {
           name,
           archivedTo,
@@ -376,6 +379,7 @@ Example:
             `server/roles/${template.role}.md (${template.provenance})`,
             `${nowIso()}: reassigned from ${previousRole}`,
           );
+        refreshDashboard(root, Date.now());
         return ok(`Agent '${name}' re-roled: ${previousRole} -> ${template.role}.`, {
           name,
           previousRole,

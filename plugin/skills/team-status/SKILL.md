@@ -17,8 +17,9 @@ almost anything else in a staffed project.
 3. Summarize for the user in plain language: who's on the team and their status, what's
    actively claimed and by whom (flag anything close to or past its ETA yourself, even before
    `manager_tick` runs), and any open blockers.
-4. If `_team/dashboard.html` exists, mention it as a visual alternative — note that until M4
-   ships, it's a static seed page, not a live-refreshing dashboard.
+4. Mention `_team/dashboard.html` as a visual, self-contained alternative — it auto-regenerates
+   on every state-mutating tool call (DoD 7), so it's always current; no separate refresh step
+   needed unless state was hand-edited outside the tools.
 
 ## Gotchas
 

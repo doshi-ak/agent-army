@@ -55,7 +55,7 @@ try {
   console.log("End-to-end scratch project (real stdio server):");
 
   let tools;
-  await test("tools/list exposes the full M1 (8) + M2 (5) = 13 tool surface", async () => {
+  await test("tools/list exposes the full M1 (8) + M2 (5) + M4 (1) = 14 tool surface", async () => {
     const res = await client.listTools();
     tools = res.tools.map((t) => t.name).sort();
     const expected = [
@@ -63,6 +63,7 @@ try {
       "agent_create",
       "agent_delete",
       "agent_list",
+      "dashboard_refresh",
       "manager_tick",
       "progress_log",
       "role_get",

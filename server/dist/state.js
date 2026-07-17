@@ -12,6 +12,7 @@ import * as path from "node:path";
 import { ok, guarded, ToolError, resolveProjectDir, requireHarness, stateFile, progressFile, rolesFile, agentsDir, nowIso, } from "./shared.js";
 import { parseState, parseProgress, parseRoles, renderStateMd, computeManagerTick, } from "./state/schema.js";
 import { appendProgress } from "./state/writers.js";
+import { refreshDashboard } from "./dashboard/render.js";
 const projectDirArg = z
     .string()
     .optional()
@@ -52,6 +53,7 @@ Example: log a claim before starting work, and a done/blocked entry after.`,
         appendProgress(root, args.actor, args.event, args.outcome);
         const entries = parseProgress(fs.readFileSync(progressFile(root), "utf8"));
         const entry = `- [${nowIso()}] ${args.actor} — ${args.event}: ${args.outcome}`;
+        refreshDashboard(root, Date.now());
         return ok(`Logged to PROGRESS.md (${entries.length} entries total).`, {
             projectDir: root,
             entry,
@@ -263,6 +265,7 @@ Example: log a claim before starting work, and a done/blocked entry after.`,
             }
         }
         fs.writeFileSync(stateFile(root), renderStateMd(doc), "utf8");
+        refreshDashboard(root, Date.now());
         return ok(`state_write(${args.op}) applied to STATE.md.`, {
             projectDir: root,
             op: args.op,
