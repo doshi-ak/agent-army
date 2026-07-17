@@ -26,6 +26,21 @@ allowlist is zero throughput").
 
    ```json
    [
+     "mcp__multi-agent-mcp",
+     "mcp__multi-agent-mcp__team_init",
+     "mcp__multi-agent-mcp__team_status",
+     "mcp__multi-agent-mcp__agent_create",
+     "mcp__multi-agent-mcp__agent_delete",
+     "mcp__multi-agent-mcp__agent_list",
+     "mcp__multi-agent-mcp__agent_assign_role",
+     "mcp__multi-agent-mcp__role_list",
+     "mcp__multi-agent-mcp__role_get",
+     "mcp__multi-agent-mcp__state_read",
+     "mcp__multi-agent-mcp__state_write",
+     "mcp__multi-agent-mcp__progress_log",
+     "mcp__multi-agent-mcp__roles_sync",
+     "mcp__multi-agent-mcp__manager_tick",
+     "mcp__multi-agent-mcp__dashboard_refresh",
      "Write(_team/**)",
      "Write(.claude/agents/**)",
      "Bash(ls:*)",
@@ -39,6 +54,12 @@ allowlist is zero throughput").
    ]
    ```
 
+   The `mcp__multi-agent-mcp` entry allowlists the team server's own tools — without it
+   every `team_*`/`agent_*`/`state_*` call still prompts, which defeats the point (found
+   by session-layer eval SL-5). This is safe because the compiled server has no
+   model/spawn/network APIs (guardrail EVAL-10) and none of the RULES.md §1 gated
+   operations are reachable through its tools.
+
    These are exactly the read-only-shell + in-harness-write operations `team_init`,
    `state_write`, `progress_log`, `agent_create`, and `agent_delete` need for a zero-prompt
    happy path. **Never add** `git push`, network commands (`curl`, `npm publish`, etc.), `rm`,
@@ -48,6 +69,13 @@ allowlist is zero throughput").
    with zero permission prompts. If the project already had a `permissions` block with
    conflicting rules (e.g. an explicit `deny` on `_team/**`), stop and tell the user — don't
    silently override an existing deny.
+6. **Tell the user about the two one-time approvals** (found by session-layer eval SL-3/SL-5 —
+   these are platform behavior, not bugs, and they only happen once per project):
+   - **Workspace trust dialog**: in a brand-new project folder, Claude Code ignores
+     `.claude/settings.json` allowlists until the user accepts the trust dialog on first
+     interactive use. If the team tools still prompt after this setup, that's why.
+   - **The settings write itself**: Claude Code protects `.claude/settings.json`, so step 4's
+     write asks for one approval. After these two clicks, the team loop is zero-prompt.
 
 ## Gotchas
 

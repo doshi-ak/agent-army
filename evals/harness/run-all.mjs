@@ -36,10 +36,30 @@ if (!fs.existsSync(SERVER_DIST)) {
   process.exit(2);
 }
 
-// Clear stale results so a suite that CRASHES before writing its JSON cannot
-// leave last run's file behind and let the aggregator report a false GREEN.
+// Single-writer lock: the */30 cron and manual runs race otherwise — proven
+// 2026-07-17 08:12Z (roles suite crashed mid-run → INVALID verdict; adjudication
+// B5). mkdir is atomic; a lock older than 10 min is a dead run and is stolen.
+const LOCK = path.resolve(here, "..", "results.lock");
+try {
+  fs.mkdirSync(LOCK);
+} catch {
+  const age = Date.now() - (fs.statSync(LOCK, { throwIfNoEntry: false })?.mtimeMs ?? 0);
+  if (age < 10 * 60 * 1000) {
+    console.error(`✗ another eval run holds ${LOCK} (${Math.round(age / 1000)}s old) — skipping to avoid clobbering its results. Re-run when it finishes.`);
+    process.exit(3);
+  }
+  fs.rmSync(LOCK, { recursive: true, force: true });
+  fs.mkdirSync(LOCK);
+}
+process.on("exit", () => { try { fs.rmSync(LOCK, { recursive: true, force: true }); } catch {} });
+
+// Clear stale SUITE OUTPUTS so a suite that CRASHES before writing its JSON
+// cannot leave last run's file behind and let the aggregator report a false
+// GREEN. Only files the suites themselves write are cleared — manually recorded
+// evidence (session-layer.json, EVAL-RUBRIC §6) must SURVIVE this wipe.
 const RES0 = path.resolve(here, "..", "results");
-fs.rmSync(RES0, { recursive: true, force: true });
+for (const f of ["functional.json", "roles.json", "plugin.json", "harness-meta.json"])
+  fs.rmSync(path.join(RES0, f), { force: true });
 const runStartMs = Date.now();
 
 const stageError = {};
@@ -70,13 +90,18 @@ const suiteCrashed = functionalCrashed || rolesCrashed;
 const harnessBroken = suiteCrashed || !fresh(meta) || meta.fail > 0 || stageError["run-meta-evals.mjs"];
 const engineFindings = (fnl ? fnl.axis1.fail + fnl.axis2.guardrailBreaches : 0);
 const libraryFindings = (roles ? roles.scope.combined.fail : 0);
-const mustFix = engineFindings + libraryFindings;
+// Plugin + session-layer FAILs are product findings too — a top-line GREEN that
+// hides a red SL row overclaims exactly like the M3 scoreboard used to.
+const plugin = readJson("plugin.json"), sl = readJson("session-layer.json");
+const pluginFindings = (plugin?.checks ?? []).filter((c) => c.status === "FAIL").length;
+const slFindings = (sl?.cases ?? []).filter((c) => c.status === "FAIL").length;
+const mustFix = engineFindings + libraryFindings + pluginFindings + slFindings;
 if (suiteCrashed) console.error(`\n⚠️  A suite crashed before writing fresh results (functional=${functionalCrashed}, roles=${rolesCrashed}) — results are INVALID, not green.`);
 
 console.log(`\n${"═".repeat(64)}`);
 console.log(`HARNESS SELF-TEST : ${harnessBroken ? "❌ BROKEN — do not trust these results" : `✅ VALIDATED (${meta.pass}/${meta.total} meta-evals pass)`}`);
-console.log(`PRODUCT FINDINGS  : ${mustFix} must-fix  (engine ${engineFindings} · library ${libraryFindings})`);
-console.log(`GATE VERDICT      : ${harnessBroken ? "INVALID" : mustFix === 0 ? "🟢 GREEN — nothing blocking" : engineFindings ? "🔴 RED — engine/guardrail defect" : "🟠 ORANGE — engine OK, library files need fixing"}`);
+console.log(`PRODUCT FINDINGS  : ${mustFix} must-fix  (engine ${engineFindings} · library ${libraryFindings} · plugin ${pluginFindings} · session-layer ${slFindings})`);
+console.log(`GATE VERDICT      : ${harnessBroken ? "INVALID" : mustFix === 0 ? "🟢 GREEN — nothing blocking" : engineFindings ? "🔴 RED — engine/guardrail defect" : "🟠 ORANGE — engine OK, non-engine findings need fixing"}`);
 console.log(`REPORT CARD       : evals/DASHBOARD.html`);
 // Exit non-zero if the harness is broken OR the gate found must-fix defects
 // (the gate blocking on real defects is correct behavior, not a malfunction).

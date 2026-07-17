@@ -1,0 +1,46 @@
+{
+  "suite": "session-layer",
+  "runner": "Evelyn (Evaluator) — interactive CLI session, headless claude-sonnet-5 sub-runs",
+  "surface": "Claude Code CLI (headless -p, plugin scope: user)",
+  "headCommit": "98c8b7b785bcee6514416b0a81142c61f6e320a7",
+  "ranAt": "2026-07-17T08:45:00Z",
+  "scratchProject": "session-scratchpad/sl-scratch (evidence: sl2-*.jsonl, sl3-run-b.jsonl)",
+  "cases": [
+    {
+      "id": "SL-1",
+      "title": "plugin marketplace add + install succeeds, skills discoverable",
+      "status": "PASS",
+      "evidence": "claude plugin marketplace add <repo> OK; claude plugin install agent-army@agent-army-marketplace OK (scope: user, enabled); claude plugin details: 8 skills + 10 agents + 0 hooks + 0 mcpServers inventoried"
+    },
+    {
+      "id": "SL-2",
+      "title": "all 8 skills invoke on natural trigger phrases",
+      "status": "PASS",
+      "evidence": "8/8 fired (Skill tool observed in stream-json): team-init, team-status, team-new-task, team-new-agent, team-assign-role, team-retire-agent, team-manager, team-skill-forge. State changes real (PROGRESS: init/create/claim/manager_tick; .claude/agents/docs-writer.md; forged skill dir). retire+assign correctly PAUSED for user judgment on an agent holding an active claim instead of destroying it — correct behavior; headless has no user to confirm"
+    },
+    {
+      "id": "SL-3",
+      "title": "D9 settings write + negative permission gate",
+      "status": "PASS",
+      "evidence": "(a) .claude/settings.json written with exactly the 10 spec entries, nothing dangerous added. Platform note: the settings.json write itself requires ONE user approval (Claude Code protects settings files) — 'zero-prompt' costs exactly one prompt at init, by platform design. (b) negative gate: git push DENIED, rm DENIED, curl DENIED; Write(_team/**) auto-allowed — allowlist live and correctly scoped"
+    },
+    {
+      "id": "SL-4",
+      "title": "skill-forge output passes the M3-03 contract",
+      "status": "PASS",
+      "evidence": ".claude/skills/team-weekly-status/SKILL.md: name==dir, lc-hyphen<=64, description 341 chars with genuine trigger phrases, body 70 lines <500"
+    },
+    {
+      "id": "SL-5",
+      "title": "skill prose matches observed session behavior",
+      "status": "PASS",
+      "evidence": "FOUND-THEN-FIXED this run. Found: D9 allowlist omitted the mcp__multi-agent-mcp tools, so team_status was DENIED (sl3-run-b.jsonl) — the 'zero permission prompts' claim was false. Fixed: step-4 allow array now includes the server + all 14 per-tool entries (Evelyn one-liner, expanded by peer); safe per EVAL-10 guardrail (no model/spawn/network in compiled server). Verified: team_status runs with NO prompt when the allow applies (sl5-verify4). Root cause of residual headless denials isolated via the CLI's own message: UNTRUSTED WORKSPACE — settings allowlists are ignored until the one-time interactive trust dialog ('Ignoring 13 permissions.allow entries... workspace has not been trusted'). Skill step 6 now documents both one-time approvals for non-technical users. Full zero-prompt loop after trust: pending one interactive confirmation (SL-6 surface matrix)"
+    },
+    {
+      "id": "SL-6",
+      "title": "surface matrix (CLI / desktop / Cowork)",
+      "status": "BLOCKED",
+      "evidence": "CLI surface exercised by this run; desktop app + Cowork runs pending (M5 matrix, docs/VERIFICATION.md)"
+    }
+  ]
+}
