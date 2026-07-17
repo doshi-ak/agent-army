@@ -17,7 +17,7 @@ boundary — never violate it, including implicitly by suggesting "I'll go run i
    `ci-cd-engineer`, `forward-deployed-engineer`, `code-reviewer`, `security-auditor`,
    `docs-writer`, `performance-engineer`). If one fits, use it directly.
 2. **Library pull**: if the catalog doesn't fit but the project has access to the wider
-   agent-army specialist library (`agents/` at the repo root — 223 curated community agents
+   agent-army specialist library (`agents/` at the repo root — 232 curated community agents
    across 9 domains), a matching template can be promoted into the project's own role catalog.
    This is a project-level decision, not something this skill does silently — surface the
    candidate template to the user, and if they confirm, add it as a new file under
