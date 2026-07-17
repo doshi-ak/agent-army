@@ -1,0 +1,13 @@
+{
+  "name": "agent-army-marketplace",
+  "owner": {
+    "name": "doshi-ak"
+  },
+  "plugins": [
+    {
+      "name": "agent-army",
+      "source": "./plugin",
+      "description": "Turn any Claude Code project into a coordinated team of autonomous agents with persistent file-based state, an agent-manager iteration loop, and a monitoring dashboard."
+    }
+  ]
+}
