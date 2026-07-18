@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "agent-army-mcp-server",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server/dist/index.js"],
+      "_note": "MCP stdio server — NO port by ratified design (PLAN transport rule / §3.8). Registered via a project's .mcp.json, not browsed. Listed for completeness; not browser-previewable."
+    },
+    {
+      "name": "eval-dashboard",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8377", "--directory", "evals"],
+      "port": 8377
+    }
+  ]
+}

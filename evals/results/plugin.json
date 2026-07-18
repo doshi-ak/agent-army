@@ -1,0 +1,59 @@
+{
+  "suite": "plugin-m3",
+  "milestone": "M3",
+  "generatedAt": "2026-07-18T05:39:58.418Z",
+  "total": 7,
+  "pass": 7,
+  "fail": 0,
+  "checks": [
+    {
+      "id": "M3-01",
+      "title": "plugin.json manifest exists and is valid JSON with a name",
+      "milestone": "M3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "M3-02",
+      "title": "all 8 required skills are present (PLAN §7)",
+      "milestone": "M3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "M3-03",
+      "title": "every SKILL.md conforms (name==dir, ≤64 lc-hyphen, description ≤1024, body <500 lines)",
+      "milestone": "M3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "M3-04",
+      "title": "team-skill-forge skill exists and is documented (DoD 5)",
+      "milestone": "M3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "M3-05",
+      "title": "plugin bundles role/agent definitions",
+      "milestone": "M3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "M3-06",
+      "title": "skill prose library counts match agents/manifest.json",
+      "milestone": "M3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "M3-07",
+      "title": "declared license has a LICENSE file in repo or plugin root",
+      "milestone": "M3",
+      "status": "PASS",
+      "detail": ""
+    }
+  ]
+}

@@ -9,6 +9,8 @@
       "Bash(crontab -l *)",
       "Bash(launchctl print *)",
       "Bash(plutil -lint *)",
+      "Bash(git fetch origin)",
+      "Bash(git fetch origin *)",
       "mcp__multi-agent-mcp__team_status",
       "mcp__multi-agent-mcp__agent_list",
       "mcp__ccd_session_mgmt__list_sessions",

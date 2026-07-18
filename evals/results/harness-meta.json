@@ -1,0 +1,29 @@
+{
+  "suite": "harness-meta",
+  "generatedAt": "2026-07-18T05:39:41.689Z",
+  "total": 4,
+  "pass": 4,
+  "fail": 0,
+  "cases": [
+    {
+      "id": "META-T1",
+      "title": "role runner detects broken/secret/bad-name roles and passes a clean one",
+      "status": "PASS"
+    },
+    {
+      "id": "META-T2",
+      "title": "published result files are internally self-consistent",
+      "status": "PASS"
+    },
+    {
+      "id": "META-T3",
+      "title": "library conformance baseline holds — no NEW contract failures",
+      "status": "PASS"
+    },
+    {
+      "id": "META-T4",
+      "title": "dashboard rolls up to RED when any suite reports a failure",
+      "status": "PASS"
+    }
+  ]
+}
