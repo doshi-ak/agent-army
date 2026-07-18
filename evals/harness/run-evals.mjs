@@ -85,7 +85,9 @@ async function freshProject() {
     dir,
     client,
     async call(name, args = {}) {
-      const res = await client.callTool({ name, arguments: args });
+      // D12: 120s (2× the SDK default) absorbs scheduled-load spikes that tripped the 60s
+      // default and crashed the functional suite (15:04Z transient). A real hang still fails at 120s.
+      const res = await client.callTool({ name, arguments: args }, undefined, { timeout: 120000 });
       if (res.isError) throw new Error(`tool ${name} error: ${JSON.stringify(res.content)}`);
       return res.structuredContent;
     },
@@ -347,6 +349,21 @@ const CASES = [
 const results = [];
 const notes = [];
 const available = await toolset();
+
+// D12: if a dangling async rejection (e.g. a concurrent-write timeout in EVAL-09) ever escapes the
+// per-case guard, the process must NOT die leaving functional.json unwritten — that produced a bare
+// ENOENT for META-T2 (15:04Z). Write a crash-marked result so the run still scores INVALID *with
+// attribution*, never a fake green. Path recomputed inline (RESULTS_DIR is defined later, line ~451).
+process.on("unhandledRejection", (err) => {
+  try {
+    fs.writeFileSync(
+      path.resolve(__dirname, "..", "results", "functional.json"),
+      JSON.stringify({ suite: "functional", crashed: true, error: String(err?.message ?? err), stamp: new Date().toISOString() }, null, 2),
+    );
+  } catch { /* best-effort: a crashed run is INVALID regardless */ }
+  console.error(`✗ functional suite crashed (unhandled rejection): ${err?.message ?? err}`);
+  process.exit(1);
+});
 
 for (const c of CASES) {
   const missing = (c.requires || []).filter((t) => !available.has(t));

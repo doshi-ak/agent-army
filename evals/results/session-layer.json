@@ -1,9 +1,9 @@
 {
   "suite": "session-layer",
-  "runner": "Evelyn (Evaluator) — interactive CLI session, headless claude-sonnet-5 sub-runs",
+  "runner": "Evelyn (Evaluator) \u2014 interactive CLI session, headless claude-sonnet-5 sub-runs",
   "surface": "Claude Code CLI (headless -p, plugin scope: user)",
-  "headCommit": "98c8b7b785bcee6514416b0a81142c61f6e320a7",
-  "ranAt": "2026-07-17T08:45:00Z",
+  "headCommit": "09466c0f9a38ce4723ec8fbdfde4f19e371506d0",
+  "ranAt": "2026-07-18T05:33:47Z",
   "scratchProject": "session-scratchpad/sl-scratch (evidence: sl2-*.jsonl, sl3-run-b.jsonl)",
   "cases": [
     {
@@ -16,13 +16,13 @@
       "id": "SL-2",
       "title": "all 8 skills invoke on natural trigger phrases",
       "status": "PASS",
-      "evidence": "8/8 fired (Skill tool observed in stream-json): team-init, team-status, team-new-task, team-new-agent, team-assign-role, team-retire-agent, team-manager, team-skill-forge. State changes real (PROGRESS: init/create/claim/manager_tick; .claude/agents/docs-writer.md; forged skill dir). retire+assign correctly PAUSED for user judgment on an agent holding an active claim instead of destroying it — correct behavior; headless has no user to confirm"
+      "evidence": "8/8 fired (Skill tool observed in stream-json): team-init, team-status, team-new-task, team-new-agent, team-assign-role, team-retire-agent, team-manager, team-skill-forge. State changes real (PROGRESS: init/create/claim/manager_tick; .claude/agents/docs-writer.md; forged skill dir). retire+assign correctly PAUSED for user judgment on an agent holding an active claim instead of destroying it \u2014 correct behavior; headless has no user to confirm"
     },
     {
       "id": "SL-3",
       "title": "D9 settings write + negative permission gate",
       "status": "PASS",
-      "evidence": "(a) .claude/settings.json written with exactly the 10 spec entries, nothing dangerous added. Platform note: the settings.json write itself requires ONE user approval (Claude Code protects settings files) — 'zero-prompt' costs exactly one prompt at init, by platform design. (b) negative gate: git push DENIED, rm DENIED, curl DENIED; Write(_team/**) auto-allowed — allowlist live and correctly scoped"
+      "evidence": "(a) .claude/settings.json written with exactly the 10 spec entries, nothing dangerous added. Platform note: the settings.json write itself requires ONE user approval (Claude Code protects settings files) \u2014 'zero-prompt' costs exactly one prompt at init, by platform design. (b) negative gate: git push DENIED, rm DENIED, curl DENIED; Write(_team/**) auto-allowed \u2014 allowlist live and correctly scoped"
     },
     {
       "id": "SL-4",
@@ -34,13 +34,14 @@
       "id": "SL-5",
       "title": "skill prose matches observed session behavior",
       "status": "PASS",
-      "evidence": "FOUND-THEN-FIXED this run. Found: D9 allowlist omitted the mcp__multi-agent-mcp tools, so team_status was DENIED (sl3-run-b.jsonl) — the 'zero permission prompts' claim was false. Fixed: step-4 allow array now includes the server + all 14 per-tool entries (Evelyn one-liner, expanded by peer); safe per EVAL-10 guardrail (no model/spawn/network in compiled server). Verified: team_status runs with NO prompt when the allow applies (sl5-verify4). Root cause of residual headless denials isolated via the CLI's own message: UNTRUSTED WORKSPACE — settings allowlists are ignored until the one-time interactive trust dialog ('Ignoring 13 permissions.allow entries... workspace has not been trusted'). Skill step 6 now documents both one-time approvals for non-technical users. Full zero-prompt loop after trust: pending one interactive confirmation (SL-6 surface matrix)"
+      "evidence": "FOUND-THEN-FIXED this run. Found: D9 allowlist omitted the mcp__multi-agent-mcp tools, so team_status was DENIED (sl3-run-b.jsonl) \u2014 the 'zero permission prompts' claim was false. Fixed: step-4 allow array now includes the server + all 14 per-tool entries (Evelyn one-liner, expanded by peer); safe per EVAL-10 guardrail (no model/spawn/network in compiled server). Verified: team_status runs with NO prompt when the allow applies (sl5-verify4). Root cause of residual headless denials isolated via the CLI's own message: UNTRUSTED WORKSPACE \u2014 settings allowlists are ignored until the one-time interactive trust dialog ('Ignoring 13 permissions.allow entries... workspace has not been trusted'). Skill step 6 now documents both one-time approvals for non-technical users. Full zero-prompt loop after trust: pending one interactive confirmation (SL-6 surface matrix)"
     },
     {
       "id": "SL-6",
-      "title": "surface matrix (CLI / desktop / Cowork)",
+      "title": "surface matrix (CLI / desktop / Cowork-web)",
       "status": "BLOCKED",
-      "evidence": "CLI surface exercised by this run; desktop app + Cowork runs pending (M5 matrix, docs/VERIFICATION.md)"
+      "evidence": "CLI: EXECUTED (this run's headless probes + skills/agents discoverable in a live interactive CLI session). Desktop: EXECUTED 2026-07-18 by a CCD session (0bce93d, VERIFICATION.md §4a — D1-D7 + D9-file-half PASS, findings DL-1/DL-2 routed). Web: NOT YET EXECUTED, gated on /install-github-app (Akash). Stays BLOCKED (not PASS) until all three surfaces are recorded — 2 of 3 done"
     }
-  ]
+  ],
+  "restampNote": "Original probes executed at 98c8b7b/798e4a7; re-stamped at current HEAD because plugin/** is UNCHANGED since 798e4a7 (git log 798e4a7..HEAD -- plugin/ = empty; tree hash a9b5a50191625414e4b8afe3e079c83153221937). Behavior evidence therefore current. Any future plugin/** commit re-stales this file by design."
 }
