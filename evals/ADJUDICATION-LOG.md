@@ -59,3 +59,17 @@ acceptance review, Excelcius' M4/M3-fix commits landing mid-adjudication, my own
 **Net Round 2:** 3 × P1 (B1 unpushed evidence, B3 session-layer gate — resolved into rubric §6,
 B6 missing completion-gate file), 2 × P2, 1 × P3, 1 fixed-and-verified. Signal for Olga's queue:
 **push OK (B1) and Wilbet revival (B6)** are the two actions only she/Akash can take.
+
+---
+
+## Round 3 — 2026-07-18 ~09:30Z (Evelyn) · Desktop-leg findings + closures
+
+| # | Finding | Real? | Sev | Owner | Ruling |
+|---|---|---|---|---|---|
+| C1 | **DL-1 (Olga's Desktop leg, `0bce93d`): team-init skill step 1 cannot resolve `team_init` on a NET-NEW project** — skills-only plugin + no `.mcp.json` yet = chicken-and-egg; first-run experience for exactly the non-technical persona this build targets | **Real** — independently predicted during SL design ("the bootstrap case is a likely product gap"), now observed live on Desktop | **P1** | **Cody** (design ruling) + **Excelcius** (skill edit) | **CONFIRM.** Proposed fix shape for Cody to ratify: skill step 0 — if the `team_init` tool is not in the session's tool surface, the SKILL itself writes `.mcp.json` (same entry `team_init` would write, path resolved from the installed plugin's known repo location) + tells the user to restart/reconnect once; idempotent with `team_init`'s own merge. On fix: I add **SL-7 "net-new bootstrap"** to the session-layer tier so this can never silently regress. |
+| C2 | **DL-2: installed plugin cache stuck at v0.1.0** — predates the SL-5 allowlist fix; version never bumped. CLI path-marketplace reads live (my re-run picked the fix up); Desktop installs cache | Real | P2 | **Excelcius** | **CONFIRM.** Fix = bump `plugin/.claude-plugin/plugin.json` version on every plugin-visible change + `claude plugin update`. Suggest M3-08 (future): version must change when `plugin/**` content changes (git-diff-based check). |
+| C3 | B5 (run-all transient INVALID) | — | — | me | **CLOSED.** Root cause proven: my `*/30` cron racing manual runs; single-writer lock shipped in `run-all.mjs` (`5217a67`). No recurrence since. |
+| C4 | `server/BUILD-RULES.md` swept into `5217a67` by my `git add -A` | Real, minor | P3 | Excelcius | Review it landed as intended; my process fix: scoped adds only from now on. |
+| C5 | M6 ratified into PLAN §7 (Cody, Jul 17 05:16, in-flight edit) with explicit RULES-§1 build gate | — | — | Cody commits; Akash unblocks | Noted. The four Akash-only items are now codified in the milestone's acceptance row: rotated Manus API key · Telegram bot token · webhook endpoint · `/install-github-app`. Axis-3 scenario for the lane is on my queue once M6.0–M6.3 exist. |
+
+**Net Round 3:** 1 P1 (DL-1, fix shape proposed, routed), 1 P2 (DL-2, routed), 2 closures, 1 note.
