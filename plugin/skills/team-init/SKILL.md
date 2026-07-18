@@ -11,8 +11,28 @@ allowlist is zero throughput").
 
 ## Steps
 
+0. **STEP 0 — make the server reachable BEFORE the first tool call (net-new bootstrap).**
+   The `team_init` tool lives *on* the `multi-agent-mcp` server, so on a brand-new project where
+   `.mcp.json` doesn't register that server yet, step 1 has nothing to call — a chicken-and-egg
+   the SL-7 regression guard exists to catch. Resolve it first:
+   - Read `.mcp.json` in the target project. If it already registers `multi-agent-mcp` under
+     `mcpServers`, the server is reachable — skip to step 1.
+   - If not (net-new), **write the registration yourself** so the server connects. Locate the
+     installed agent-army server entry — `server/dist/index.js` inside the cloned `agent-army`
+     repo (default `~/Developer/GitHub/agent-army/server/dist/index.js`; use the actual clone
+     path on this machine). Create/merge `.mcp.json` with **exactly** the shape the server uses,
+     so a later `team_init` call sees it as already-present (idempotent), never a conflict:
+     ```json
+     { "mcpServers": { "multi-agent-mcp": { "command": "node", "args": ["<abs path>/server/dist/index.js"] } } }
+     ```
+   - Tell the user the MCP server list must reload for the new registration to take effect
+     (reopen the project or reload MCP servers), **then** proceed to step 1. Do not call
+     `team_init` before `.mcp.json` registers the server — it will fail as an unknown tool.
+
 1. **Call the `team_init` tool** (multi-agent-mcp MCP server). Args: `projectDir` (optional,
-   defaults to cwd), `projectName` (optional, defaults to the directory name).
+   defaults to cwd), `projectName` (optional, defaults to the directory name). On net-new this
+   runs *after* STEP 0; `team_init`'s own `.mcp.json` write is then a no-op ("skipped"), which
+   is correct — STEP 0 already wrote the identical entry.
 2. **Report what happened** in plain language: which files were created vs. already present
    (`team_init` is idempotent — re-running never overwrites).
 3. **If the result includes `skillForgeNudge`** (net-new environment: no `.claude/skills/`

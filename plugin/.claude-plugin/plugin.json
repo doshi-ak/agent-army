@@ -1,7 +1,7 @@
 {
   "name": "agent-army",
   "description": "Turn any Claude Code project into a coordinated team of autonomous agents with persistent file-based state, an agent-manager iteration loop, and a monitoring dashboard. Skills-only plugin (PLAN.md §3.4) — wires the multi-agent-mcp server into a project via .mcp.json rather than bundling a server binary.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "doshi-ak"
   },
