@@ -15,9 +15,13 @@ If a rule here conflicts with PLAN.md, PLAN wins — flag it, don't improvise.*
 3. **Verify before done:** a change is not complete until `npm test` passes AND
    `node evals/harness/run-all.mjs` is green at the new HEAD. "Builds clean" is not "verified."
 
-4. **Frozen interfaces:** `server/src/state/schema.ts` exports and the five writers in `state/writers.ts`
-   are the stable M2 surface. Downstream (M3 skills, M4 dashboard) consumes the schema-parsed objects from
-   `team_status` — **never re-parse the markdown**.
+4. **Frozen interfaces:** `server/src/state/schema.ts` exports and the writers in `state/writers.ts`
+   are the stable M2 surface — the original five, plus `upsertTeamMember`/`removeTeamMember` (Team-table
+   sync) and the `withStateLock`/`atomicWriteState` safety helpers added 2026-07-18 under the disclosed
+   lane-exception + non-author verification (BOARD; cross-process race demonstrated and fixed). **Every
+   STATE.md writer MUST go through `withStateLock` + `atomicWriteState`** — direct `writeFileSync` on
+   STATE.md is the demonstrated torn-read bug. Downstream (M3 skills, M4 dashboard) consumes the
+   schema-parsed objects from `team_status` — **never re-parse the markdown**.
 
 5. **Role catalog single-source:** `server/roles/*.md` is canonical; `plugin/agents/*.md` is a build-time
    copy — re-sync with `cp server/roles/*.md plugin/agents/`, never edit either side independently.

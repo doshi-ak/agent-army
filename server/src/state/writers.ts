@@ -106,6 +106,51 @@ export function appendRoleRegistryRow(
 }
 
 /**
+ * STATE.md cross-process safety (non-author verification finding, 2026-07-18):
+ * every Claude session spawns its own server process on the same project dir,
+ * and a demonstrated two-process race lost team rows (18/20) and produced one
+ * torn read (in-place writeFileSync truncation). Two remedies, shared by every
+ * STATE.md writer (these helpers AND state.ts's state_write):
+ *  - withStateLock: mkdir-based cross-process mutex around read-modify-write
+ *    (same pattern as evals/harness/run-all.mjs; stale locks stolen after 10s).
+ *  - atomicWriteState: write temp + renameSync so readers never see a
+ *    half-written file.
+ */
+const sleepMs = (ms: number): void => {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+};
+
+export function withStateLock<T>(root: string, fn: () => T): T {
+  const lock = stateFile(root) + ".lock";
+  const deadline = Date.now() + 5000;
+  for (;;) {
+    try {
+      fs.mkdirSync(lock);
+      break;
+    } catch {
+      const age = Date.now() - (fs.statSync(lock, { throwIfNoEntry: false })?.mtimeMs ?? 0);
+      if (age > 10_000) {
+        try { fs.rmSync(lock, { recursive: true, force: true }); } catch { /* raced another stealer */ }
+        continue;
+      }
+      if (Date.now() > deadline) throw new Error(`STATE.md lock held too long: ${lock}`);
+      sleepMs(15);
+    }
+  }
+  try {
+    return fn();
+  } finally {
+    try { fs.rmSync(lock, { recursive: true, force: true }); } catch { /* best-effort */ }
+  }
+}
+
+export function atomicWriteState(file: string, data: string): void {
+  const tmp = `${file}.tmp.${process.pid}.${Math.random().toString(36).slice(2, 8)}`;
+  fs.writeFileSync(tmp, data, "utf8");
+  fs.renameSync(tmp, file);
+}
+
+/**
  * Keep STATE.md's Team table in sync with agent lifecycle events. Added
  * 2026-07-17 (Evaluator finding, B-scenario evals): agent_create/delete/
  * assign_role wrote .claude/agents/ + ROLES.md + PROGRESS.md but never STATE's
@@ -114,21 +159,25 @@ export function appendRoleRegistryRow(
  * may overrule.
  */
 export function upsertTeamMember(root: string, agent: string, role: string, status?: string): void {
-  const file = stateFile(root);
-  const doc = parseState(fs.readFileSync(file, "utf8"));
-  const existing = doc.team.find((t) => t.agent === agent);
-  if (existing) {
-    existing.role = role || existing.role;
-    if (status) existing.status = status as typeof existing.status;
-  } else {
-    doc.team.push({ agent, role, status: (status ?? "IDLE") as StateDoc["team"][number]["status"] });
-  }
-  fs.writeFileSync(file, renderStateMd(doc), "utf8");
+  withStateLock(root, () => {
+    const file = stateFile(root);
+    const doc = parseState(fs.readFileSync(file, "utf8"));
+    const existing = doc.team.find((t) => t.agent === agent);
+    if (existing) {
+      existing.role = role || existing.role;
+      if (status) existing.status = status as typeof existing.status;
+    } else {
+      doc.team.push({ agent, role, status: (status ?? "IDLE") as StateDoc["team"][number]["status"] });
+    }
+    atomicWriteState(file, renderStateMd(doc));
+  });
 }
 
 export function removeTeamMember(root: string, agent: string): void {
-  const file = stateFile(root);
-  const doc = parseState(fs.readFileSync(file, "utf8"));
-  doc.team = doc.team.filter((t) => t.agent !== agent);
-  fs.writeFileSync(file, renderStateMd(doc), "utf8");
+  withStateLock(root, () => {
+    const file = stateFile(root);
+    const doc = parseState(fs.readFileSync(file, "utf8"));
+    doc.team = doc.team.filter((t) => t.agent !== agent);
+    atomicWriteState(file, renderStateMd(doc));
+  });
 }

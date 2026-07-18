@@ -32,7 +32,7 @@ import {
   renderStateMd,
   computeManagerTick,
 } from "./state/schema.js";
-import { appendProgress } from "./state/writers.js";
+import { appendProgress, withStateLock, atomicWriteState } from "./state/writers.js";
 import { refreshDashboard } from "./dashboard/render.js";
 
 const projectDirArg = z
@@ -295,6 +295,10 @@ Example: log a claim before starting work, and a done/blocked entry after.`,
       guarded(async () => {
         const root = resolveProjectDir(args.projectDir);
         requireHarness(root);
+        // Cross-process mutex + atomic rename (2026-07-18 verification finding):
+        // concurrent sessions each run their own server process on this dir —
+        // an unlocked read-modify-write demonstrably lost updates and tore reads.
+        return withStateLock(root, () => {
         const doc = parseState(fs.readFileSync(stateFile(root), "utf8"));
 
         switch (args.op) {
@@ -344,7 +348,7 @@ Example: log a claim before starting work, and a done/blocked entry after.`,
           }
         }
 
-        fs.writeFileSync(stateFile(root), renderStateMd(doc), "utf8");
+        atomicWriteState(stateFile(root), renderStateMd(doc));
         refreshDashboard(root, Date.now());
         return ok(`state_write(${args.op}) applied to STATE.md.`, {
           projectDir: root,
@@ -353,6 +357,7 @@ Example: log a claim before starting work, and a done/blocked entry after.`,
           activeWork: doc.active_work,
           blockers: doc.blockers,
           lastManagerTick: doc.last_manager_tick,
+        });
         });
       }),
   );

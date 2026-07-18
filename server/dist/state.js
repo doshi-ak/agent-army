@@ -11,7 +11,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { ok, guarded, ToolError, resolveProjectDir, requireHarness, stateFile, progressFile, rolesFile, agentsDir, nowIso, } from "./shared.js";
 import { parseState, parseProgress, parseRoles, renderStateMd, computeManagerTick, } from "./state/schema.js";
-import { appendProgress } from "./state/writers.js";
+import { appendProgress, withStateLock, atomicWriteState } from "./state/writers.js";
 import { refreshDashboard } from "./dashboard/render.js";
 const projectDirArg = z
     .string()
@@ -214,65 +214,70 @@ Example: log a claim before starting work, and a done/blocked entry after.`,
     }, async (args) => guarded(async () => {
         const root = resolveProjectDir(args.projectDir);
         requireHarness(root);
-        const doc = parseState(fs.readFileSync(stateFile(root), "utf8"));
-        switch (args.op) {
-            case "upsert_agent": {
-                if (!args.agent || !args.status) {
-                    throw new ToolError("op 'upsert_agent' requires 'agent' and 'status'.");
+        // Cross-process mutex + atomic rename (2026-07-18 verification finding):
+        // concurrent sessions each run their own server process on this dir —
+        // an unlocked read-modify-write demonstrably lost updates and tore reads.
+        return withStateLock(root, () => {
+            const doc = parseState(fs.readFileSync(stateFile(root), "utf8"));
+            switch (args.op) {
+                case "upsert_agent": {
+                    if (!args.agent || !args.status) {
+                        throw new ToolError("op 'upsert_agent' requires 'agent' and 'status'.");
+                    }
+                    const existing = doc.team.find((t) => t.agent === args.agent);
+                    if (existing) {
+                        existing.status = args.status;
+                        if (args.role)
+                            existing.role = args.role;
+                    }
+                    else {
+                        doc.team.push({ agent: args.agent, role: args.role ?? "", status: args.status });
+                    }
+                    break;
                 }
-                const existing = doc.team.find((t) => t.agent === args.agent);
-                if (existing) {
-                    existing.status = args.status;
-                    if (args.role)
-                        existing.role = args.role;
+                case "claim": {
+                    if (!args.task || !args.owner) {
+                        throw new ToolError("op 'claim' requires 'task' and 'owner'.");
+                    }
+                    doc.active_work.push({
+                        task: args.task,
+                        owner: args.owner,
+                        claimed_at: nowIso(),
+                        eta: args.eta ?? "",
+                    });
+                    appendProgress(root, args.owner, "claim", args.task);
+                    break;
                 }
-                else {
-                    doc.team.push({ agent: args.agent, role: args.role ?? "", status: args.status });
+                case "complete": {
+                    if (!args.task)
+                        throw new ToolError("op 'complete' requires 'task'.");
+                    const before = doc.active_work.length;
+                    doc.active_work = doc.active_work.filter((w) => w.task !== args.task);
+                    if (doc.active_work.length === before) {
+                        throw new ToolError(`No active-work item matching task '${args.task}'.`);
+                    }
+                    appendProgress(root, args.owner ?? "unknown", "done", args.task);
+                    break;
                 }
-                break;
-            }
-            case "claim": {
-                if (!args.task || !args.owner) {
-                    throw new ToolError("op 'claim' requires 'task' and 'owner'.");
+                case "set_blockers": {
+                    doc.blockers = (args.blockers ?? []).map((desc) => ({ desc }));
+                    break;
                 }
-                doc.active_work.push({
-                    task: args.task,
-                    owner: args.owner,
-                    claimed_at: nowIso(),
-                    eta: args.eta ?? "",
-                });
-                appendProgress(root, args.owner, "claim", args.task);
-                break;
-            }
-            case "complete": {
-                if (!args.task)
-                    throw new ToolError("op 'complete' requires 'task'.");
-                const before = doc.active_work.length;
-                doc.active_work = doc.active_work.filter((w) => w.task !== args.task);
-                if (doc.active_work.length === before) {
-                    throw new ToolError(`No active-work item matching task '${args.task}'.`);
+                case "record_tick": {
+                    doc.last_manager_tick = nowIso();
+                    break;
                 }
-                appendProgress(root, args.owner ?? "unknown", "done", args.task);
-                break;
             }
-            case "set_blockers": {
-                doc.blockers = (args.blockers ?? []).map((desc) => ({ desc }));
-                break;
-            }
-            case "record_tick": {
-                doc.last_manager_tick = nowIso();
-                break;
-            }
-        }
-        fs.writeFileSync(stateFile(root), renderStateMd(doc), "utf8");
-        refreshDashboard(root, Date.now());
-        return ok(`state_write(${args.op}) applied to STATE.md.`, {
-            projectDir: root,
-            op: args.op,
-            team: doc.team,
-            activeWork: doc.active_work,
-            blockers: doc.blockers,
-            lastManagerTick: doc.last_manager_tick,
+            atomicWriteState(stateFile(root), renderStateMd(doc));
+            refreshDashboard(root, Date.now());
+            return ok(`state_write(${args.op}) applied to STATE.md.`, {
+                projectDir: root,
+                op: args.op,
+                team: doc.team,
+                activeWork: doc.active_work,
+                blockers: doc.blockers,
+                lastManagerTick: doc.last_manager_tick,
+            });
         });
     }));
 }

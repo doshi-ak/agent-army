@@ -19,6 +19,8 @@ export declare function initialRolesMd(): string;
 export declare function appendProgress(projectRoot: string, actor: string, event: string, outcome: string): boolean;
 /** Append a ROLES.md registry row. Best-effort, same contract as appendProgress. */
 export declare function appendRoleRegistryRow(projectRoot: string, role: string, agentFile: string, sourceTemplate: string, history: string): boolean;
+export declare function withStateLock<T>(root: string, fn: () => T): T;
+export declare function atomicWriteState(file: string, data: string): void;
 /**
  * Keep STATE.md's Team table in sync with agent lifecycle events. Added
  * 2026-07-17 (Evaluator finding, B-scenario evals): agent_create/delete/
