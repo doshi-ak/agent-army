@@ -48,7 +48,7 @@
     <h1 class="name">Agent Army &mdash; Eval Report Card</h1>
     <div class="big">🟡 NEEDS A LOOK</div>
     <div class="plain">Nothing is broken, but some things need tidying up or can't be tested yet.</div>
-    <div class="meta">Last checked: 2026-07-18 10:38 UTC &nbsp;·&nbsp; 0 broken &nbsp;·&nbsp; 0 need tidying &nbsp;·&nbsp; 4 can't test yet</div>
+    <div class="meta">Last checked: 2026-07-20 13:22 UTC &nbsp;·&nbsp; 0 broken &nbsp;·&nbsp; 0 need tidying &nbsp;·&nbsp; 3 can't test yet</div>
   </header>
 
   <div class="legend">
@@ -225,9 +225,9 @@
     <h2>4 &middot; Does it work the way a person actually uses it?</h2>
     <p class="lede">Everything above tests the machinery directly. This section tests the <b>human path</b>: installing the plugin the way you would, typing plain-English requests ("set this project up for an agent team") and confirming the right skill wakes up and does its job &mdash; plus proving the safety rails hold (pushing code, deleting files, and network calls stay behind your approval).</p>
     <div class="tiles">
-      <div class="tile ok"><b>5</b><span>passed</span></div>
+      <div class="tile ok"><b>6</b><span>passed</span></div>
       <div class="tile ok"><b>0</b><span>failed</span></div>
-      <div class="tile wait"><b>2</b><span>awaiting a surface run</span></div>
+      <div class="tile wait"><b>1</b><span>awaiting a surface run</span></div>
     </div>
     <table><thead><tr><th>ID</th><th>What it checks</th><th>Result</th><th>Evidence (abridged)</th></tr></thead><tbody>
     <tr class="lv-PASS">
@@ -254,9 +254,9 @@
       <td class="mono">SL-6</td><td>surface matrix (CLI / desktop / Cowork-web)</td><td class="st">⏳ Can't test yet</td>
       <td class="detail">CLI: EXECUTED (this run's headless probes + skills/agents discoverable in a live interactive CLI session). Desktop: EXECUTED 2026-07-18 by a CCD session (0bce93d, VERIFICATION.md §4a — D1-D7 + D9-file-half PASS, findings DL-1/DL-2 routed). Web: NOT YET EXECUTE&hellip;</td>
     </tr>
-    <tr class="lv-BLOCKED">
-      <td class="mono">SL-7</td><td>net-new bootstrap — team-init on a project with no .mcp.json (D16/DL-1 regression guard)</td><td class="st">⏳ Can't test yet</td>
-      <td class="detail">BLOCKED-ON-FIX, not fake-green. Gap is REAL + CONFIRMED P1 (DL-1, observed live on Desktop leg 0bce93d; adjudicated ADJUDICATION-LOG C1). Cody ruled 2026-07-17 23:23: fix = STEP 0 in the team-init SKILL — if .mcp.json missing / team_init tool absent, the SKILL&hellip;</td>
+    <tr class="lv-PASS">
+      <td class="mono">SL-7</td><td>net-new bootstrap: STEP-0 resolves the chicken-and-egg (DL-1/D16)</td><td class="st">✅ Working</td>
+      <td class="detail">LIVE two-phase run 2026-07-20 (scratchpad/sl7-netnew, sl7-phase{1,2}.jsonl), plugin v0.1.1 (DL-2 bump verified: update pulled 0.1.0-&gt;0.1.1). Phase 1 (NO .mcp.json): skill fired on the natural phrase, STEP-0 wrote the exact canonical registration shape, did &hellip;</td>
     </tr></tbody></table>
     <p class="foot">Recorded by a live session with pasted evidence &mdash; a missing or out-of-date record shows as "can't test yet", never as a pass. Full detail: <span class="mono">evals/results/session-layer.json</span>.</p>
   </section>

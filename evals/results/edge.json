@@ -1,0 +1,31 @@
+{
+  "suite": "edge-m6",
+  "milestone": "M6",
+  "generatedAt": "2026-07-20T13:22:43.821Z",
+  "total": 3,
+  "pass": 3,
+  "fail": 0,
+  "checks": [
+    {
+      "id": "M6-EDGE",
+      "title": "adapter logic: dedup/dispatch/intake/ingest + kill-switch inertness",
+      "milestone": "M6",
+      "status": "PASS",
+      "detail": "13 assertions pass, 0 fail"
+    },
+    {
+      "id": "M6-BOUNDARY",
+      "title": "§3.8 guard: server never imports edge/; edge never imports server internals",
+      "milestone": "M6",
+      "status": "PASS",
+      "detail": "4 assertions pass, 0 fail"
+    },
+    {
+      "id": "M6-ROUNDTRIP",
+      "title": "end-to-end dry-run chain: intake→dispatch→offload→callback→ingest→push, zero network I/O",
+      "milestone": "M6",
+      "status": "PASS",
+      "detail": "3 assertions pass, 0 fail"
+    }
+  ]
+}

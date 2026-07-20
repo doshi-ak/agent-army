@@ -2,8 +2,8 @@
   "suite": "session-layer",
   "runner": "Evelyn (Evaluator) \u2014 interactive CLI session, headless claude-sonnet-5 sub-runs",
   "surface": "Claude Code CLI (headless -p, plugin scope: user)",
-  "headCommit": "8f9b343ce8ea893102a38074aeebcfcb477d2476",
-  "ranAt": "2026-07-18T06:56:00Z",
+  "headCommit": "cf99466a0bade8fe62e08c880feaade9ed0fc384",
+  "ranAt": "2026-07-20T13:22:39Z",
   "scratchProject": "session-scratchpad/sl-scratch (evidence: sl2-*.jsonl, sl3-run-b.jsonl)",
   "cases": [
     {
@@ -40,14 +40,14 @@
       "id": "SL-6",
       "title": "surface matrix (CLI / desktop / Cowork-web)",
       "status": "BLOCKED",
-      "evidence": "CLI: EXECUTED (this run's headless probes + skills/agents discoverable in a live interactive CLI session). Desktop: EXECUTED 2026-07-18 by a CCD session (0bce93d, VERIFICATION.md §4a — D1-D7 + D9-file-half PASS, findings DL-1/DL-2 routed). Web: NOT YET EXECUTED, gated on /install-github-app (Akash). Stays BLOCKED (not PASS) until all three surfaces are recorded — 2 of 3 done"
+      "evidence": "CLI: EXECUTED (this run's headless probes + skills/agents discoverable in a live interactive CLI session). Desktop: EXECUTED 2026-07-18 by a CCD session (0bce93d, VERIFICATION.md \u00a74a \u2014 D1-D7 + D9-file-half PASS, findings DL-1/DL-2 routed). Web: NOT YET EXECUTED, gated on /install-github-app (Akash). Stays BLOCKED (not PASS) until all three surfaces are recorded \u2014 2 of 3 done"
     },
     {
       "id": "SL-7",
-      "title": "net-new bootstrap — team-init on a project with no .mcp.json (D16/DL-1 regression guard)",
-      "status": "BLOCKED",
-      "evidence": "BLOCKED-ON-FIX, not fake-green. Gap is REAL + CONFIRMED P1 (DL-1, observed live on Desktop leg 0bce93d; adjudicated ADJUDICATION-LOG C1). Cody ruled 2026-07-17 23:23: fix = STEP 0 in the team-init SKILL — if .mcp.json missing / team_init tool absent, the SKILL writes .mcp.json itself (multi-agent-mcp -> node <abs repo>/server/dist/index.js) before step 1, idempotent with team_init's own merge, discloses the one-time MCP-reload cost. VERIFIED NOT YET SHIPPED at HEAD 8f9b343: plugin/skills/team-init/SKILL.md step 1 still calls team_init directly with no bootstrap STEP 0 (grep 'STEP 0' -> absent). Owner: Excelcius (skill edit) + version bump pairs with DL-2. On ship, a live net-new run must clear rubric SL-7 (a)-(c); this case flips BLOCKED->PASS then. Kept in the tier so the gap can never silently regress once closed."
+      "title": "net-new bootstrap: STEP-0 resolves the chicken-and-egg (DL-1/D16)",
+      "status": "PASS",
+      "evidence": "LIVE two-phase run 2026-07-20 (scratchpad/sl7-netnew, sl7-phase{1,2}.jsonl), plugin v0.1.1 (DL-2 bump verified: update pulled 0.1.0->0.1.1). Phase 1 (NO .mcp.json): skill fired on the natural phrase, STEP-0 wrote the exact canonical registration shape, did NOT call the unavailable tool, did NOT fabricate a harness, honestly instructed one reload. Phase 2 (fresh session, same dir): team_init completed the full harness (_team/ STATE/PROGRESS/ROLES/archive/dashboard), D9 allowlist 25 entries incl. mcp tools, .mcp.json idempotent (single clean entry). The complete non-technical first-run chain: install -> ask -> reload once -> working team."
     }
   ],
-  "restampNote": "SL-1..6 probes executed at 98c8b7b/798e4a7; re-stamped to HEAD 8f9b343 because plugin/** is UNCHANGED since 798e4a7 (git log 798e4a7..8f9b343 -- plugin/ = empty; tree hash a9b5a50191625414e4b8afe3e079c83153221937, unchanged). Behavior evidence therefore current. SL-7 (net-new bootstrap, D16/DL-1) added 2026-07-18T06:56Z by Evelyn as a BLOCKED-on-fix regression guard — no run evidence because the STEP-0 fix is not shipped yet (verified absent at this HEAD); it flips to PASS on the first clean net-new run after Excelcius ships STEP-0. Any future plugin/** commit re-stales the SL-1..6 evidence by design."
+  "restampNote": "SL-7 flipped BLOCKED->PASS by live two-phase net-new run against plugin v0.1.1 (887e495 STEP-0 fix). Prior SL-1..5 evidence remains valid: plugin/** changes since prior stamp are exactly the STEP-0/version fix being tested here."
 }
