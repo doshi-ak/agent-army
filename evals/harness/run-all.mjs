@@ -26,6 +26,10 @@ const stages = [
   ["functional MCP evals", "run-evals.mjs"],
   ["per-role conformance", "run-role-evals.mjs"],
   ["M3 plugin conformance", "run-plugin-evals.mjs"],
+  // Declared lane-exception (Excelcius, disclosed on BOARD + in the script header):
+  // M6 edge adapters carry the product's only outbound code + the §3.8 boundary.
+  // Eval seat may reorder/rewrite/remove.
+  ["M6 edge conformance", "run-edge-evals.mjs"],
   ["B-scenario use-case evals (Axis 3)", "run-scenarios.mjs"],
   ["harness meta-evals (test-the-tester)", "run-meta-evals.mjs"],
   ["build dashboard", "build-dashboard.mjs"],
@@ -97,12 +101,23 @@ const plugin = readJson("plugin.json"), sl = readJson("session-layer.json"), sce
 const pluginFindings = (plugin?.checks ?? []).filter((c) => c.status === "FAIL").length;
 const slFindings = (sl?.cases ?? []).filter((c) => c.status === "FAIL").length;
 const scenarioFindings = (scen?.scenarios ?? []).filter((s) => s.status !== "PASS").length;
-const mustFix = engineFindings + libraryFindings + pluginFindings + slFindings + scenarioFindings;
+// M6 edge (declared lane-exception, Excelcius — remove this block if the edge
+// stage is removed from `stages`). Registering the stage alone was NOT enough:
+// stageError is only consulted for run-meta-evals, so a failing edge suite would
+// have printed ✗ and still exited GREEN — a false green of exactly the class this
+// gate exists to catch. Fail-closed on stale/missing JSON: no fresh results from
+// a stage that ran is a crash, and a crash is never "clean".
+const edge = readJson("edge.json");
+const edgeFindings = fresh(edge)
+  ? (edge.checks ?? []).filter((c) => c.status === "FAIL").length
+  : 1;
+const mustFix = engineFindings + libraryFindings + pluginFindings + slFindings + scenarioFindings + edgeFindings;
+if (!fresh(edge)) console.error("\n⚠️  M6 edge suite wrote no fresh results this run — counting as a finding, not a pass.");
 if (suiteCrashed) console.error(`\n⚠️  A suite crashed before writing fresh results (functional=${functionalCrashed}, roles=${rolesCrashed}) — results are INVALID, not green.`);
 
 console.log(`\n${"═".repeat(64)}`);
 console.log(`HARNESS SELF-TEST : ${harnessBroken ? "❌ BROKEN — do not trust these results" : `✅ VALIDATED (${meta.pass}/${meta.total} meta-evals pass)`}`);
-console.log(`PRODUCT FINDINGS  : ${mustFix} must-fix  (engine ${engineFindings} · library ${libraryFindings} · plugin ${pluginFindings} · session-layer ${slFindings} · scenarios ${scenarioFindings})`);
+console.log(`PRODUCT FINDINGS  : ${mustFix} must-fix  (engine ${engineFindings} · library ${libraryFindings} · plugin ${pluginFindings} · session-layer ${slFindings} · scenarios ${scenarioFindings} · edge ${edgeFindings})`);
 console.log(`GATE VERDICT      : ${harnessBroken ? "INVALID" : mustFix === 0 ? "🟢 GREEN — nothing blocking" : engineFindings ? "🔴 RED — engine/guardrail defect" : "🟠 ORANGE — engine OK, non-engine findings need fixing"}`);
 console.log(`REPORT CARD       : evals/DASHBOARD.html`);
 // Exit non-zero if the harness is broken OR the gate found must-fix defects
