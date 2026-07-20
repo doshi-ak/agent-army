@@ -41,7 +41,7 @@
     <h1 class="name">Agent Army &mdash; Eval Report Card</h1>
     <div class="big">🟡 NEEDS A LOOK</div>
     <div class="plain">Nothing is broken, but some things need tidying up or can't be tested yet.</div>
-    <div class="meta">Last checked: 2026-07-20 13:22 UTC &nbsp;·&nbsp; 0 broken &nbsp;·&nbsp; 0 need tidying &nbsp;·&nbsp; 3 can't test yet</div>
+    <div class="meta">Last checked: 2026-07-20 13:23 UTC &nbsp;·&nbsp; 0 broken &nbsp;·&nbsp; 0 need tidying &nbsp;·&nbsp; 3 can't test yet</div>
   </header>
 
   <div class="legend">
@@ -255,7 +255,21 @@
   </section>
 
   <section class="card">
-    <h2>5 &middot; Should we bolt on outside tools? (Perplexity, Tavily, &hellip;)</h2>
+    <h2>5 &middot; Is the "outside world" lane safely fenced? (M6 edge)</h2>
+    <p class="lede">The newest part of the build connects Agent Army to the outside world (webhooks in, offloaded work out, notifications to you). These checks prove the fence holds: the core server still never talks to the internet, and the whole intake&rarr;dispatch&rarr;push chain works in a dry run with <b>zero</b> real network calls and zero secrets in files.</p>
+    <div class="tiles">
+      <div class="tile ok"><b>3</b><span>checks passed</span></div>
+      <div class="tile ok"><b>0</b><span>failed</span></div>
+    </div>
+    <table><thead><tr><th>ID</th><th>What it checks</th><th>Result</th></tr></thead><tbody>
+    <tr class="lv-PASS"><td class="mono">M6-EDGE</td><td>adapter logic: dedup/dispatch/intake/ingest + kill-switch inertness</td><td class="st">✅ Working</td></tr>
+    <tr class="lv-PASS"><td class="mono">M6-BOUNDARY</td><td>§3.8 guard: server never imports edge/; edge never imports server internals</td><td class="st">✅ Working</td></tr>
+    <tr class="lv-PASS"><td class="mono">M6-ROUNDTRIP</td><td>end-to-end dry-run chain: intake→dispatch→offload→callback→ingest→push, zero network I/O</td><td class="st">✅ Working</td></tr></tbody></table>
+    <p class="foot">Live operation still waits on the owner's credentials &mdash; these prove the machinery, not the connection.</p>
+  </section>
+
+  <section class="card">
+    <h2>6 &middot; Should we bolt on outside tools? (Perplexity, Tavily, &hellip;)</h2>
     <p class="lede">A judgment question, not a pass/fail one: when someone offers a shiny outside tool (a web-search add-on like Perplexity or Tavily, an outside worker service), should Agent Army swallow it whole, keep it at arm's length, or skip it? The rule of thumb, from the project's own architecture: keep outside tools <b>separate and swappable</b> unless there's a strong reason not to &mdash; fewer moving parts, less that can break.</p>
     <div class="tiles">
       <div class="tile ok"><b>✓</b><span>analysis written</span></div>
@@ -264,7 +278,7 @@
   </section>
   
   <section class="card signoff">
-    <h2>6 &middot; Who has checked this? (sign-off)</h2>
+    <h2>7 &middot; Who has checked this? (sign-off)</h2>
     <p class="lede">Evals only matter if people actually read them. Each teammate below must cross-reference these results against their own area and initial the box. An unsigned row means "nobody has audited this yet."</p>
     <table><thead><tr><th>Teammate</th><th>Their job here</th><th>What to cross-check</th><th>Signed?</th></tr></thead><tbody>
       <tr><td><b>Cody Banks</b><br><span class="role">Architect</span></td><td>Owns the blueprint</td><td>Do the passing checks match what the plan (PLAN.md) promised? Are the "can't test yet" items really just later steps?</td><td class="sign">☐ initials ____ date ____</td></tr>

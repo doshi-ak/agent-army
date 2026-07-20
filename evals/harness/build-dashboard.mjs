@@ -28,6 +28,7 @@ const roles = read("roles.json");
 const meta = read("harness-meta.json");
 const scenarios = read("scenarios.json");
 const sl = read("session-layer.json");
+const edge = read("edge.json");
 const hasIntegration = fs.existsSync(path.join(EVALS, "INTEGRATION-DECISION-EVAL.md"));
 
 const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
@@ -46,6 +47,7 @@ if (sl) {
   engineFails += (sl.cases || []).filter((c) => c.status === "FAIL").length;
   cantRunYet += (sl.cases || []).filter((c) => c.status === "BLOCKED").length;
 }
+if (edge) { engineFails += (edge.checks || []).filter((c) => c.status === "FAIL").length; }
 const hardFails = engineFails + libraryFails;
 
 const overall = engineFails > 0 ? "RED"
@@ -151,9 +153,25 @@ if (sl) {
   </section>`);
 }
 
+if (edge) {
+  const rows = (edge.checks || []).map((c) => `
+    <tr class="lv-${c.status}"><td class="mono">${esc(c.id)}</td><td>${esc(c.title)}</td><td class="st">${pill(c.status)}</td></tr>`).join("");
+  cards.push(`
+  <section class="card">
+    <h2>5 &middot; Is the "outside world" lane safely fenced? (M6 edge)</h2>
+    <p class="lede">The newest part of the build connects Agent Army to the outside world (webhooks in, offloaded work out, notifications to you). These checks prove the fence holds: the core server still never talks to the internet, and the whole intake&rarr;dispatch&rarr;push chain works in a dry run with <b>zero</b> real network calls and zero secrets in files.</p>
+    <div class="tiles">
+      <div class="tile ok"><b>${(edge.checks || []).filter((c) => c.status === "PASS").length}</b><span>checks passed</span></div>
+      <div class="tile ${(edge.checks || []).some((c) => c.status === "FAIL") ? "bad" : "ok"}"><b>${(edge.checks || []).filter((c) => c.status === "FAIL").length}</b><span>failed</span></div>
+    </div>
+    <table><thead><tr><th>ID</th><th>What it checks</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="foot">Live operation still waits on the owner's credentials &mdash; these prove the machinery, not the connection.</p>
+  </section>`);
+}
+
 cards.push(`
   <section class="card">
-    <h2>5 &middot; Should we bolt on outside tools? (Perplexity, Tavily, &hellip;)</h2>
+    <h2>6 &middot; Should we bolt on outside tools? (Perplexity, Tavily, &hellip;)</h2>
     <p class="lede">A judgment question, not a pass/fail one: when someone offers a shiny outside tool (a web-search add-on like Perplexity or Tavily, an outside worker service), should Agent Army swallow it whole, keep it at arm's length, or skip it? The rule of thumb, from the project's own architecture: keep outside tools <b>separate and swappable</b> unless there's a strong reason not to &mdash; fewer moving parts, less that can break.</p>
     <div class="tiles">
       <div class="tile ${hasIntegration ? "ok" : "wait"}"><b>${hasIntegration ? "✓" : "…"}</b><span>${hasIntegration ? "analysis written" : "analysis in progress"}</span></div>
@@ -164,7 +182,7 @@ cards.push(`
 // ---- sign-off (forcing function) ----
 const signoff = `
   <section class="card signoff">
-    <h2>6 &middot; Who has checked this? (sign-off)</h2>
+    <h2>7 &middot; Who has checked this? (sign-off)</h2>
     <p class="lede">Evals only matter if people actually read them. Each teammate below must cross-reference these results against their own area and initial the box. An unsigned row means "nobody has audited this yet."</p>
     <table><thead><tr><th>Teammate</th><th>Their job here</th><th>What to cross-check</th><th>Signed?</th></tr></thead><tbody>
       <tr><td><b>Cody Banks</b><br><span class="role">Architect</span></td><td>Owns the blueprint</td><td>Do the passing checks match what the plan (PLAN.md) promised? Are the "can't test yet" items really just later steps?</td><td class="sign">☐ initials ____ date ____</td></tr>
