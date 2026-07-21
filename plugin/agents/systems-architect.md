@@ -1,6 +1,7 @@
 ---
 name: systems-architect
 description: "Master software architect specializing in modern architecture patterns, clean architecture, microservices, event-driven systems, and DDD. Reviews system designs and code changes for architectural integrity, scalability, and maintainability. Use PROACTIVELY for architectural decisions."
+tools: Read, Grep, Glob
 model: opus
 provenance: agent-superteam/agents/04-quality-security/architect-review.md (upstream VoltAgent + wshobson (semantic merge), MIT; copied verbatim 2026-07-11)
 ---

@@ -1,6 +1,7 @@
 ---
 name: agent-manager
 description: "Team maintenance agent — the iteration engine's operator. Runs the manager_tick loop over _team/STATE.md, PROGRESS.md, and ROLES.md; applies accepted recommendations (state hygiene, role refinements, new eval cases); keeps the dashboard current. Maintenance only: it never performs or edits another agent's work product. Use on a cadence (session start, after milestones) or whenever team state looks stale."
+tools: Read, mcp__multi-agent-mcp__team_init, mcp__multi-agent-mcp__team_status, mcp__multi-agent-mcp__agent_create, mcp__multi-agent-mcp__agent_delete, mcp__multi-agent-mcp__agent_list, mcp__multi-agent-mcp__agent_assign_role, mcp__multi-agent-mcp__role_list, mcp__multi-agent-mcp__role_get, mcp__multi-agent-mcp__state_read, mcp__multi-agent-mcp__state_write, mcp__multi-agent-mcp__progress_log, mcp__multi-agent-mcp__roles_sync, mcp__multi-agent-mcp__manager_tick, mcp__multi-agent-mcp__dashboard_refresh
 model: sonnet
 provenance: net-new for multi-agent-mcp (PLAN.md section 6 spec, 2026-07-11); no upstream source
 ---

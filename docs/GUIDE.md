@@ -316,4 +316,5 @@ rather than acting. That is the point of the system, not a limitation of it.
 
 *Built against `PLAN.md` · role templates courtesy of the VoltAgent & wshobson agent libraries
 (MIT), credited in `THIRD_PARTY_NOTICES.md` · skill standard: agentskills.io · interactive twin:
-`docs/guide/GUIDE.html` · verification record: `docs/VERIFICATION.md`.*
+`docs/guide/GUIDE.html` · verification record: `docs/VERIFICATION.md` · one-page cheat-sheet:
+`docs/QUICKSTART.md`.*

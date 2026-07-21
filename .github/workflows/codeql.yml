@@ -1,6 +1,16 @@
 # Agent Army — CodeQL security scanning (owner: Excelcius / Executor, per PLAN §10.6b:
 # "Repo CI hygiene the moment agents push unattended: CodeQL (js/ts, push + weekly)").
 # Agents began pushing unattended Jul 17 — this is the tripwire that watches what they push.
+#
+# ⚠️ D20 (Wilbet, 2026-07-18 06:35): this workflow fails "configuration error" on every run.
+# ROOT-CAUSED (Excelcius, verified via `gh run view --log-failed` + `gh repo view`), not a
+# workflow bug: `doshi-ak/agent-army` is a PRIVATE repo, and GitHub code scanning requires
+# GitHub Advanced Security to be enabled for private repos (Settings → Security → Code
+# security → "GitHub Advanced Security" + "Code scanning" → CodeQL). That is a one-time
+# owner toggle, not something any session can self-serve (RULES §1/§2 — repo security
+# settings). BLOCKED-AKASH until enabled. Left genuinely red on purpose rather than
+# `continue-on-error`-ing it quiet — a silently-passing security scanner is a worse outcome
+# than a red one everyone understands.
 
 name: codeql
 
@@ -19,6 +29,7 @@ jobs:
     permissions:
       security-events: write
       contents: read
+      actions: read  # required so codeql-action can read workflow-run info for baseline diffing
     steps:
       - uses: actions/checkout@v4
 

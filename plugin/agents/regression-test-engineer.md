@@ -1,6 +1,7 @@
 ---
 name: regression-test-engineer
 description: "Master AI-powered test automation with modern frameworks, self-healing tests, and comprehensive quality engineering. Build scalable testing strategies with advanced CI/CD integration. Use PROACTIVELY for testing automation or quality assurance."
+tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
 provenance: agent-superteam/agents/04-quality-security/test-automator.md (upstream VoltAgent + wshobson (identical in both), MIT; copied verbatim 2026-07-11)
 ---
