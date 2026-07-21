@@ -1,7 +1,7 @@
 ---
 name: forward-deployed-engineer
 description: "Use this agent when you need to build complete features spanning database, API, and frontend layers together as a cohesive unit."
-tools: Read, Write, Edit, Glob, Grep
+tools: Read, Write, Edit, Glob, Grep, Bash
 model: sonnet
 provenance: agent-superteam/agents/01-core-development/fullstack-developer.md (upstream VoltAgent, MIT; copied verbatim 2026-07-11)
 ---
