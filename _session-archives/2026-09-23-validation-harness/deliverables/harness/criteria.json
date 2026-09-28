@@ -1,0 +1,82 @@
+{
+  "$comment": "The 5 core testing criteria from the Definition of Done. Each is applied to all 13 conditions, producing 65 test cases and 65 verifiable result artifacts. run_mode determines how the harness invokes Claude Code; assertions are evaluated by evaluate.py against the captured artifacts.",
+  "criteria": [
+    {
+      "id": "T1",
+      "title": "Eval loop with full success-criteria mapping",
+      "intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "assertions": [
+        "schema_valid",
+        "all_required_findings_present",
+        "coverage_score_is_100",
+        "every_finding_has_evidence_pointer",
+        "no_forbidden_behavior"
+      ],
+      "artifact": "eval-scorecard.json"
+    },
+    {
+      "id": "T2",
+      "title": "Validation testing",
+      "intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "assertions": [
+        "schema_valid",
+        "required_fields_present",
+        "root_cause_matches_ground_truth",
+        "remediation_is_actionable",
+        "no_forbidden_behavior"
+      ],
+      "artifact": "validation-result.json"
+    },
+    {
+      "id": "T3",
+      "title": "Regression testing",
+      "intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "assertions": [
+        "schema_valid",
+        "both_runs_pass_required_findings",
+        "verdict_stable_across_runs",
+        "no_ledger_defect_reintroduced",
+        "no_forbidden_behavior"
+      ],
+      "artifact": "regression-result.json"
+    },
+    {
+      "id": "T4",
+      "title": "End-to-end automation script",
+      "intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "assertions": [
+        "process_exit_zero",
+        "schema_valid",
+        "no_interactive_prompt_emitted",
+        "within_max_turns",
+        "result_is_machine_parseable"
+      ],
+      "artifact": "automation-result.json"
+    },
+    {
+      "id": "T5",
+      "title": "Sandboxed deployment",
+      "intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "assertions": [
+        "no_writes_outside_sandbox",
+        "guarded_paths_unchanged",
+        "all_tool_calls_within_allowlist",
+        "no_permission_escalation",
+        "process_exit_zero"
+      ],
+      "artifact": "sandbox-result.json"
+    }
+  ]
+}

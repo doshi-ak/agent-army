@@ -1,0 +1,3046 @@
+{
+  "matrix": {
+    "conditions": 13,
+    "criteria": 5,
+    "total_cases": 65
+  },
+  "definition_of_done": "All 65 cases PASS. Any FAIL triggers the Hard Rule: re-architect the impacted condition and re-run that condition against all five criteria.",
+  "cases": [
+    {
+      "case_id": "C01-T1",
+      "condition_id": "C01",
+      "criterion_id": "T1",
+      "title": "Interface-agnostic operation :: Eval loop with full success-criteria mapping",
+      "condition_statement": "The troubleshoot skill must be optimized for the Claude Code interface regardless of specifics: GitHub repo connection, local session, Claude Code on the web, desktop app, or CLI.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c01_interface",
+      "probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "second_probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 25,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "cli",
+            "web",
+            "desktop",
+            "github"
+          ]
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "cli",
+            "web",
+            "desktop",
+            "github"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 4
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C01-T1/eval-scorecard.json",
+      "transcript": "results/C01-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C01-T1/fs-before.sha",
+      "fs_manifest_after": "results/C01-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C01-T2",
+      "condition_id": "C01",
+      "criterion_id": "T2",
+      "title": "Interface-agnostic operation :: Validation testing",
+      "condition_statement": "The troubleshoot skill must be optimized for the Claude Code interface regardless of specifics: GitHub repo connection, local session, Claude Code on the web, desktop app, or CLI.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c01_interface",
+      "probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "second_probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 25,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "surface_determination"
+          ]
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C01"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C01-T2/validation-result.json",
+      "transcript": "results/C01-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C01-T2/fs-before.sha",
+      "fs_manifest_after": "results/C01-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C01-T3",
+      "condition_id": "C01",
+      "criterion_id": "T3",
+      "title": "Interface-agnostic operation :: Regression testing",
+      "condition_statement": "The troubleshoot skill must be optimized for the Claude Code interface regardless of specifics: GitHub repo connection, local session, Claude Code on the web, desktop app, or CLI.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c01_interface",
+      "probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "second_probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 25,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "cli",
+            "web",
+            "desktop",
+            "github"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C01-T3/regression-result.json",
+      "transcript": "results/C01-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C01-T3/fs-before.sha",
+      "fs_manifest_after": "results/C01-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C01-T4",
+      "condition_id": "C01",
+      "criterion_id": "T4",
+      "title": "Interface-agnostic operation :: End-to-end automation script",
+      "condition_statement": "The troubleshoot skill must be optimized for the Claude Code interface regardless of specifics: GitHub repo connection, local session, Claude Code on the web, desktop app, or CLI.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c01_interface",
+      "probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "second_probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 25,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 25
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C01-T4/automation-result.json",
+      "transcript": "results/C01-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C01-T4/fs-before.sha",
+      "fs_manifest_after": "results/C01-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C01-T5",
+      "condition_id": "C01",
+      "criterion_id": "T5",
+      "title": "Interface-agnostic operation :: Sandboxed deployment",
+      "condition_statement": "The troubleshoot skill must be optimized for the Claude Code interface regardless of specifics: GitHub repo connection, local session, Claude Code on the web, desktop app, or CLI.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c01_interface",
+      "probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "second_probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 25,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C01-T5/sandbox-result.json",
+      "transcript": "results/C01-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C01-T5/fs-before.sha",
+      "fs_manifest_after": "results/C01-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C02-T1",
+      "condition_id": "C02",
+      "criterion_id": "T1",
+      "title": "Full-lifecycle defect ownership across all issue classes :: Eval loop with full success-criteria mapping",
+      "condition_statement": "The skill must engage, own, execute and excel at the full lifecycle of bug, defect and error management across any issue class: native Claude error, local error, Claude config or data-directory error, API response code, MCP error, and reconciliation of a failed build developed off a public GitHub repo.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c02_issue_classes",
+      "probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "second_probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "native",
+            "local",
+            "config",
+            "api",
+            "mcp",
+            "reconcil"
+          ]
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "native",
+            "local",
+            "config",
+            "api",
+            "mcp",
+            "reconcil"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 6
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "left_class_unaddressed"
+          ]
+        }
+      ],
+      "artifact": "results/C02-T1/eval-scorecard.json",
+      "transcript": "results/C02-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C02-T1/fs-before.sha",
+      "fs_manifest_after": "results/C02-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C02-T2",
+      "condition_id": "C02",
+      "criterion_id": "T2",
+      "title": "Full-lifecycle defect ownership across all issue classes :: Validation testing",
+      "condition_statement": "The skill must engage, own, execute and excel at the full lifecycle of bug, defect and error management across any issue class: native Claude error, local error, Claude config or data-directory error, API response code, MCP error, and reconciliation of a failed build developed off a public GitHub repo.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c02_issue_classes",
+      "probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "second_probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "issue_class"
+          ]
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C02"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "left_class_unaddressed"
+          ]
+        }
+      ],
+      "artifact": "results/C02-T2/validation-result.json",
+      "transcript": "results/C02-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C02-T2/fs-before.sha",
+      "fs_manifest_after": "results/C02-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C02-T3",
+      "condition_id": "C02",
+      "criterion_id": "T3",
+      "title": "Full-lifecycle defect ownership across all issue classes :: Regression testing",
+      "condition_statement": "The skill must engage, own, execute and excel at the full lifecycle of bug, defect and error management across any issue class: native Claude error, local error, Claude config or data-directory error, API response code, MCP error, and reconciliation of a failed build developed off a public GitHub repo.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c02_issue_classes",
+      "probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "second_probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "native",
+            "local",
+            "config",
+            "api",
+            "mcp",
+            "reconcil"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "left_class_unaddressed"
+          ]
+        }
+      ],
+      "artifact": "results/C02-T3/regression-result.json",
+      "transcript": "results/C02-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C02-T3/fs-before.sha",
+      "fs_manifest_after": "results/C02-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C02-T4",
+      "condition_id": "C02",
+      "criterion_id": "T4",
+      "title": "Full-lifecycle defect ownership across all issue classes :: End-to-end automation script",
+      "condition_statement": "The skill must engage, own, execute and excel at the full lifecycle of bug, defect and error management across any issue class: native Claude error, local error, Claude config or data-directory error, API response code, MCP error, and reconciliation of a failed build developed off a public GitHub repo.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c02_issue_classes",
+      "probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "second_probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C02-T4/automation-result.json",
+      "transcript": "results/C02-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C02-T4/fs-before.sha",
+      "fs_manifest_after": "results/C02-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C02-T5",
+      "condition_id": "C02",
+      "criterion_id": "T5",
+      "title": "Full-lifecycle defect ownership across all issue classes :: Sandboxed deployment",
+      "condition_statement": "The skill must engage, own, execute and excel at the full lifecycle of bug, defect and error management across any issue class: native Claude error, local error, Claude config or data-directory error, API response code, MCP error, and reconciliation of a failed build developed off a public GitHub repo.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c02_issue_classes",
+      "probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "second_probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C02-T5/sandbox-result.json",
+      "transcript": "results/C02-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C02-T5/fs-before.sha",
+      "fs_manifest_after": "results/C02-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C03-T1",
+      "condition_id": "C03",
+      "criterion_id": "T1",
+      "title": "Authoritative-source grounding and CI/CD validation :: Eval loop with full success-criteria mapping",
+      "condition_statement": "The skill must reference authoritative, highly-upvoted GitHub repositories and developer-security, cybersecurity and regression-engineering resources to validate solution architecture, CI/CD best practice, and automation scripting via Postman and Jenkins.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c03_cicd",
+      "probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "second_probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_sources": 3
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "jenkins",
+            "postman",
+            "secret",
+            "workflow"
+          ],
+          "min_sources": 3
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "jenkins",
+            "postman",
+            "secret",
+            "workflow"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 4
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "unsourced_recommendation",
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C03-T1/eval-scorecard.json",
+      "transcript": "results/C03-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C03-T1/fs-before.sha",
+      "fs_manifest_after": "results/C03-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C03-T2",
+      "condition_id": "C03",
+      "criterion_id": "T2",
+      "title": "Authoritative-source grounding and CI/CD validation :: Validation testing",
+      "condition_statement": "The skill must reference authoritative, highly-upvoted GitHub repositories and developer-security, cybersecurity and regression-engineering resources to validate solution architecture, CI/CD best practice, and automation scripting via Postman and Jenkins.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c03_cicd",
+      "probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "second_probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_sources": 3
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "sources"
+          ],
+          "min_sources": 3
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C03"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "unsourced_recommendation",
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C03-T2/validation-result.json",
+      "transcript": "results/C03-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C03-T2/fs-before.sha",
+      "fs_manifest_after": "results/C03-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C03-T3",
+      "condition_id": "C03",
+      "criterion_id": "T3",
+      "title": "Authoritative-source grounding and CI/CD validation :: Regression testing",
+      "condition_statement": "The skill must reference authoritative, highly-upvoted GitHub repositories and developer-security, cybersecurity and regression-engineering resources to validate solution architecture, CI/CD best practice, and automation scripting via Postman and Jenkins.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c03_cicd",
+      "probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "second_probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_sources": 3
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "jenkins",
+            "postman",
+            "secret",
+            "workflow"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "unsourced_recommendation",
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C03-T3/regression-result.json",
+      "transcript": "results/C03-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C03-T3/fs-before.sha",
+      "fs_manifest_after": "results/C03-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C03-T4",
+      "condition_id": "C03",
+      "criterion_id": "T4",
+      "title": "Authoritative-source grounding and CI/CD validation :: End-to-end automation script",
+      "condition_statement": "The skill must reference authoritative, highly-upvoted GitHub repositories and developer-security, cybersecurity and regression-engineering resources to validate solution architecture, CI/CD best practice, and automation scripting via Postman and Jenkins.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c03_cicd",
+      "probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "second_probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid",
+          "min_sources": 3
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C03-T4/automation-result.json",
+      "transcript": "results/C03-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C03-T4/fs-before.sha",
+      "fs_manifest_after": "results/C03-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C03-T5",
+      "condition_id": "C03",
+      "criterion_id": "T5",
+      "title": "Authoritative-source grounding and CI/CD validation :: Sandboxed deployment",
+      "condition_statement": "The skill must reference authoritative, highly-upvoted GitHub repositories and developer-security, cybersecurity and regression-engineering resources to validate solution architecture, CI/CD best practice, and automation scripting via Postman and Jenkins.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c03_cicd",
+      "probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "second_probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C03-T5/sandbox-result.json",
+      "transcript": "results/C03-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C03-T5/fs-before.sha",
+      "fs_manifest_after": "results/C03-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C04-T1",
+      "condition_id": "C04",
+      "criterion_id": "T1",
+      "title": "Database engineering, solutioning and triage :: Eval loop with full success-criteria mapping",
+      "condition_statement": "The skill must have full capacity for database engineering, solutioning and triage including AWS S3 buckets, SQL databases, AWS Redshift and Oracle data warehouses.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c04_data",
+      "probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "second_probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "s3",
+            "deadlock",
+            "skew",
+            "oracle"
+          ]
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "s3",
+            "deadlock",
+            "skew",
+            "oracle"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 4
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "left_class_unaddressed"
+          ]
+        }
+      ],
+      "artifact": "results/C04-T1/eval-scorecard.json",
+      "transcript": "results/C04-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C04-T1/fs-before.sha",
+      "fs_manifest_after": "results/C04-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C04-T2",
+      "condition_id": "C04",
+      "criterion_id": "T2",
+      "title": "Database engineering, solutioning and triage :: Validation testing",
+      "condition_statement": "The skill must have full capacity for database engineering, solutioning and triage including AWS S3 buckets, SQL databases, AWS Redshift and Oracle data warehouses.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c04_data",
+      "probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "second_probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "issue_class",
+            "remediation"
+          ]
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C04"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "left_class_unaddressed"
+          ]
+        }
+      ],
+      "artifact": "results/C04-T2/validation-result.json",
+      "transcript": "results/C04-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C04-T2/fs-before.sha",
+      "fs_manifest_after": "results/C04-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C04-T3",
+      "condition_id": "C04",
+      "criterion_id": "T3",
+      "title": "Database engineering, solutioning and triage :: Regression testing",
+      "condition_statement": "The skill must have full capacity for database engineering, solutioning and triage including AWS S3 buckets, SQL databases, AWS Redshift and Oracle data warehouses.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c04_data",
+      "probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "second_probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "s3",
+            "deadlock",
+            "skew",
+            "oracle"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "left_class_unaddressed"
+          ]
+        }
+      ],
+      "artifact": "results/C04-T3/regression-result.json",
+      "transcript": "results/C04-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C04-T3/fs-before.sha",
+      "fs_manifest_after": "results/C04-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C04-T4",
+      "condition_id": "C04",
+      "criterion_id": "T4",
+      "title": "Database engineering, solutioning and triage :: End-to-end automation script",
+      "condition_statement": "The skill must have full capacity for database engineering, solutioning and triage including AWS S3 buckets, SQL databases, AWS Redshift and Oracle data warehouses.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c04_data",
+      "probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "second_probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C04-T4/automation-result.json",
+      "transcript": "results/C04-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C04-T4/fs-before.sha",
+      "fs_manifest_after": "results/C04-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C04-T5",
+      "condition_id": "C04",
+      "criterion_id": "T5",
+      "title": "Database engineering, solutioning and triage :: Sandboxed deployment",
+      "condition_statement": "The skill must have full capacity for database engineering, solutioning and triage including AWS S3 buckets, SQL databases, AWS Redshift and Oracle data warehouses.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c04_data",
+      "probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "second_probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C04-T5/sandbox-result.json",
+      "transcript": "results/C04-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C04-T5/fs-before.sha",
+      "fs_manifest_after": "results/C04-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C05-T1",
+      "condition_id": "C05",
+      "criterion_id": "T1",
+      "title": "Language-model architecture triage and MLOps solutioning :: Eval loop with full success-criteria mapping",
+      "condition_statement": "The skill must have full capacity for language-model architecture triage and solutioning using MLOps best practice, for locally built and running models (inference-time failure, runtime defects, training-data defects, pre-training and model architecture) and for off-the-shelf services such as AWS Bedrock, AWS SageMaker, the OpenAI API and the Anthropic API.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c05_mlops",
+      "probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "second_probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "oom",
+            "tokenizer",
+            "leakage",
+            "throttl",
+            "overloaded"
+          ]
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "oom",
+            "tokenizer",
+            "leakage",
+            "throttl",
+            "overloaded"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 5
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "left_class_unaddressed"
+          ]
+        }
+      ],
+      "artifact": "results/C05-T1/eval-scorecard.json",
+      "transcript": "results/C05-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C05-T1/fs-before.sha",
+      "fs_manifest_after": "results/C05-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C05-T2",
+      "condition_id": "C05",
+      "criterion_id": "T2",
+      "title": "Language-model architecture triage and MLOps solutioning :: Validation testing",
+      "condition_statement": "The skill must have full capacity for language-model architecture triage and solutioning using MLOps best practice, for locally built and running models (inference-time failure, runtime defects, training-data defects, pre-training and model architecture) and for off-the-shelf services such as AWS Bedrock, AWS SageMaker, the OpenAI API and the Anthropic API.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c05_mlops",
+      "probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "second_probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "issue_class",
+            "remediation"
+          ]
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C05"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "left_class_unaddressed"
+          ]
+        }
+      ],
+      "artifact": "results/C05-T2/validation-result.json",
+      "transcript": "results/C05-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C05-T2/fs-before.sha",
+      "fs_manifest_after": "results/C05-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C05-T3",
+      "condition_id": "C05",
+      "criterion_id": "T3",
+      "title": "Language-model architecture triage and MLOps solutioning :: Regression testing",
+      "condition_statement": "The skill must have full capacity for language-model architecture triage and solutioning using MLOps best practice, for locally built and running models (inference-time failure, runtime defects, training-data defects, pre-training and model architecture) and for off-the-shelf services such as AWS Bedrock, AWS SageMaker, the OpenAI API and the Anthropic API.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c05_mlops",
+      "probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "second_probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "oom",
+            "tokenizer",
+            "leakage",
+            "throttl",
+            "overloaded"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "left_class_unaddressed"
+          ]
+        }
+      ],
+      "artifact": "results/C05-T3/regression-result.json",
+      "transcript": "results/C05-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C05-T3/fs-before.sha",
+      "fs_manifest_after": "results/C05-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C05-T4",
+      "condition_id": "C05",
+      "criterion_id": "T4",
+      "title": "Language-model architecture triage and MLOps solutioning :: End-to-end automation script",
+      "condition_statement": "The skill must have full capacity for language-model architecture triage and solutioning using MLOps best practice, for locally built and running models (inference-time failure, runtime defects, training-data defects, pre-training and model architecture) and for off-the-shelf services such as AWS Bedrock, AWS SageMaker, the OpenAI API and the Anthropic API.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c05_mlops",
+      "probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "second_probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid"
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C05-T4/automation-result.json",
+      "transcript": "results/C05-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C05-T4/fs-before.sha",
+      "fs_manifest_after": "results/C05-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C05-T5",
+      "condition_id": "C05",
+      "criterion_id": "T5",
+      "title": "Language-model architecture triage and MLOps solutioning :: Sandboxed deployment",
+      "condition_statement": "The skill must have full capacity for language-model architecture triage and solutioning using MLOps best practice, for locally built and running models (inference-time failure, runtime defects, training-data defects, pre-training and model architecture) and for off-the-shelf services such as AWS Bedrock, AWS SageMaker, the OpenAI API and the Anthropic API.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c05_mlops",
+      "probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "second_probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C05-T5/sandbox-result.json",
+      "transcript": "results/C05-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C05-T5/fs-before.sha",
+      "fs_manifest_after": "results/C05-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C06-T1",
+      "condition_id": "C06",
+      "criterion_id": "T1",
+      "title": "Complete lifecycle stages present in every engagement :: Eval loop with full success-criteria mapping",
+      "condition_statement": "The full lifecycle includes diagnostics, root-cause identification, triage, solution architecture, validation and regression testing. Every stage must be present and ordered.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c06_lifecycle",
+      "probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "second_probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "required_stages": [
+            "diagnostics",
+            "root_cause",
+            "triage",
+            "solution",
+            "validation",
+            "regression"
+          ]
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "diagnos",
+            "root cause",
+            "triage",
+            "solution",
+            "validat",
+            "regression"
+          ],
+          "required_stages": [
+            "diagnostics",
+            "root_cause",
+            "triage",
+            "solution",
+            "validation",
+            "regression"
+          ]
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "diagnos",
+            "root cause",
+            "triage",
+            "solution",
+            "validat",
+            "regression"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 1
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "skipped_lifecycle_stage",
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C06-T1/eval-scorecard.json",
+      "transcript": "results/C06-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C06-T1/fs-before.sha",
+      "fs_manifest_after": "results/C06-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C06-T2",
+      "condition_id": "C06",
+      "criterion_id": "T2",
+      "title": "Complete lifecycle stages present in every engagement :: Validation testing",
+      "condition_statement": "The full lifecycle includes diagnostics, root-cause identification, triage, solution architecture, validation and regression testing. Every stage must be present and ordered.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c06_lifecycle",
+      "probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "second_probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "required_stages": [
+            "diagnostics",
+            "root_cause",
+            "triage",
+            "solution",
+            "validation",
+            "regression"
+          ]
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "lifecycle_stages"
+          ],
+          "required_stages": [
+            "diagnostics",
+            "root_cause",
+            "triage",
+            "solution",
+            "validation",
+            "regression"
+          ]
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C06"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "skipped_lifecycle_stage",
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C06-T2/validation-result.json",
+      "transcript": "results/C06-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C06-T2/fs-before.sha",
+      "fs_manifest_after": "results/C06-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C06-T3",
+      "condition_id": "C06",
+      "criterion_id": "T3",
+      "title": "Complete lifecycle stages present in every engagement :: Regression testing",
+      "condition_statement": "The full lifecycle includes diagnostics, root-cause identification, triage, solution architecture, validation and regression testing. Every stage must be present and ordered.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c06_lifecycle",
+      "probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "second_probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "required_stages": [
+            "diagnostics",
+            "root_cause",
+            "triage",
+            "solution",
+            "validation",
+            "regression"
+          ]
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "diagnos",
+            "root cause",
+            "triage",
+            "solution",
+            "validat",
+            "regression"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "skipped_lifecycle_stage",
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C06-T3/regression-result.json",
+      "transcript": "results/C06-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C06-T3/fs-before.sha",
+      "fs_manifest_after": "results/C06-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C06-T4",
+      "condition_id": "C06",
+      "criterion_id": "T4",
+      "title": "Complete lifecycle stages present in every engagement :: End-to-end automation script",
+      "condition_statement": "The full lifecycle includes diagnostics, root-cause identification, triage, solution architecture, validation and regression testing. Every stage must be present and ordered.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c06_lifecycle",
+      "probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "second_probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid",
+          "required_stages": [
+            "diagnostics",
+            "root_cause",
+            "triage",
+            "solution",
+            "validation",
+            "regression"
+          ]
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C06-T4/automation-result.json",
+      "transcript": "results/C06-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C06-T4/fs-before.sha",
+      "fs_manifest_after": "results/C06-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C06-T5",
+      "condition_id": "C06",
+      "criterion_id": "T5",
+      "title": "Complete lifecycle stages present in every engagement :: Sandboxed deployment",
+      "condition_statement": "The full lifecycle includes diagnostics, root-cause identification, triage, solution architecture, validation and regression testing. Every stage must be present and ordered.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c06_lifecycle",
+      "probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "second_probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(python3 *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C06-T5/sandbox-result.json",
+      "transcript": "results/C06-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C06-T5/fs-before.sha",
+      "fs_manifest_after": "results/C06-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C07-T1",
+      "condition_id": "C07",
+      "criterion_id": "T1",
+      "title": "Zero-context cold start with diff and regression analysis :: Eval loop with full success-criteria mapping",
+      "condition_statement": "The user may provide no context when deploying the skill. The skill must begin diff and regression analysis on its own, starting from logical locations: errors in the environment the current session is building in, the local drive, diagnostic commands, and the Claude cache and data directory for other coding sessions, especially those consuming significant token bandwidth.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c07_coldstart",
+      "probe": "Something is wrong. Fix it.",
+      "second_probe": "Something is wrong. Fix it.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(du *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_search_locations": 3
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "broken_module",
+            "session",
+            "token"
+          ],
+          "min_search_locations": 3
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "broken_module",
+            "session",
+            "token"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 3
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C07-T1/eval-scorecard.json",
+      "transcript": "results/C07-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C07-T1/fs-before.sha",
+      "fs_manifest_after": "results/C07-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C07-T2",
+      "condition_id": "C07",
+      "criterion_id": "T2",
+      "title": "Zero-context cold start with diff and regression analysis :: Validation testing",
+      "condition_statement": "The user may provide no context when deploying the skill. The skill must begin diff and regression analysis on its own, starting from logical locations: errors in the environment the current session is building in, the local drive, diagnostic commands, and the Claude cache and data directory for other coding sessions, especially those consuming significant token bandwidth.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c07_coldstart",
+      "probe": "Something is wrong. Fix it.",
+      "second_probe": "Something is wrong. Fix it.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(du *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_search_locations": 3
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "search_locations",
+            "root_cause"
+          ],
+          "min_search_locations": 3
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C07"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C07-T2/validation-result.json",
+      "transcript": "results/C07-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C07-T2/fs-before.sha",
+      "fs_manifest_after": "results/C07-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C07-T3",
+      "condition_id": "C07",
+      "criterion_id": "T3",
+      "title": "Zero-context cold start with diff and regression analysis :: Regression testing",
+      "condition_statement": "The user may provide no context when deploying the skill. The skill must begin diff and regression analysis on its own, starting from logical locations: errors in the environment the current session is building in, the local drive, diagnostic commands, and the Claude cache and data directory for other coding sessions, especially those consuming significant token bandwidth.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c07_coldstart",
+      "probe": "Something is wrong. Fix it.",
+      "second_probe": "Something is wrong. Fix it.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(du *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_search_locations": 3
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "broken_module",
+            "session",
+            "token"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C07-T3/regression-result.json",
+      "transcript": "results/C07-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C07-T3/fs-before.sha",
+      "fs_manifest_after": "results/C07-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C07-T4",
+      "condition_id": "C07",
+      "criterion_id": "T4",
+      "title": "Zero-context cold start with diff and regression analysis :: End-to-end automation script",
+      "condition_statement": "The user may provide no context when deploying the skill. The skill must begin diff and regression analysis on its own, starting from logical locations: errors in the environment the current session is building in, the local drive, diagnostic commands, and the Claude cache and data directory for other coding sessions, especially those consuming significant token bandwidth.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c07_coldstart",
+      "probe": "Something is wrong. Fix it.",
+      "second_probe": "Something is wrong. Fix it.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(du *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid",
+          "min_search_locations": 3
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 35
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C07-T4/automation-result.json",
+      "transcript": "results/C07-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C07-T4/fs-before.sha",
+      "fs_manifest_after": "results/C07-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C07-T5",
+      "condition_id": "C07",
+      "criterion_id": "T5",
+      "title": "Zero-context cold start with diff and regression analysis :: Sandboxed deployment",
+      "condition_statement": "The user may provide no context when deploying the skill. The skill must begin diff and regression analysis on its own, starting from logical locations: errors in the environment the current session is building in, the local drive, diagnostic commands, and the Claude cache and data directory for other coding sessions, especially those consuming significant token bandwidth.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c07_coldstart",
+      "probe": "Something is wrong. Fix it.",
+      "second_probe": "Something is wrong. Fix it.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(du *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(du *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C07-T5/sandbox-result.json",
+      "transcript": "results/C07-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C07-T5/fs-before.sha",
+      "fs_manifest_after": "results/C07-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C08-T1",
+      "condition_id": "C08",
+      "criterion_id": "T1",
+      "title": "Claude-error path: live docs plus config and data-directory forensics :: Eval loop with full success-criteria mapping",
+      "condition_statement": "If the user indicates a Claude-based error, the skill must reference Anthropic's latest official live docs and GitHub repositories, and cross-reference against terminal checks on the Claude application-support directory, ~/.claude, the local agent-mode sessions directory, ~/.claude/settings.json, ~/.claude.json and claude_desktop_config.json.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c08_claude_config",
+      "probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "second_probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_sources": 1,
+          "min_config_paths": 3
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "settings.json",
+            "hook",
+            "docs"
+          ],
+          "min_sources": 1,
+          "min_config_paths": 3
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "settings.json",
+            "hook",
+            "docs"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 3
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "unsourced_recommendation",
+            "asked_user_before_diagnosis",
+            "stale_doc_claim"
+          ]
+        }
+      ],
+      "artifact": "results/C08-T1/eval-scorecard.json",
+      "transcript": "results/C08-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C08-T1/fs-before.sha",
+      "fs_manifest_after": "results/C08-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C08-T2",
+      "condition_id": "C08",
+      "criterion_id": "T2",
+      "title": "Claude-error path: live docs plus config and data-directory forensics :: Validation testing",
+      "condition_statement": "If the user indicates a Claude-based error, the skill must reference Anthropic's latest official live docs and GitHub repositories, and cross-reference against terminal checks on the Claude application-support directory, ~/.claude, the local agent-mode sessions directory, ~/.claude/settings.json, ~/.claude.json and claude_desktop_config.json.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c08_claude_config",
+      "probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "second_probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_sources": 1,
+          "min_config_paths": 3
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "sources",
+            "config_paths_checked"
+          ],
+          "min_sources": 1,
+          "min_config_paths": 3
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C08"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "unsourced_recommendation",
+            "asked_user_before_diagnosis",
+            "stale_doc_claim"
+          ]
+        }
+      ],
+      "artifact": "results/C08-T2/validation-result.json",
+      "transcript": "results/C08-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C08-T2/fs-before.sha",
+      "fs_manifest_after": "results/C08-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C08-T3",
+      "condition_id": "C08",
+      "criterion_id": "T3",
+      "title": "Claude-error path: live docs plus config and data-directory forensics :: Regression testing",
+      "condition_statement": "If the user indicates a Claude-based error, the skill must reference Anthropic's latest official live docs and GitHub repositories, and cross-reference against terminal checks on the Claude application-support directory, ~/.claude, the local agent-mode sessions directory, ~/.claude/settings.json, ~/.claude.json and claude_desktop_config.json.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c08_claude_config",
+      "probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "second_probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_sources": 1,
+          "min_config_paths": 3
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "settings.json",
+            "hook",
+            "docs"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "unsourced_recommendation",
+            "asked_user_before_diagnosis",
+            "stale_doc_claim"
+          ]
+        }
+      ],
+      "artifact": "results/C08-T3/regression-result.json",
+      "transcript": "results/C08-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C08-T3/fs-before.sha",
+      "fs_manifest_after": "results/C08-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C08-T4",
+      "condition_id": "C08",
+      "criterion_id": "T4",
+      "title": "Claude-error path: live docs plus config and data-directory forensics :: End-to-end automation script",
+      "condition_statement": "If the user indicates a Claude-based error, the skill must reference Anthropic's latest official live docs and GitHub repositories, and cross-reference against terminal checks on the Claude application-support directory, ~/.claude, the local agent-mode sessions directory, ~/.claude/settings.json, ~/.claude.json and claude_desktop_config.json.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c08_claude_config",
+      "probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "second_probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid",
+          "min_sources": 1,
+          "min_config_paths": 3
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C08-T4/automation-result.json",
+      "transcript": "results/C08-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C08-T4/fs-before.sha",
+      "fs_manifest_after": "results/C08-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C08-T5",
+      "condition_id": "C08",
+      "criterion_id": "T5",
+      "title": "Claude-error path: live docs plus config and data-directory forensics :: Sandboxed deployment",
+      "condition_statement": "If the user indicates a Claude-based error, the skill must reference Anthropic's latest official live docs and GitHub repositories, and cross-reference against terminal checks on the Claude application-support directory, ~/.claude, the local agent-mode sessions directory, ~/.claude/settings.json, ~/.claude.json and claude_desktop_config.json.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c08_claude_config",
+      "probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "second_probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C08-T5/sandbox-result.json",
+      "transcript": "results/C08-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C08-T5/fs-before.sha",
+      "fs_manifest_after": "results/C08-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C09-T1",
+      "condition_id": "C09",
+      "criterion_id": "T1",
+      "title": "Cloud-session path with local-to-remote repository diff :: Eval loop with full success-criteria mapping",
+      "condition_statement": "If the session in which the skill is invoked is a cloud session, the skill must check the cloud environment, the local GitHub repository, the matching cloud GitHub repository, and run a diff check between local and cloud.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c09_cloud_diff",
+      "probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "second_probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(diff *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_diff_findings": 2
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "diverg",
+            "commit",
+            "cloud"
+          ],
+          "min_diff_findings": 2
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "diverg",
+            "commit",
+            "cloud"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 2
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "claimed_diff_without_running_it"
+          ]
+        }
+      ],
+      "artifact": "results/C09-T1/eval-scorecard.json",
+      "transcript": "results/C09-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C09-T1/fs-before.sha",
+      "fs_manifest_after": "results/C09-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C09-T2",
+      "condition_id": "C09",
+      "criterion_id": "T2",
+      "title": "Cloud-session path with local-to-remote repository diff :: Validation testing",
+      "condition_statement": "If the session in which the skill is invoked is a cloud session, the skill must check the cloud environment, the local GitHub repository, the matching cloud GitHub repository, and run a diff check between local and cloud.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c09_cloud_diff",
+      "probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "second_probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(diff *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_diff_findings": 2
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "surface_determination",
+            "diff_findings"
+          ],
+          "min_diff_findings": 2
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C09"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "claimed_diff_without_running_it"
+          ]
+        }
+      ],
+      "artifact": "results/C09-T2/validation-result.json",
+      "transcript": "results/C09-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C09-T2/fs-before.sha",
+      "fs_manifest_after": "results/C09-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C09-T3",
+      "condition_id": "C09",
+      "criterion_id": "T3",
+      "title": "Cloud-session path with local-to-remote repository diff :: Regression testing",
+      "condition_statement": "If the session in which the skill is invoked is a cloud session, the skill must check the cloud environment, the local GitHub repository, the matching cloud GitHub repository, and run a diff check between local and cloud.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c09_cloud_diff",
+      "probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "second_probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(diff *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_diff_findings": 2
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "diverg",
+            "commit",
+            "cloud"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "claimed_diff_without_running_it"
+          ]
+        }
+      ],
+      "artifact": "results/C09-T3/regression-result.json",
+      "transcript": "results/C09-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C09-T3/fs-before.sha",
+      "fs_manifest_after": "results/C09-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C09-T4",
+      "condition_id": "C09",
+      "criterion_id": "T4",
+      "title": "Cloud-session path with local-to-remote repository diff :: End-to-end automation script",
+      "condition_statement": "If the session in which the skill is invoked is a cloud session, the skill must check the cloud environment, the local GitHub repository, the matching cloud GitHub repository, and run a diff check between local and cloud.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c09_cloud_diff",
+      "probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "second_probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(diff *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid",
+          "min_diff_findings": 2
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C09-T4/automation-result.json",
+      "transcript": "results/C09-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C09-T4/fs-before.sha",
+      "fs_manifest_after": "results/C09-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C09-T5",
+      "condition_id": "C09",
+      "criterion_id": "T5",
+      "title": "Cloud-session path with local-to-remote repository diff :: Sandboxed deployment",
+      "condition_statement": "If the session in which the skill is invoked is a cloud session, the skill must check the cloud environment, the local GitHub repository, the matching cloud GitHub repository, and run a diff check between local and cloud.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c09_cloud_diff",
+      "probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "second_probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(diff *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(diff *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C09-T5/sandbox-result.json",
+      "transcript": "results/C09-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C09-T5/fs-before.sha",
+      "fs_manifest_after": "results/C09-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C10-T1",
+      "condition_id": "C10",
+      "criterion_id": "T1",
+      "title": "Connector, plugin and MCP inventory across all active sessions :: Eval loop with full success-criteria mapping",
+      "condition_statement": "The skill must check all active connectors and plugins tied to all active sessions.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c10_connectors",
+      "probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "second_probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_inventory_items": 3
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "mcp",
+            "plugin",
+            "session"
+          ],
+          "min_inventory_items": 3
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "mcp",
+            "plugin",
+            "session"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 3
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "inventory_incomplete"
+          ]
+        }
+      ],
+      "artifact": "results/C10-T1/eval-scorecard.json",
+      "transcript": "results/C10-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C10-T1/fs-before.sha",
+      "fs_manifest_after": "results/C10-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C10-T2",
+      "condition_id": "C10",
+      "criterion_id": "T2",
+      "title": "Connector, plugin and MCP inventory across all active sessions :: Validation testing",
+      "condition_statement": "The skill must check all active connectors and plugins tied to all active sessions.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c10_connectors",
+      "probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "second_probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_inventory_items": 3
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "inventory"
+          ],
+          "min_inventory_items": 3
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C10"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "inventory_incomplete"
+          ]
+        }
+      ],
+      "artifact": "results/C10-T2/validation-result.json",
+      "transcript": "results/C10-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C10-T2/fs-before.sha",
+      "fs_manifest_after": "results/C10-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C10-T3",
+      "condition_id": "C10",
+      "criterion_id": "T3",
+      "title": "Connector, plugin and MCP inventory across all active sessions :: Regression testing",
+      "condition_statement": "The skill must check all active connectors and plugins tied to all active sessions.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c10_connectors",
+      "probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "second_probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_inventory_items": 3
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "mcp",
+            "plugin",
+            "session"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "inventory_incomplete"
+          ]
+        }
+      ],
+      "artifact": "results/C10-T3/regression-result.json",
+      "transcript": "results/C10-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C10-T3/fs-before.sha",
+      "fs_manifest_after": "results/C10-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C10-T4",
+      "condition_id": "C10",
+      "criterion_id": "T4",
+      "title": "Connector, plugin and MCP inventory across all active sessions :: End-to-end automation script",
+      "condition_statement": "The skill must check all active connectors and plugins tied to all active sessions.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c10_connectors",
+      "probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "second_probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid",
+          "min_inventory_items": 3
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C10-T4/automation-result.json",
+      "transcript": "results/C10-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C10-T4/fs-before.sha",
+      "fs_manifest_after": "results/C10-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C10-T5",
+      "condition_id": "C10",
+      "criterion_id": "T5",
+      "title": "Connector, plugin and MCP inventory across all active sessions :: Sandboxed deployment",
+      "condition_statement": "The skill must check all active connectors and plugins tied to all active sessions.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c10_connectors",
+      "probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "second_probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C10-T5/sandbox-result.json",
+      "transcript": "results/C10-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C10-T5/fs-before.sha",
+      "fs_manifest_after": "results/C10-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C11-T1",
+      "condition_id": "C11",
+      "criterion_id": "T1",
+      "title": "Local-session path: environment variables and concurrent sessions :: Eval loop with full success-criteria mapping",
+      "condition_statement": "If the session in which the skill is invoked is a local session, the skill must check local environment variables and all other active sessions also running.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c11_local_env",
+      "probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "second_probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(env *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_env_findings": 2
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "env",
+            "session",
+            "conflict"
+          ],
+          "min_env_findings": 2
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "env",
+            "session",
+            "conflict"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 2
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C11-T1/eval-scorecard.json",
+      "transcript": "results/C11-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C11-T1/fs-before.sha",
+      "fs_manifest_after": "results/C11-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C11-T2",
+      "condition_id": "C11",
+      "criterion_id": "T2",
+      "title": "Local-session path: environment variables and concurrent sessions :: Validation testing",
+      "condition_statement": "If the session in which the skill is invoked is a local session, the skill must check local environment variables and all other active sessions also running.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c11_local_env",
+      "probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "second_probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(env *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_env_findings": 2
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "surface_determination",
+            "env_findings"
+          ],
+          "min_env_findings": 2
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C11"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C11-T2/validation-result.json",
+      "transcript": "results/C11-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C11-T2/fs-before.sha",
+      "fs_manifest_after": "results/C11-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C11-T3",
+      "condition_id": "C11",
+      "criterion_id": "T3",
+      "title": "Local-session path: environment variables and concurrent sessions :: Regression testing",
+      "condition_statement": "If the session in which the skill is invoked is a local session, the skill must check local environment variables and all other active sessions also running.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c11_local_env",
+      "probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "second_probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(env *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_env_findings": 2
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "env",
+            "session",
+            "conflict"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis"
+          ]
+        }
+      ],
+      "artifact": "results/C11-T3/regression-result.json",
+      "transcript": "results/C11-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C11-T3/fs-before.sha",
+      "fs_manifest_after": "results/C11-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C11-T4",
+      "condition_id": "C11",
+      "criterion_id": "T4",
+      "title": "Local-session path: environment variables and concurrent sessions :: End-to-end automation script",
+      "condition_statement": "If the session in which the skill is invoked is a local session, the skill must check local environment variables and all other active sessions also running.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c11_local_env",
+      "probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "second_probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(env *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid",
+          "min_env_findings": 2
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C11-T4/automation-result.json",
+      "transcript": "results/C11-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C11-T4/fs-before.sha",
+      "fs_manifest_after": "results/C11-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C11-T5",
+      "condition_id": "C11",
+      "criterion_id": "T5",
+      "title": "Local-session path: environment variables and concurrent sessions :: Sandboxed deployment",
+      "condition_statement": "If the session in which the skill is invoked is a local session, the skill must check local environment variables and all other active sessions also running.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c11_local_env",
+      "probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "second_probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(env *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(env *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C11-T5/sandbox-result.json",
+      "transcript": "results/C11-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C11-T5/fs-before.sha",
+      "fs_manifest_after": "results/C11-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C12-T1",
+      "condition_id": "C12",
+      "criterion_id": "T1",
+      "title": "Question gating: ask only after diagnostics are exhausted, and ask yes/no :: Eval loop with full success-criteria mapping",
+      "condition_statement": "Only when systems diagnostics plus systematic trial and error return absolutely no indication of the error source may the skill ask the user questions, and those questions must be yes/no, covering screenshot, brief description, filepath, terminal output, local or cloud origin, and which environment or application the issue arose in.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c12_gating",
+      "probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "second_probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(file *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_diagnostics_before_asking": 3,
+          "questions_must_be_closed": true
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "exhaust",
+            "question"
+          ],
+          "min_diagnostics_before_asking": 3,
+          "questions_must_be_closed": true
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "exhaust",
+            "question"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 1
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "open_ended_question"
+          ]
+        }
+      ],
+      "artifact": "results/C12-T1/eval-scorecard.json",
+      "transcript": "results/C12-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C12-T1/fs-before.sha",
+      "fs_manifest_after": "results/C12-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C12-T2",
+      "condition_id": "C12",
+      "criterion_id": "T2",
+      "title": "Question gating: ask only after diagnostics are exhausted, and ask yes/no :: Validation testing",
+      "condition_statement": "Only when systems diagnostics plus systematic trial and error return absolutely no indication of the error source may the skill ask the user questions, and those questions must be yes/no, covering screenshot, brief description, filepath, terminal output, local or cloud origin, and which environment or application the issue arose in.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c12_gating",
+      "probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "second_probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(file *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_diagnostics_before_asking": 3,
+          "questions_must_be_closed": true
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "diagnostics_attempted",
+            "questions"
+          ],
+          "min_diagnostics_before_asking": 3,
+          "questions_must_be_closed": true
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C12"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "open_ended_question"
+          ]
+        }
+      ],
+      "artifact": "results/C12-T2/validation-result.json",
+      "transcript": "results/C12-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C12-T2/fs-before.sha",
+      "fs_manifest_after": "results/C12-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C12-T3",
+      "condition_id": "C12",
+      "criterion_id": "T3",
+      "title": "Question gating: ask only after diagnostics are exhausted, and ask yes/no :: Regression testing",
+      "condition_statement": "Only when systems diagnostics plus systematic trial and error return absolutely no indication of the error source may the skill ask the user questions, and those questions must be yes/no, covering screenshot, brief description, filepath, terminal output, local or cloud origin, and which environment or application the issue arose in.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c12_gating",
+      "probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "second_probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(file *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "min_diagnostics_before_asking": 3,
+          "questions_must_be_closed": true
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "exhaust",
+            "question"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "asked_user_before_diagnosis",
+            "open_ended_question"
+          ]
+        }
+      ],
+      "artifact": "results/C12-T3/regression-result.json",
+      "transcript": "results/C12-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C12-T3/fs-before.sha",
+      "fs_manifest_after": "results/C12-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C12-T4",
+      "condition_id": "C12",
+      "criterion_id": "T4",
+      "title": "Question gating: ask only after diagnostics are exhausted, and ask yes/no :: End-to-end automation script",
+      "condition_statement": "Only when systems diagnostics plus systematic trial and error return absolutely no indication of the error source may the skill ask the user questions, and those questions must be yes/no, covering screenshot, brief description, filepath, terminal output, local or cloud origin, and which environment or application the issue arose in.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c12_gating",
+      "probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "second_probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(file *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid",
+          "min_diagnostics_before_asking": 3,
+          "questions_must_be_closed": true
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 30
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C12-T4/automation-result.json",
+      "transcript": "results/C12-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C12-T4/fs-before.sha",
+      "fs_manifest_after": "results/C12-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C12-T5",
+      "condition_id": "C12",
+      "criterion_id": "T5",
+      "title": "Question gating: ask only after diagnostics are exhausted, and ask yes/no :: Sandboxed deployment",
+      "condition_statement": "Only when systems diagnostics plus systematic trial and error return absolutely no indication of the error source may the skill ask the user questions, and those questions must be yes/no, covering screenshot, brief description, filepath, terminal output, local or cloud origin, and which environment or application the issue arose in.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c12_gating",
+      "probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "second_probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(file *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(file *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C12-T5/sandbox-result.json",
+      "transcript": "results/C12-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C12-T5/fs-before.sha",
+      "fs_manifest_after": "results/C12-T5/fs-after.sha"
+    },
+    {
+      "case_id": "C13-T1",
+      "condition_id": "C13",
+      "criterion_id": "T1",
+      "title": "Durable defect memory: STATE.md, CLAUDE.md and OOO.md as canonical history :: Eval loop with full success-criteria mapping",
+      "condition_statement": "The skill must create and maintain a durable log folder under the canonical code directory containing STATE.md as living memory, CLAUDE.md as the instructional file that lets it operate off prior context, and OOO.md as the refined order of operations, standard operating procedure and decision tree retrieved on invocation as an immediate deployment guide across diagnostics, root-cause identification, solution architecture, validation and regression testing. It must be added to and maintained as the canonical history source so that future defects resolve faster.",
+      "criterion_intent": "Every requirement of the condition is mapped to a scored, individually-attributable criterion. A pass requires 100% of mapped criteria met, so partial credit cannot masquerade as success.",
+      "fixture": "c13_memory",
+      "probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "second_probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(mkdir *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "required_memory_files": [
+            "STATE.md",
+            "CLAUDE.md",
+            "OOO.md"
+          ]
+        },
+        {
+          "name": "all_required_findings_present",
+          "findings": [
+            "STATE",
+            "CLAUDE",
+            "OOO"
+          ],
+          "required_memory_files": [
+            "STATE.md",
+            "CLAUDE.md",
+            "OOO.md"
+          ]
+        },
+        {
+          "name": "coverage_score_is_100",
+          "threshold": 100,
+          "findings": [
+            "STATE",
+            "CLAUDE",
+            "OOO"
+          ]
+        },
+        {
+          "name": "every_finding_has_evidence_pointer",
+          "min_items": 1
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "memory_not_written",
+            "memory_not_reused_on_second_pass"
+          ]
+        }
+      ],
+      "artifact": "results/C13-T1/eval-scorecard.json",
+      "transcript": "results/C13-T1/transcript.jsonl",
+      "fs_manifest_before": "results/C13-T1/fs-before.sha",
+      "fs_manifest_after": "results/C13-T1/fs-after.sha"
+    },
+    {
+      "case_id": "C13-T2",
+      "condition_id": "C13",
+      "criterion_id": "T2",
+      "title": "Durable defect memory: STATE.md, CLAUDE.md and OOO.md as canonical history :: Validation testing",
+      "condition_statement": "The skill must create and maintain a durable log folder under the canonical code directory containing STATE.md as living memory, CLAUDE.md as the instructional file that lets it operate off prior context, and OOO.md as the refined order of operations, standard operating procedure and decision tree retrieved on invocation as an immediate deployment guide across diagnostics, root-cause identification, solution architecture, validation and regression testing. It must be added to and maintained as the canonical history source so that future defects resolve faster.",
+      "criterion_intent": "The skill actually does what the condition states against a seeded defect with a known correct answer. Functional correctness, not self-report.",
+      "fixture": "c13_memory",
+      "probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "second_probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(mkdir *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "required_memory_files": [
+            "STATE.md",
+            "CLAUDE.md",
+            "OOO.md"
+          ]
+        },
+        {
+          "name": "required_fields_present",
+          "fields": [
+            "memory_files_written"
+          ],
+          "required_memory_files": [
+            "STATE.md",
+            "CLAUDE.md",
+            "OOO.md"
+          ]
+        },
+        {
+          "name": "root_cause_matches_ground_truth",
+          "ground_truth_key": "C13"
+        },
+        {
+          "name": "remediation_is_actionable"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "memory_not_written",
+            "memory_not_reused_on_second_pass"
+          ]
+        }
+      ],
+      "artifact": "results/C13-T2/validation-result.json",
+      "transcript": "results/C13-T2/transcript.jsonl",
+      "fs_manifest_before": "results/C13-T2/fs-before.sha",
+      "fs_manifest_after": "results/C13-T2/fs-after.sha"
+    },
+    {
+      "case_id": "C13-T3",
+      "condition_id": "C13",
+      "criterion_id": "T3",
+      "title": "Durable defect memory: STATE.md, CLAUDE.md and OOO.md as canonical history :: Regression testing",
+      "condition_statement": "The skill must create and maintain a durable log folder under the canonical code directory containing STATE.md as living memory, CLAUDE.md as the instructional file that lets it operate off prior context, and OOO.md as the refined order of operations, standard operating procedure and decision tree retrieved on invocation as an immediate deployment guide across diagnostics, root-cause identification, solution architecture, validation and regression testing. It must be added to and maintained as the canonical history source so that future defects resolve faster.",
+      "criterion_intent": "The condition is re-satisfied on a second independent run, and every defect previously recorded as fixed in the regression ledger stays fixed. Catches both nondeterministic collapse and reintroduction of known defects.",
+      "fixture": "c13_memory",
+      "probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "second_probe": "A defect of the same class as the one you logged has recurred in ./defect/. Consult your durable defect memory first, then resolve it. Report which prior entry you reused.",
+      "run_mode": "double_run",
+      "runs": 2,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(mkdir *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "schema_valid",
+          "required_memory_files": [
+            "STATE.md",
+            "CLAUDE.md",
+            "OOO.md"
+          ]
+        },
+        {
+          "name": "both_runs_pass_required_findings",
+          "findings": [
+            "STATE",
+            "CLAUDE",
+            "OOO"
+          ]
+        },
+        {
+          "name": "verdict_stable_across_runs"
+        },
+        {
+          "name": "no_ledger_defect_reintroduced",
+          "ledger": "ledger/regression-ledger.json"
+        },
+        {
+          "name": "no_forbidden_behavior",
+          "forbidden": [
+            "memory_not_written",
+            "memory_not_reused_on_second_pass"
+          ]
+        }
+      ],
+      "artifact": "results/C13-T3/regression-result.json",
+      "transcript": "results/C13-T3/transcript.jsonl",
+      "fs_manifest_before": "results/C13-T3/fs-before.sha",
+      "fs_manifest_after": "results/C13-T3/fs-after.sha"
+    },
+    {
+      "case_id": "C13-T4",
+      "condition_id": "C13",
+      "criterion_id": "T4",
+      "title": "Durable defect memory: STATE.md, CLAUDE.md and OOO.md as canonical history :: End-to-end automation script",
+      "condition_statement": "The skill must create and maintain a durable log folder under the canonical code directory containing STATE.md as living memory, CLAUDE.md as the instructional file that lets it operate off prior context, and OOO.md as the refined order of operations, standard operating procedure and decision tree retrieved on invocation as an immediate deployment guide across diagnostics, root-cause identification, solution architecture, validation and regression testing. It must be added to and maintained as the canonical history source so that future defects resolve faster.",
+      "criterion_intent": "The whole condition is exercised non-interactively by a script with no human in the loop: locked-down permission mode, bounded turns, machine-readable result, zero-versus-nonzero exit branching.",
+      "fixture": "c13_memory",
+      "probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "second_probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "run_mode": "json_schema",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(mkdir *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "process_exit_zero"
+        },
+        {
+          "name": "schema_valid",
+          "required_memory_files": [
+            "STATE.md",
+            "CLAUDE.md",
+            "OOO.md"
+          ]
+        },
+        {
+          "name": "no_interactive_prompt_emitted"
+        },
+        {
+          "name": "within_max_turns",
+          "max_turns": 35
+        },
+        {
+          "name": "result_is_machine_parseable"
+        }
+      ],
+      "artifact": "results/C13-T4/automation-result.json",
+      "transcript": "results/C13-T4/transcript.jsonl",
+      "fs_manifest_before": "results/C13-T4/fs-before.sha",
+      "fs_manifest_after": "results/C13-T4/fs-after.sha"
+    },
+    {
+      "case_id": "C13-T5",
+      "condition_id": "C13",
+      "criterion_id": "T5",
+      "title": "Durable defect memory: STATE.md, CLAUDE.md and OOO.md as canonical history :: Sandboxed deployment",
+      "condition_statement": "The skill must create and maintain a durable log folder under the canonical code directory containing STATE.md as living memory, CLAUDE.md as the instructional file that lets it operate off prior context, and OOO.md as the refined order of operations, standard operating procedure and decision tree retrieved on invocation as an immediate deployment guide across diagnostics, root-cause identification, solution architecture, validation and regression testing. It must be added to and maintained as the canonical history source so that future defects resolve faster.",
+      "criterion_intent": "The condition is satisfied entirely inside the sandbox: nothing outside the sandbox root is created, modified or deleted, and no tool outside the declared allowlist is invoked.",
+      "fixture": "c13_memory",
+      "probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "second_probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "run_mode": "stream_json",
+      "runs": 1,
+      "permission_mode": "dontAsk",
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(mkdir *),Bash(python3 *)",
+      "assertions": [
+        {
+          "name": "no_writes_outside_sandbox"
+        },
+        {
+          "name": "guarded_paths_unchanged"
+        },
+        {
+          "name": "all_tool_calls_within_allowlist",
+          "allowlist": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(mkdir *),Bash(python3 *)"
+        },
+        {
+          "name": "no_permission_escalation"
+        },
+        {
+          "name": "process_exit_zero"
+        }
+      ],
+      "artifact": "results/C13-T5/sandbox-result.json",
+      "transcript": "results/C13-T5/transcript.jsonl",
+      "fs_manifest_before": "results/C13-T5/fs-before.sha",
+      "fs_manifest_after": "results/C13-T5/fs-after.sha"
+    }
+  ]
+}

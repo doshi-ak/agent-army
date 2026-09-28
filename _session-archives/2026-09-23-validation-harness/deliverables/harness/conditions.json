@@ -1,0 +1,250 @@
+{
+  "$comment": "The 13 AUDIT CHECKLIST conditions from the rough spec, restated as testable capability requirements. Each condition owns one fixture and one probe. Criteria (criteria.json) are applied across all 13 to produce the 65-cell matrix.",
+  "conditions": [
+    {
+      "id": "C01",
+      "title": "Interface-agnostic operation",
+      "statement": "The troubleshoot skill must be optimized for the Claude Code interface regardless of specifics: GitHub repo connection, local session, Claude Code on the web, desktop app, or CLI.",
+      "fixture": "c01_interface",
+      "seed": [
+        "transcripts/cli_session.txt",
+        "transcripts/web_session.txt",
+        "transcripts/desktop_session.txt",
+        "transcripts/github_action_run.txt",
+        "surface_manifest.json"
+      ],
+      "probe": "Four transcripts in ./transcripts/ come from four different Claude Code surfaces. For each one, identify the surface, state the single piece of evidence in the text that identifies it, and state one diagnostic step that is available on that surface and one that is not. Do not ask me anything.",
+      "required_findings": ["cli", "web", "desktop", "github"],
+      "required_fields": ["surface_determination"],
+      "min_evidence_items": 4,
+      "forbidden_behaviors": ["asked_user_before_diagnosis"],
+      "max_turns": 25,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+    },
+    {
+      "id": "C02",
+      "title": "Full-lifecycle defect ownership across all issue classes",
+      "statement": "The skill must engage, own, execute and excel at the full lifecycle of bug, defect and error management across any issue class: native Claude error, local error, Claude config or data-directory error, API response code, MCP error, and reconciliation of a failed build developed off a public GitHub repo.",
+      "fixture": "c02_issue_classes",
+      "seed": [
+        "errors/native_claude_error.txt",
+        "errors/local_runtime_error.txt",
+        "errors/config_directory_error.json",
+        "errors/api_response_codes.log",
+        "errors/mcp_handshake_failure.log",
+        "errors/github_build_reconciliation.diff"
+      ],
+      "probe": "./errors/ holds six failures of six different classes. Classify each by class, give root cause, and give the fix. Every one of the six must be addressed. Do not ask me anything.",
+      "required_findings": ["native", "local", "config", "api", "mcp", "reconcil"],
+      "required_fields": ["issue_class"],
+      "min_evidence_items": 6,
+      "forbidden_behaviors": ["asked_user_before_diagnosis", "left_class_unaddressed"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+    },
+    {
+      "id": "C03",
+      "title": "Authoritative-source grounding and CI/CD validation",
+      "statement": "The skill must reference authoritative, highly-upvoted GitHub repositories and developer-security, cybersecurity and regression-engineering resources to validate solution architecture, CI/CD best practice, and automation scripting via Postman and Jenkins.",
+      "fixture": "c03_cicd",
+      "seed": [
+        "ci/Jenkinsfile",
+        "ci/postman_collection.json",
+        "ci/architecture.md",
+        "ci/.github/workflows/deploy.yml"
+      ],
+      "probe": "Review ./ci/ for solution-architecture and CI/CD defects, including the Jenkinsfile, the Postman collection and the GitHub Actions workflow. Every finding must carry a named authoritative source. Do not ask me anything.",
+      "required_findings": ["jenkins", "postman", "secret", "workflow"],
+      "required_fields": ["sources"],
+      "min_evidence_items": 4,
+      "min_sources": 3,
+      "forbidden_behaviors": ["unsourced_recommendation", "asked_user_before_diagnosis"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)"
+    },
+    {
+      "id": "C04",
+      "title": "Database engineering, solutioning and triage",
+      "statement": "The skill must have full capacity for database engineering, solutioning and triage including AWS S3 buckets, SQL databases, AWS Redshift and Oracle data warehouses.",
+      "fixture": "c04_data",
+      "seed": [
+        "db/s3_access_denied.json",
+        "db/sql_deadlock.log",
+        "db/redshift_skew.txt",
+        "db/oracle_dwh_plan.txt"
+      ],
+      "probe": "./db/ holds four data-tier failures: an S3 access failure, a SQL deadlock, a Redshift distribution problem and an Oracle warehouse plan regression. Diagnose each, name the root cause, and give the remediation. Do not ask me anything.",
+      "required_findings": ["s3", "deadlock", "skew", "oracle"],
+      "required_fields": ["issue_class", "remediation"],
+      "min_evidence_items": 4,
+      "forbidden_behaviors": ["asked_user_before_diagnosis", "left_class_unaddressed"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+    },
+    {
+      "id": "C05",
+      "title": "Language-model architecture triage and MLOps solutioning",
+      "statement": "The skill must have full capacity for language-model architecture triage and solutioning using MLOps best practice, for locally built and running models (inference-time failure, runtime defects, training-data defects, pre-training and model architecture) and for off-the-shelf services such as AWS Bedrock, AWS SageMaker, the OpenAI API and the Anthropic API.",
+      "fixture": "c05_mlops",
+      "seed": [
+        "ml/local_inference_oom.log",
+        "ml/tokenizer_mismatch.txt",
+        "ml/training_data_leakage.csv",
+        "ml/bedrock_throttling.json",
+        "ml/anthropic_api_overloaded.json"
+      ],
+      "probe": "./ml/ holds five model-tier failures spanning local inference, tokenization, training data, and hosted inference services. Diagnose each with root cause and remediation, and say for each whether it is an inference-time, runtime, training-data, or service-tier defect. Do not ask me anything.",
+      "required_findings": ["oom", "tokenizer", "leakage", "throttl", "overloaded"],
+      "required_fields": ["issue_class", "remediation"],
+      "min_evidence_items": 5,
+      "forbidden_behaviors": ["asked_user_before_diagnosis", "left_class_unaddressed"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+    },
+    {
+      "id": "C06",
+      "title": "Complete lifecycle stages present in every engagement",
+      "statement": "The full lifecycle includes diagnostics, root-cause identification, triage, solution architecture, validation and regression testing. Every stage must be present and ordered.",
+      "fixture": "c06_lifecycle",
+      "seed": ["lifecycle/failing_build.log", "lifecycle/src/app.py", "lifecycle/tests/test_app.py"],
+      "probe": "The build in ./lifecycle/ fails. Work the complete defect lifecycle on it and label each stage of your work explicitly. Do not ask me anything.",
+      "required_findings": ["diagnos", "root cause", "triage", "solution", "validat", "regression"],
+      "required_fields": ["lifecycle_stages"],
+      "min_evidence_items": 1,
+      "required_stages": ["diagnostics", "root_cause", "triage", "solution", "validation", "regression"],
+      "forbidden_behaviors": ["skipped_lifecycle_stage", "asked_user_before_diagnosis"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(python3 *)"
+    },
+    {
+      "id": "C07",
+      "title": "Zero-context cold start with diff and regression analysis",
+      "statement": "The user may provide no context when deploying the skill. The skill must begin diff and regression analysis on its own, starting from logical locations: errors in the environment the current session is building in, the local drive, diagnostic commands, and the Claude cache and data directory for other coding sessions, especially those consuming significant token bandwidth.",
+      "fixture": "c07_coldstart",
+      "seed": [
+        "workspace/broken_module.py",
+        "workspace/.git_state.txt",
+        "claude_home/sessions/session_alpha.json",
+        "claude_home/sessions/session_bravo.json",
+        "claude_home/cache/token_usage.json"
+      ],
+      "probe": "Something is wrong. Fix it.",
+      "required_findings": ["broken_module", "session", "token"],
+      "required_fields": ["search_locations", "root_cause"],
+      "min_evidence_items": 3,
+      "min_search_locations": 3,
+      "forbidden_behaviors": ["asked_user_before_diagnosis"],
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(du *)"
+    },
+    {
+      "id": "C08",
+      "title": "Claude-error path: live docs plus config and data-directory forensics",
+      "statement": "If the user indicates a Claude-based error, the skill must reference Anthropic's latest official live docs and GitHub repositories, and cross-reference against terminal checks on the Claude application-support directory, ~/.claude, the local agent-mode sessions directory, ~/.claude/settings.json, ~/.claude.json and claude_desktop_config.json.",
+      "fixture": "c08_claude_config",
+      "seed": [
+        "claude_home/.claude/settings.json",
+        "claude_home/.claude.json",
+        "claude_home/AppSupport/claude_desktop_config.json",
+        "claude_home/AppSupport/local-agent-mode-sessions/session_01.json",
+        "claude_home/error.txt"
+      ],
+      "probe": "This is a Claude error. See ./claude_home/error.txt. Diagnose it against the actual configuration files on disk under ./claude_home/ and against Anthropic's current official documentation. Cite the documentation you used. Do not ask me anything.",
+      "required_findings": ["settings.json", "hook", "docs"],
+      "required_fields": ["sources", "config_paths_checked"],
+      "min_evidence_items": 3,
+      "min_sources": 1,
+      "min_config_paths": 3,
+      "forbidden_behaviors": ["unsourced_recommendation", "asked_user_before_diagnosis", "stale_doc_claim"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,WebSearch,WebFetch,Bash(ls *),Bash(cat *),Bash(find *)"
+    },
+    {
+      "id": "C09",
+      "title": "Cloud-session path with local-to-remote repository diff",
+      "statement": "If the session in which the skill is invoked is a cloud session, the skill must check the cloud environment, the local GitHub repository, the matching cloud GitHub repository, and run a diff check between local and cloud.",
+      "fixture": "c09_cloud_diff",
+      "seed": ["repo_local/", "repo_remote/", "env/cloud_markers.txt"],
+      "probe": "This is a cloud session. ./repo_local/ and ./repo_remote/ are the local and remote states of the same repository. Establish which environment you are in from the evidence in ./env/, then diff local against remote and report every divergence. Do not ask me anything.",
+      "required_findings": ["diverg", "commit", "cloud"],
+      "required_fields": ["surface_determination", "diff_findings"],
+      "min_evidence_items": 2,
+      "min_diff_findings": 2,
+      "forbidden_behaviors": ["asked_user_before_diagnosis", "claimed_diff_without_running_it"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(git *),Bash(diff *)"
+    },
+    {
+      "id": "C10",
+      "title": "Connector, plugin and MCP inventory across all active sessions",
+      "statement": "The skill must check all active connectors and plugins tied to all active sessions.",
+      "fixture": "c10_connectors",
+      "seed": [
+        "claude_home/.claude/settings.json",
+        "claude_home/.claude/plugins/config.json",
+        "claude_home/mcp/.mcp.json",
+        "claude_home/sessions/active_sessions.json"
+      ],
+      "probe": "Inventory every connector, plugin and MCP server tied to every active session recorded under ./claude_home/, and flag any that is misconfigured, unreachable or duplicated. Do not ask me anything.",
+      "required_findings": ["mcp", "plugin", "session"],
+      "required_fields": ["inventory"],
+      "min_evidence_items": 3,
+      "min_inventory_items": 3,
+      "forbidden_behaviors": ["asked_user_before_diagnosis", "inventory_incomplete"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *)"
+    },
+    {
+      "id": "C11",
+      "title": "Local-session path: environment variables and concurrent sessions",
+      "statement": "If the session in which the skill is invoked is a local session, the skill must check local environment variables and all other active sessions also running.",
+      "fixture": "c11_local_env",
+      "seed": [
+        "env/environment.txt",
+        "env/shell_profile.sh",
+        "claude_home/sessions/active_sessions.json",
+        "claude_home/sessions/session_charlie.json"
+      ],
+      "probe": "This is a local session. Read the environment captured in ./env/ and the concurrently running sessions under ./claude_home/sessions/, and identify every environment-level cause of interference between them. Do not ask me anything.",
+      "required_findings": ["env", "session", "conflict"],
+      "required_fields": ["surface_determination", "env_findings"],
+      "min_evidence_items": 2,
+      "min_env_findings": 2,
+      "forbidden_behaviors": ["asked_user_before_diagnosis"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(env *)"
+    },
+    {
+      "id": "C12",
+      "title": "Question gating: ask only after diagnostics are exhausted, and ask yes/no",
+      "statement": "Only when systems diagnostics plus systematic trial and error return absolutely no indication of the error source may the skill ask the user questions, and those questions must be yes/no, covering screenshot, brief description, filepath, terminal output, local or cloud origin, and which environment or application the issue arose in.",
+      "fixture": "c12_gating",
+      "seed": ["opaque/README.txt", "opaque/binary.bin", "opaque/empty.log"],
+      "probe": "Something failed somewhere in my setup. The only material I can give you is ./opaque/. Diagnose it.",
+      "required_findings": ["exhaust", "question"],
+      "required_fields": ["diagnostics_attempted", "questions"],
+      "min_evidence_items": 1,
+      "min_diagnostics_before_asking": 3,
+      "questions_must_be_closed": true,
+      "forbidden_behaviors": ["asked_user_before_diagnosis", "open_ended_question"],
+      "max_turns": 30,
+      "allowed_tools": "Read,Grep,Glob,Bash(ls *),Bash(cat *),Bash(find *),Bash(file *)"
+    },
+    {
+      "id": "C13",
+      "title": "Durable defect memory: STATE.md, CLAUDE.md and OOO.md as canonical history",
+      "statement": "The skill must create and maintain a durable log folder under the canonical code directory containing STATE.md as living memory, CLAUDE.md as the instructional file that lets it operate off prior context, and OOO.md as the refined order of operations, standard operating procedure and decision tree retrieved on invocation as an immediate deployment guide across diagnostics, root-cause identification, solution architecture, validation and regression testing. It must be added to and maintained as the canonical history source so that future defects resolve faster.",
+      "fixture": "c13_memory",
+      "seed": ["defect/regression_bug.py", "defect/failure.log"],
+      "probe": "Resolve the defect in ./defect/, then record what you learned in your durable defect-memory folder so a future session resolves this class of defect faster. Do not ask me anything.",
+      "required_findings": ["STATE", "CLAUDE", "OOO"],
+      "required_fields": ["memory_files_written"],
+      "min_evidence_items": 1,
+      "required_memory_files": ["STATE.md", "CLAUDE.md", "OOO.md"],
+      "second_pass_probe": "A defect of the same class as the one you logged has recurred in ./defect/. Consult your durable defect memory first, then resolve it. Report which prior entry you reused.",
+      "forbidden_behaviors": ["memory_not_written", "memory_not_reused_on_second_pass"],
+      "max_turns": 35,
+      "allowed_tools": "Read,Grep,Glob,Edit,Write,Bash(ls *),Bash(cat *),Bash(find *),Bash(mkdir *),Bash(python3 *)"
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["verdict", "surface_determination", "diagnostics_attempted", "findings", "lifecycle_stages", "questions", "sources", "memory_files_written"],
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": ["resolved", "root_cause_identified", "insufficient_evidence"],
+      "description": "resolved = defect diagnosed and remediation given; root_cause_identified = cause found, remediation blocked; insufficient_evidence = diagnostics exhausted without an identified source, which is the only state permitting questions."
+    },
+    "surface_determination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surface", "evidence", "reasoning"],
+      "properties": {
+        "surface": {"type": "string", "enum": ["cli", "web", "desktop", "github_actions", "unknown"]},
+        "evidence": {"type": "array", "items": {"type": "string"}},
+        "reasoning": {"type": "string"}
+      },
+      "description": "Which Claude Code surface the session or artifact belongs to, and the literal evidence used to decide."
+    },
+    "diagnostics_attempted": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["step", "location", "outcome"],
+        "properties": {
+          "step": {"type": "string"},
+          "location": {"type": "string"},
+          "outcome": {"type": "string", "enum": ["signal", "no_signal", "error"]}
+        }
+      },
+      "description": "Every diagnostic actually run, before any question was asked. Locations double as the search_locations and config_paths_checked evidence."
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "issue_class", "root_cause", "evidence_pointer", "remediation", "severity"],
+        "properties": {
+          "id": {"type": "string"},
+          "issue_class": {
+            "type": "string",
+            "enum": ["native_claude", "local_runtime", "claude_config", "api_response", "mcp", "github_reconciliation", "cicd", "database", "model_inference", "model_training", "model_service", "connector_plugin", "environment", "repo_divergence", "unknown"]
+          },
+          "root_cause": {"type": "string"},
+          "evidence_pointer": {"type": "string", "description": "Concrete file path, line reference, log line or command output that supports the finding."},
+          "remediation": {"type": "string"},
+          "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]}
+        }
+      }
+    },
+    "lifecycle_stages": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["diagnostics", "root_cause", "triage", "solution", "validation", "regression"],
+      "properties": {
+        "diagnostics": {"type": "string"},
+        "root_cause": {"type": "string"},
+        "triage": {"type": "string"},
+        "solution": {"type": "string"},
+        "validation": {"type": "string"},
+        "regression": {"type": "string"}
+      },
+      "description": "One line per lifecycle stage. Empty string means the stage was not performed."
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text", "closed_form"],
+        "properties": {
+          "text": {"type": "string"},
+          "closed_form": {"type": "boolean", "description": "True only if the question is answerable yes or no."}
+        }
+      },
+      "description": "Must be empty unless verdict is insufficient_evidence."
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "title", "checked_on"],
+        "properties": {
+          "url": {"type": "string"},
+          "title": {"type": "string"},
+          "checked_on": {"type": "string"}
+        }
+      },
+      "description": "Authoritative sources actually fetched during this run."
+    },
+    "inventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "kind", "status"],
+        "properties": {
+          "name": {"type": "string"},
+          "kind": {"type": "string", "enum": ["mcp_server", "plugin", "connector", "session"]},
+          "status": {"type": "string", "enum": ["healthy", "misconfigured", "unreachable", "duplicate"]}
+        }
+      }
+    },
+    "diff_findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["left", "right", "divergence"],
+        "properties": {
+          "left": {"type": "string"},
+          "right": {"type": "string"},
+          "divergence": {"type": "string"}
+        }
+      }
+    },
+    "env_findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["variable", "issue"],
+        "properties": {
+          "variable": {"type": "string"},
+          "issue": {"type": "string"}
+        }
+      }
+    },
+    "memory_files_written": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Absolute or sandbox-relative paths of durable defect-memory files created or updated this run."
+    },
+    "memory_entries_reused": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Identifiers of prior defect-memory entries consulted before diagnosing."
+    }
+  }
+}
